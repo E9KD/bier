@@ -1,11 +1,55 @@
 {
   "pages": [
-    "pages/index/main"
+    "pages/index/main",
+    "pages/serve/main",
+    "pages/lesson/main",
+    "pages/person/main",
+    "pages/teacherinfo/main",
+    "pages/buylesson/main",
+    "pages/toolspage/main",
+    "pages/login/main",
+    "pages/test/main",
+    "pages/addchildren/main",
+    "pages/groupreport/main",
+    "pages/order/main",
+    "pages/vip/main",
+    "pages/childrenhightreport/main",
+    "pages/hightpre/main",
+    "pages/chartpage/main",
+    "pages/changehight/main",
+    "pages/pastscore/main",
+    "pages/resultpage/main"
   ],
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "WeChat",
     "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "color": "#FFF",
+    "selectedColor": "#F56700",
+    "backgroundColor": "black",
+    "list": [{
+      "pagePath": "pages/index/main",
+      "text": "首页",
+      "iconPath": "/static/image/a1.png",
+      "selectedIconPath": "/static/image/a2.png"
+    }, {
+      "pagePath": "pages/serve/main",
+      "text": "服务",
+      "iconPath": "/static/image/a3.png",
+      "selectedIconPath": "/static/image/a4.png"
+    }, {
+      "pagePath": "pages/lesson/main",
+      "text": "课程",
+      "iconPath": "/static/image/a7.png",
+      "selectedIconPath": "/static/image/a8.png"
+    }, {
+      "pagePath": "pages/person/main",
+      "text": "我的",
+      "iconPath": "/static/image/a9.png",
+      "selectedIconPath": "/static/image/a10.png"
+    }]
   }
 }
