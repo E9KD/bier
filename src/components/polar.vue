@@ -125,7 +125,6 @@ export default {
   onLoad(x) {
     // this.list=JSON.parse(x.a)
     this.list=this.polarParam
-    console.log(this.polarParam);
   },
 
 };

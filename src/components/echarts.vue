@@ -148,7 +148,6 @@
                     this.HightComputed(2, this.lowHight, womandata)
                     this.youHightlist.push(this.youHight)
                 }
-                console.log('change');
             },
             ChangeNumber() {
                 // 直接修改option就可以
@@ -200,10 +199,8 @@
         },
         watch: {
             childrenIndex(x) {
-                console.log(x);
                 this.childrenSex = this.chartSex
                 this.childrenAge = this.chartAge
-                console.log(this.normalHight);
                 this.ChangeData()
                 this.option.series = [{
                         name: '正常身高',
@@ -227,8 +224,6 @@
                     },
                 ]
                 chart.setOption(this.option)
-                console.log(this.normalHight);
-                console.log('执行完成');
             }
         }
     }

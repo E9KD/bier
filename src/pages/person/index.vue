@@ -46,7 +46,6 @@
       //   })
       // },
       getuserinfo(e) {
-        console.log(e.mp.detail.userInfo);
       },
       GoChildrenPage(x) {
         switch (x) {

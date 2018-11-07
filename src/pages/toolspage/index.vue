@@ -62,14 +62,12 @@ export default {
     ...mapMutations(['openPushcardType']),
     GoEvaluate(x) {
       if (x != 0) {
-        console.log(`1111`);
         return;
       }
       this.openPushcardType(0)
     },
     GoPunch(x) {
       if (x != 0) {
-        console.log(`1111`);
         return;
       }
       this.openPushcardType(1)

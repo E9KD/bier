@@ -72,7 +72,7 @@
             },
             asd(){
                 wx.navigateTo({
-                    url: '/pages/pastscore/main'
+                    url: '/pages/cardpage/main'
                 })
             }
         },

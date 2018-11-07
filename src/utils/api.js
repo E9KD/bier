@@ -28,7 +28,23 @@ const GetWithData=function(url,data,resolve){
 
 }
 
+const Post=function(url,data,resolve){
+    wx.request({
+        url: url,
+        method:"POST",
+        data:data,
+        header: {
+            'Content-Type': 'application/json'
+        },
+        success: function(res) {
+            resolve(res)
+        }
+    })
+
+}
+
 export default  {
     api,
-    GetWithData
+    GetWithData,
+    Post
 }

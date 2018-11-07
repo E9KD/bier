@@ -57,7 +57,11 @@
         methods: {
             ...mapMutations(["closePushcardType"]),
             GoEvaluate() {},
-            GoPunch() {},
+            GoPunch() {
+                wx.navigateTo({
+                    url: '/pages/cardpage/main'
+                })
+            },
             // 阻止冒泡
             preventD() {},
             // 关闭pushcard

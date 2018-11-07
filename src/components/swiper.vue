@@ -35,7 +35,6 @@
       getBanner() {
         let that = this
         request.api(this.httpHead + this.httpBanner, function(res) {
-          console.log(res);
           that.imgUrls = res.data.banner
         })
       }

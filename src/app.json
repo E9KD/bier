@@ -18,7 +18,8 @@
     "pages/chartpage/main",
     "pages/changehight/main",
     "pages/pastscore/main",
-    "pages/resultpage/main"
+    "pages/resultpage/main",
+    "pages/cardpage/main"
   ],
   "window": {
     "backgroundTextStyle": "light",

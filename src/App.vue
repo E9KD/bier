@@ -157,7 +157,13 @@
   page {
     background-color: #eeeeee;
   }
-  
+  .backgroundImg {
+  background-image: url("https://wx.biergao.vip/uploads/b/201805/nutrition.png");
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-size: cover;
+  -moz-background-size: 100% 100%;
+}
   .hide {
     transition: height 0.5s;
     height: 0px;

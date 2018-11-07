@@ -91,7 +91,6 @@
                 }
               })
             } else {
-              console.log(res.errMsg)
             }
           }
         })

@@ -31,7 +31,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 17,
+			"current": 18,
 			"list": [
 				{
 					"id": -1,
@@ -140,6 +140,11 @@
 					"name": "评分结果",
 					"pathName": "pages/resultpage/main",
 					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "打卡页面",
+					"pathName": "pages/cardpage/main"
 				}
 			]
 		}

@@ -1,5 +1,5 @@
 <template>
-  <div class="resultpage" id="resultpage">
+  <div class="resultpage backgroundImg" id="resultpage">
     <!-- <img src="" alt="" class="bgi" :style="{height:pageHeight+'px'}"> -->
     <div class="result_container">
       <div class="container_top">
@@ -148,7 +148,6 @@ export default {
       // 计算各项分数
       let lowList = {};
       if (q >= w) {
-        console.log("zuigao");
         lowList.listContent = res.data[index].assess_a;
         lowList.parsecontent = res.data[index].pingfenzhibiao.assess_a.replace(
           /16/g,
@@ -160,7 +159,6 @@ export default {
         lowList.listisshow=true
         this.scoreList.push(lowList);
       } else if (q <= e) {
-        console.log("zuidi");
         lowList.listContent = res.data[index].assess_c;
         lowList.parsecontent = res.data[index].pingfenzhibiao.assess_c.replace(
           /16/g,
@@ -172,7 +170,6 @@ export default {
         lowList.listisshow=true
         this.scoreList.push(lowList);
       } else {
-        console.log("zhongjan");
         lowList.listContent = res.data[index].assess_b;
         lowList.parsecontent = res.data[index].pingfenzhibiao.assess_b.replace(
           /16/g,
@@ -309,13 +306,6 @@ export default {
 
 <style scoped>
 @import url("~mpvue-wxparse/src/wxParse.css");
-.resultpage {
-  background-image: url("https://wx.biergao.vip/uploads/b/201805/nutrition.png");
-  background-attachment: fixed;
-  background-repeat: no-repeat;
-  background-size: cover;
-  -moz-background-size: 100% 100%;
-}
 
 .box_bottom {
   margin-top: 20rpx;

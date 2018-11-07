@@ -17,7 +17,6 @@
         // 没有授权过，点击授权并获取用户信息
         wx.setStorageSync('userinfo', e.mp.detail.userInfo)
         let getinfo = wx.getStorageSync('userinfo')
-        console.log(getinfo=='',getinfo==null);
         if (getinfo!='') {
           // 回到主页
           wx.reLaunch({

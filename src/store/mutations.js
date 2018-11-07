@@ -8,7 +8,6 @@ export default {
     state.pushCardtype = x
     // 修改展示的状态，显示还是隐藏,只需要展示不需要点击隐藏
     state.isPushcardshow = true
-    console.log(123);
   },                
   // 关闭pushcard组件
   closePushcardType(state, x) {
@@ -38,7 +37,6 @@ export default {
   //全局获取用户参数
   ChangeUserParam(state,x){
     state.userParam=x
-    console.log(state.userParam);
   },
   // 修改当前echarts的参数，age&sex&hight
   ChangeEchartsParam(state, x) {
@@ -53,7 +51,6 @@ export default {
   // 修改雷达图参数
   ChangePolarParam(state,x){
     state.polarParam=x
-    console.log(x,state.polarParam);
   },
   // 修改全局分数
   ChangeScoreState(state,x){

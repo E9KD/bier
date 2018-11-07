@@ -21,8 +21,6 @@
     },
     methods: {
       aaa(e) {
-        console.log(e.target.scrollTop);
-        console.log(this.aheight);
         if (e.target.scrollTop >= this.aheight - 5) {
           this.a = true
         }else if(e.target.scrollTop<=this.aheight){

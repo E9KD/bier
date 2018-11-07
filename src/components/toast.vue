@@ -42,14 +42,11 @@
         watch: {
             // 监视toasttype的改变，每次
             toastshow() {
-                console.log(123);
                 // 判定是事件还是等待
                 if (this.toasttype == 0) {
-                    console.log(789);
                     // 如果是事件，展示数组等于事件数组
                     this.toastcom = this.toastListevent
                 } else {
-                    console.log(456);
                     // 如果是load，展示数组等于等待数组
                     this.toastcom = this.toastListload
                 }

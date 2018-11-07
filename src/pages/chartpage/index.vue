@@ -119,7 +119,6 @@ export default {
     
   },
   onLoad(){
-    console.log(this.userInfo);
   },
   computed:{
     ...mapState(['userInfo'])
