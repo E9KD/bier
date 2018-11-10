@@ -135,7 +135,7 @@
     margin: 0 auto;
     width: 300rpx;
     height: 80rpx;
-    background-color: #F56700;
+    background-color: rgb(227, 139, 39);
     text-align: center;
     font-size: 30rpx;
     line-height: 80rpx;
@@ -179,12 +179,12 @@
     float: left;
   }
   .active {
-    background-color: #F56700;
+    background-color: rgb(227, 139, 39);
     color: white;
   }
   .normal {
     background-color: white;
-    border: 1px solid #F56700;
+    border: 1px solid rgb(227, 139, 39);
     color: black;
   }
   .choosecom {
@@ -204,7 +204,7 @@
   }
   .buytip i {
     width: 100rpx;
-    background-color: #F56700;
+    background-color: rgb(227, 139, 39);
     height: 6rpx;
     text-align: center;
     position: absolute;
@@ -265,7 +265,7 @@
   .listbtn {
     width: 300rpx;
     height: 80rpx;
-    background-color: #F56700;
+    background-color: rgb(227, 139, 39);
     text-align: center;
     font-size: 30rpx;
     color: white;

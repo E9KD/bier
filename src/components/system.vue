@@ -13,12 +13,12 @@
                         <div class="halfcurleft halfcur"></div>
                         <div class="halfcurright halfcur"></div>
                         <div class="littlecurtop littlecur" @click="showpushcard(0)">
-                            <div class="inlittlecurtop inlittlecur" style="margin-top:15rpx;background-color:#F56700;color:white;">评</div>
-                            <div class="inlittlecurbom inlittlecur" style="color:#F56700">价</div>
+                            <div class="inlittlecurtop inlittlecur" style="margin-top:15rpx;background-color:rgb(227, 139, 39);color:white;">评</div>
+                            <div class="inlittlecurbom inlittlecur" style="color:rgb(227, 139, 39)">价</div>
                         </div>
                         <div class="littlecurbom littlecur" @click="showpushcard(1)">
                             <div class="inlittlecurtop inlittlecur" style="color:white;">打</div>
-                            <div class="inlittlecurbom inlittlecur" style="margin-bottom:15rpx;background-color:white;color:#F56700">卡</div>
+                            <div class="inlittlecurbom inlittlecur" style="margin-bottom:15rpx;background-color:white;color:rgb(227, 139, 39)">卡</div>
                         </div>
                     </div>
                 </div>
@@ -121,7 +121,7 @@ import { mapMutations } from 'vuex';
     .systemtypetext {
         height: 100rpx;
         width: 100rpx;
-        background-color: #F56700;
+        background-color: rgb(227, 139, 39);
         border-radius: 70rpx;
         position: absolute;
         top: 50%;
@@ -205,7 +205,7 @@ import { mapMutations } from 'vuex';
         width: 200rpx;
         height: 60rpx;
         border-radius: 20rpx;
-        background-color: #F56700;
+        background-color: rgb(227, 139, 39);
         text-align: center;
         font-size: 30rpx;
     }
@@ -220,7 +220,7 @@ import { mapMutations } from 'vuex';
     }
     .halfcurright{
         border-radius:0 155px 155px 0;
-        background-color: #F56700;
+        background-color: rgb(227, 139, 39);
     }
     .littlecur {
         width: 155rpx;
@@ -236,7 +236,7 @@ import { mapMutations } from 'vuex';
         transform: translate(-50%,0%)
     }
     .littlecurbom {
-        background-color: #F56700;
+        background-color: rgb(227, 139, 39);
         bottom: 0px;
         left: 50%;
         transform: translate(-50%,0%)

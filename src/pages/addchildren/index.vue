@@ -176,7 +176,7 @@
     height: 80rpx;
     line-height: 80rpx;
     border-radius: 80rpx;
-    background-color: #f56700;
+    background-color: rgb(227, 139, 39);
     text-align: center;
     color: white;
     font-size: 30rpx;

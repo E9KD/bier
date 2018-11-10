@@ -51,7 +51,7 @@
 }
 
 .pick {
-  color: #f56700;
+  color: rgb(227, 139, 39);
   text-align: center;
   background-color: white;
   width: 90%;

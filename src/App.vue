@@ -5,7 +5,7 @@
   } from 'vuex';
   export default {
     methods: {
-      ...mapMutations(['ChangeUserInfo','ChangeUserParam']),
+      ...mapMutations(['ChangeUserInfo', 'ChangeUserParam']),
       // 查看是否授权
       getuserinfo(x) {
         let that = this
@@ -91,7 +91,7 @@
       }
     },
     onLoad() {
-      
+  
     },
     onLaunch() {
       this.getuserinfo()
@@ -157,13 +157,19 @@
   page {
     background-color: #eeeeee;
   }
+  
+  .goldbg {
+    background: linear-gradient(to right, rgb(227, 139, 39), rgb(227, 200, 39));
+  }
+  
   .backgroundImg {
-  background-image: url("https://wx.biergao.vip/uploads/b/201805/nutrition.png");
-  background-attachment: fixed;
-  background-repeat: no-repeat;
-  background-size: cover;
-  -moz-background-size: 100% 100%;
-}
+    background-image: url("https://wx.biergao.vip/uploads/b/201805/nutrition.png");
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
+    -moz-background-size: 100% 100%;
+  }
+  
   .hide {
     transition: height 0.5s;
     height: 0px;
@@ -184,13 +190,14 @@
     width: 100%;
     height: 100%;
   }
+  
   .bgi {
-  background-size: cover;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
-}
+    background-size: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
 </style>

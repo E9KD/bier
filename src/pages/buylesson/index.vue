@@ -165,12 +165,12 @@ export default {
 .changecardbor {
   width: 50%;
   height: 6rpx;
-  background-color: #f56700;
+  background-color: rgb(227, 139, 39);
   display: inline-block;
 }
 
 .active {
-  border-bottom: 8rpx solid #f56700;
+  border-bottom: 8rpx solid rgb(227, 139, 39);
 }
 
 .normal {

@@ -16,7 +16,7 @@
                 </div>
             </div>
             <div class="commentbtn">
-                <div class="btncom btnleft" @click="goanswer">重新答题</div>
+                <div class="btncom btnleft" @click="GoAnswer">重新答题</div>
                 <div class="btncom btnright" @click="GoPastScore">往期评价</div>
             </div>
             <div class="commenttip">（题目均为单选题）</div>
@@ -56,7 +56,11 @@
         },
         methods: {
             ...mapMutations(["closePushcardType"]),
-            GoEvaluate() {},
+            GoEvaluate() {
+                wx.navigateTo({
+                    url: '/pages/pastscore/main?show=1'
+                })
+            },
             GoPunch() {
                 wx.navigateTo({
                     url: '/pages/cardpage/main'
@@ -68,14 +72,14 @@
             closePushcard() {
                 this.closePushcardType();
             },
-            goanswer() {
+            GoAnswer() {
                 wx.navigateTo({
-                    url: "/pages/answer/main"
+                    url: `/pages/question/main`
                 });
             },
             GoPastScore(){
                 wx.navigateTo({
-                    url: '/pages/pastscore/main'
+                    url: '/pages/pastscore/main?show=0'
                 })
             }
         },
@@ -154,7 +158,7 @@
     .btncom {
         text-align: center;
         color: white;
-        background-color: #f56700;
+        background-color: rgb(227, 139, 39);
         height: 80rpx;
         width: 210rpx;
         line-height: 80rpx;

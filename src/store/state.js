@@ -1,19 +1,8 @@
 export default {
   // toast
   toastshow: false, //toast显示隐藏切换
-  toasttype: 0, //展示toast的类型，默认为0
-  toastListevent: [ // 事件的list
-    true,
-    true,
-    '/static/image/success.png',
-    'Hello World'
-  ],
-  toastListload: [ //等待的list
-    true,
-    false,
-    '/static/image/loading.gif',
-    'Please Wait...'
-  ],
+  toasttype: 0, //展示toast的类型，默认为0是事件 1是等待
+
   // 获得用户信息
   userInfo:[],
   userParam:[],
@@ -27,6 +16,8 @@ export default {
   httpVideo: 'https://wx.biergao.vip/uploads/b/784344c9f6e7dd9f6322783457cfb071.mp4',
   httpTeacherinfo: 'https://wx.biergao.vip/api/Fuwu/getoneinfo?id=',
   pushCardtype: 0,
+  // 营养是0
+  cardType:null,
   isPushcardshow: false,
   // 课程的所有信息
   lessonListcontent: [],
@@ -43,5 +34,7 @@ export default {
   // 雷达图参数
   polarParam:null,
   //  全局分数
-  scoreState:null
+  scoreState:null,
+  // 打卡评价需要的参数
+  evaluateParam:[],
 }

@@ -1,10 +1,27 @@
 <template>
     <div class="toastbox" v-show="toastshow">
+
+        <!-- loading -->
         <div class="toast">
-            <img src="/static/image/close.png" alt="#" class="toastclose" v-show="toastcom[1]" @click="toastclose">
-            <img :src="toastcom[2]" class="toastimg" v-show="toastcom[0]">
-            <p class="toastext">{{toastcom[3]}}</p>
+            <!-- <img src="/static/image/close.png" alt="#" class="toastclose" v-show="toastcom[1]" @click="toastclose"> -->
+            <img :src="toastcom[0]" class="toastimg" >
+            <p class="toastext">{{toastcom[1]}}</p>
         </div>
+
+        <!-- 完成-->
+        <div class="toast">
+            <!-- <img src="/static/image/close.png" alt="#" class="toastclose" v-show="toastcom[1]" @click="toastclose"> -->
+            <img :src="toastcom[0]" class="toastimg" >
+            <p class="toastext">{{toastcom[1]}}</p>
+        </div>
+
+        <!-- 警告 -->
+        <div class="toast">
+            <!-- <img src="/static/image/close.png" alt="#" class="toastclose" v-show="toastcom[1]" @click="toastclose"> -->
+            <img :src="toastcom[0]" class="toastimg" >
+            <p class="toastext">{{toastcom[1]}}</p>
+        </div>
+
     </div>
 </template>
 
@@ -16,39 +33,48 @@
     export default {
         data() {
             return {
-                toastcom: [
-                    true,
-                    true,
+                toastcom: [],
+                toastListload: [
                     '/static/image/loading.gif',
-                    'Hello World'
-                ]
+                    '请耐心等待'
+                ],
+                toastListcomplete: [ 
+                    '/static/image/success.png',
+                    '成功！'
+                ],
+                toastListwarning: [ 
+                    '/static/image/error.png',
+                    '失败！'
+                ],
             }
         },
         methods: {
-            ...mapMutations(['closeToast']),
+            // ...mapMutations(['closeToast']),
             // 点击关闭执行mutations，将组件隐藏
-            toastclose() {
-                this.closeToast()
-            },
+            // toastclose() {
+            //     this.closeToast()
+            // },
         },
         computed: {
             ...mapState([
                 'toastshow',
                 'toasttype',
-                'toastListevent',
-                'toastListload'
             ]),
         },
         watch: {
             // 监视toasttype的改变，每次
             toastshow() {
-                // 判定是事件还是等待
+                /**
+                 * @msg: 0loading 1完成 2警告
+                 * @param {type} 
+                 * @return: 
+                 */
                 if (this.toasttype == 0) {
-                    // 如果是事件，展示数组等于事件数组
-                    this.toastcom = this.toastListevent
-                } else {
-                    // 如果是load，展示数组等于等待数组
                     this.toastcom = this.toastListload
+                } else if(this.toasttype==1){
+                    this.toastcom=this.toastListcomplete
+                }else if(this.toasttype==2){
+                    this.toastcom=this.toastListwarning
                 }
             }
         }
@@ -57,15 +83,18 @@
 
 <style>
     /* 外围 mark*/
+    
     .toastbox {
         width: 100%;
         height: 100vh;
-        background-color: #6E727D;
         position: absolute;
         top: 0px;
         left: 0px;
     }
+    
+    
     /* box */
+    
     .toast {
         position: absolute;
         top: 50%;
@@ -74,13 +103,19 @@
         background-color: white;
         border-radius: 50rpx;
     }
+    
+    
     /* 图片 */
+    
     .toastimg {
         width: 160rpx;
         height: 160rpx;
         padding: 60rpx 80rpx 0px 80rpx;
     }
+    
+    
     /* 文字 */
+    
     .toastext {
         display: block;
         width: 160rpx;
@@ -91,7 +126,10 @@
         padding: 10rpx 80rpx 30rpx 80rpx;
         text-align: center;
     }
+    
+    
     /* 关闭按钮 */
+    
     .toastclose {
         width: 30rpx;
         height: 30rpx;

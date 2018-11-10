@@ -12,7 +12,7 @@
 	"compileType": "miniprogram",
 	"appid": "wx41e93e31c9d4dc26",
 	"projectname": "biergao",
-	"libVersion": "2.3.2",
+	"libVersion": "2.4.0",
 	"condition": {
 		"search": {
 			"current": -1,
@@ -31,7 +31,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 18,
+			"current": 20,
 			"list": [
 				{
 					"id": -1,
@@ -144,7 +144,19 @@
 				{
 					"id": -1,
 					"name": "打卡页面",
-					"pathName": "pages/cardpage/main"
+					"pathName": "pages/cardpage/main",
+					"query": ""
+				},
+				{
+					"id": 19,
+					"name": "答题",
+					"pathName": "pages/question/main",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "答题评价",
+					"pathName": "pages/evaluate/main"
 				}
 			]
 		}

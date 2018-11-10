@@ -237,7 +237,7 @@
     padding: 0px 15rpx;
     line-height: 60rpx;
     height: 60rpx;
-    border-bottom: 1px solid #F56700;
+    border-bottom: 1px solid rgb(227, 139, 39);
   }
   .optioncardbox {
     background-color: white;
@@ -257,10 +257,10 @@
     width: 80rpx;
     height: 80rpx;
     border-radius: 70rpx;
-    background-color: #F56700;
+    background-color: rgb(227, 139, 39);
     margin: 0 auto;
     display: block;
-    border: 1px solid #F56700;
+    border: 1px solid rgb(227, 139, 39);
   }
   .notoptioncardimg {
     width: 80rpx;
@@ -269,7 +269,7 @@
     background-color: #eeeeee;
     margin: 0 auto;
     display: block;
-    border: 1px solid #F56700;
+    border: 1px solid rgb(227, 139, 39);
   }
   .optioncardfirst {
     font-size: 30rpx;
@@ -277,8 +277,8 @@
     height: 80rpx;
     border-radius: 70rpx;
     background-color: #eee;
-    border: 1px solid #F56700;
-    color: #F56700;
+    border: 1px solid rgb(227, 139, 39);
+    color: rgb(227, 139, 39);
     text-align: center;
     line-height: 80rpx;
     margin: 0 auto;
@@ -288,8 +288,8 @@
     width: 80rpx;
     height: 80rpx;
     border-radius: 70rpx;
-    background-color: #F56700;
-    border: 1px solid #F56700;
+    background-color: rgb(227, 139, 39);
+    border: 1px solid rgb(227, 139, 39);
     color: #eee;
     text-align: center;
     line-height: 80rpx;

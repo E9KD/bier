@@ -19,7 +19,9 @@
     "pages/changehight/main",
     "pages/pastscore/main",
     "pages/resultpage/main",
-    "pages/cardpage/main"
+    "pages/cardpage/main",
+    "pages/question/main",
+    "pages/evaluate/main"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -29,7 +31,7 @@
   },
   "tabBar": {
     "color": "#FFF",
-    "selectedColor": "#F56700",
+    "selectedColor": "rgb(227, 139, 39)",
     "backgroundColor": "black",
     "list": [{
       "pagePath": "pages/index/main",

@@ -3,18 +3,21 @@ export default {
     state.teacherid = x
   },
   // 打开pushcard组件
-  openPushcardType(state, x) {
+  openPushcardType(state, {type,index}) {
     //修改展示的类型，是打卡还是评价,0是评价，1是打卡
-    state.pushCardtype = x
+    state.pushCardtype = type
+    // 当前的类型是什么 0是营养
+    state.cardType=index
     // 修改展示的状态，显示还是隐藏,只需要展示不需要点击隐藏
     state.isPushcardshow = true
   },                
   // 关闭pushcard组件
-  closePushcardType(state, x) {
+  closePushcardType(state) {
     state.isPushcardshow = false
   },
   // 获取type和显示toast
   toastshowtype(state, x) {
+    // 0是事件，1是等待
     state.toasttype = x,
     state.toastshow = true
   },
@@ -55,5 +58,9 @@ export default {
   // 修改全局分数
   ChangeScoreState(state,x){
     state.scoreState=x
+  },
+  //  全全局修改打卡评价参数
+  ChangeEvaluateList(state,x){
+    state.evaluateParam=x
   }
 }

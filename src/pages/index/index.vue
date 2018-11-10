@@ -123,7 +123,7 @@
   }
   .processlistcolright {
     width: 50%;
-    background-color: #F56700;
+    background-color: rgb(227, 139, 39);
   }
   .processlistcol {
     width: 50%;

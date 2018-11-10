@@ -2,10 +2,10 @@
   <div class="user">
     <div class="userinfobox">
       <div class="userinfoimg">
-        <img :src="userinfolist.avatarUrl" class="userimg">
+        <img :src="userInfolist.avatarUrl" class="userimg">
       </div>
       <div class="userinfoname">
-        <p class="username">{{userinfolist.nickName}}</p>
+        <p class="username">{{userInfolist.nickName}}</p>
       </div>
     </div>
     <div class="userfuncbox">
@@ -21,31 +21,23 @@
 
 <script>
   import {
-    mapState, mapMutations
+    mapState,
+    mapMutations
   } from "vuex";
   export default {
     data() {
       return {
         canIUse: wx.canIUse("button.open-type.getUserInfo"),
         openid: "",
-        userinfolist: []
+        userInfolist: []
       };
     },
+    computed:{
+      ...mapState(['userInfo'])
+    },
     methods: {
-      // 测试chart组件，没有问题噢
-      // ...mapMutations(['ChangeEchartsParam']),
-      // click() {
-      //   let sex = 1;
-      //   let age = 10;
-      //   this.ChangeEchartsParam({
-      //     sex,
-      //     age
-      //   });
-      //   wx.navigateTo({
-      //     url: '../test/main'
-      //   })
-      // },
-      getuserinfo(e) {
+      GetUserInfo(e) {
+        this.userInfolist=this.userInfo
       },
       GoChildrenPage(x) {
         switch (x) {
@@ -72,6 +64,9 @@
         }
       }
     },
+    onLoad(){
+      this.GetUserInfo()
+    }
   };
 </script>
 

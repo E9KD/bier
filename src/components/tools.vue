@@ -72,7 +72,7 @@
             },
             asd(){
                 wx.navigateTo({
-                    url: '/pages/cardpage/main'
+                    url: `/pages/question/main`
                 })
             }
         },
@@ -118,7 +118,7 @@
         width: 220rpx;
         height: 220rpx;
         border-radius: 250rpx;
-        background-color: #F56700;
+        background-color: rgb(227, 139, 39);
         position: absolute;
         top: 50%;
         left: 50%;

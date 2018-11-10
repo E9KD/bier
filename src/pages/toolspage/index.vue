@@ -34,22 +34,22 @@ export default {
         },
         {
           img: require("../../../static/image/icon16.png"),
-          title: "营养",
+          title: "运动",
           ishow: true
         },
         {
           img: require("../../../static/image/icon16.png"),
-          title: "营养",
+          title: "睡眠",
           ishow: true
         },
         {
           img: require("../../../static/image/icon16.png"),
-          title: "营养",
+          title: "情绪",
           ishow: true
         },
         {
           img: require("../../../static/image/icon16.png"),
-          title: "营养",
+          title: "内分泌",
           ishow: true
         }
       ]
@@ -64,13 +64,20 @@ export default {
       if (x != 0) {
         return;
       }
-      this.openPushcardType(0)
+      this.openPushcardType({
+        type:0,
+        index:x
+      })
+
     },
     GoPunch(x) {
       if (x != 0) {
         return;
       }
-      this.openPushcardType(1)
+      this.openPushcardType({
+        type:1,
+        index:x
+      })
     }
   },
 };
@@ -144,7 +151,7 @@ export default {
   border-radius: 20rpx;
   width: 70vw;
   margin: 0 auto;
-  background-color: #f56700;
+  background-color: rgb(227, 139, 39);
   margin-top: 60rpx;
 }
 </style>

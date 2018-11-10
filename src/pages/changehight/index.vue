@@ -111,7 +111,7 @@ export default {
   width: 50rpx;
   height: 50rpx;
   line-height: 50rpx;
-  background-color: #f56700;
+  background-color: rgb(227, 139, 39);
   border-radius: 50rpx;
 }
 </style>
