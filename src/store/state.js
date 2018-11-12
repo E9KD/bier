@@ -19,7 +19,7 @@ export default {
   // 营养是0
   cardType:null,
   isPushcardshow: false,
-  // 课程的所有信息
+  // 选中课程的所有信息
   lessonListcontent: [],
   // 点击要去的课程的id
   lessoninfoid: 0,

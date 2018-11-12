@@ -48,11 +48,10 @@ export default {
       }
     },
     GetHistoryScore(url) {
-      // let url = `https://wx.biergao.vip/api/Yypfjl/getfuwu2`;
       let data = {
         page: 1,
         pageall: 15,
-        openid: this.userParam.data.userid,
+        openid: this.userParam.userid,
         pid: this.cardType
       };
       request.GetWithData(url, data, res => {

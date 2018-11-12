@@ -26,7 +26,7 @@ export default {
     state.toastshow = false
   },
   // 获得全部的课程列表信息
-  getLessonlistContent(state, x) {
+  GetLessonlistContent(state, x) {
     state.lessonListcontent = x
   },
   // 修改点击要去的课程的id
@@ -62,5 +62,5 @@ export default {
   //  全全局修改打卡评价参数
   ChangeEvaluateList(state,x){
     state.evaluateParam=x
-  }
+  },
 }

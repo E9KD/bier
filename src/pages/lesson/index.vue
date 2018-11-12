@@ -21,7 +21,7 @@
       </div>
       <!-- 课程列表 -->
       <div class="lessonlisttitle">
-        <div class="contextbox" v-for='(item,index) in goodsinfo' :key="index" @click="goLessonpage(index)">
+        <div class="contextbox" v-for='(item,index) in goodsinfo' :key="index" @click="GoLessonPage(index)">
           <img :src="item.class_url_img" alt="" srcset="" class="contextleft">
           <div class="contextright">
             <h3 class="contexttitle">{{item.title}}</h3>
@@ -99,7 +99,7 @@
       Swiper
     },
     methods: {
-      ...mapMutations(['getLessonlistContent','changeClicklessonPageindex']),
+      ...mapMutations(['GetLessonlistContent', 'changeClicklessonPageindex']),
       changetype(x) {
         if (x == 9) {
           this.cur = 9
@@ -119,25 +119,22 @@
       },
       getDefaultlist() {
         let url = this.httpHead + this.httpGoods
-        let that = this
-        request.api(url, function(res) {
-          that.goodsinfo = res.data
-          // that.getLessonlistContent(res.data)
+        request.api(url, res => {
+          this.goodsinfo = res.data
         })
       },
       getLessonlist(x) {
-        let that = this
         let url = this.httpHead + 'index/getClasstypeResource?catid=' + this.targetid + '&classtypeid=' + x
-        request.api(url, function(res) {
-          that.goodsinfo = res.data
-          // 获得当前的课程信息,存放起来
-          // that.getLessonlistContent(res.data)
+        request.api(url, res => {
+          this.goodsinfo = res.data
         })
-
+  
       },
-      goLessonpage(x) {
+      GoLessonPage(x) {
         // 获得点击课程的index
-        this.changeClicklessonPageindex(x)
+        // this.changeClicklessonPageindex(x)
+        //存放选中的课程全部信息
+        this.GetLessonlistContent(this.goodsinfo[x])
         wx.navigateTo({
           url: '/pages/buylesson/main'
         })
@@ -147,7 +144,7 @@
       this.getDefaultlist()
     },
     computed: {
-      ...mapState(['httpHead', 'httpGoods'])
+      ...mapState(['httpHead', 'httpGoods', 'lessonListcontent'])
     },
     onPullDownRefresh() {
       wx.showNavigationBarLoading()
@@ -167,33 +164,41 @@
     right: 20rpx;
     color: red;
   }
+  
   .contextteacher {
     font-size: 26rpx;
     position: absolute;
     bottom: 10rpx;
     left: 20rpx;
   }
+  
   .contexttitle {
     white-space: nowrap;
     font-size: 36rpx;
     padding: 10rpx 10rpx;
   }
+  
   .contextin {
     font-size: 28rpx;
     color: #999;
     padding: 0px 10rpx;
+    height: 85rpx;
+    overflow: hidden;
   }
+  
   .contextright {
     float: right;
     height: 200rpx;
     width: 58%;
     position: relative;
   }
+  
   .contextleft {
     float: left;
     width: 40%;
     height: 200rpx;
   }
+  
   .contextbox {
     width: 95%;
     margin: 20rpx auto;
@@ -202,15 +207,18 @@
     background-color: white;
     border-radius: 30rpx;
   }
+  
   .lessonlist {
     margin-top: 20rpx;
   }
+  
   .lessonlisthead {
     background-color: white;
     overflow: hidden;
     padding-top: 60rpx;
     padding-bottom: 30rpx;
   }
+  
   .lessonlisttext {
     float: left;
     font-size: 40rpx;
@@ -218,10 +226,12 @@
     height: 60rpx;
     margin-left: 20rpx;
   }
+  
   .lessonlistoption {
     float: right;
     margin-right: 10rpx;
   }
+  
   .lessonlistoptioncard {
     font-size: 30rpx;
     display: inline-block;
@@ -230,6 +240,7 @@
     line-height: 60rpx;
     height: 60rpx;
   }
+  
   .islessonlistoptioncard {
     font-size: 30rpx;
     display: inline-block;
@@ -239,20 +250,24 @@
     height: 60rpx;
     border-bottom: 1px solid rgb(227, 139, 39);
   }
+  
   .optioncardbox {
     background-color: white;
     padding-bottom: 30rpx;
     padding-top: 30rpx;
   }
+  
   .optioncardlist {
     display: inline-block;
   }
+  
   .optioncard {
     width: 16.66vw;
     height: 150rpx;
     display: inline-block;
     vertical-align: middle;
   }
+  
   .optioncardimg {
     width: 80rpx;
     height: 80rpx;
@@ -262,6 +277,7 @@
     display: block;
     border: 1px solid rgb(227, 139, 39);
   }
+  
   .notoptioncardimg {
     width: 80rpx;
     height: 80rpx;
@@ -271,6 +287,7 @@
     display: block;
     border: 1px solid rgb(227, 139, 39);
   }
+  
   .optioncardfirst {
     font-size: 30rpx;
     width: 80rpx;
@@ -283,6 +300,7 @@
     line-height: 80rpx;
     margin: 0 auto;
   }
+  
   .notoptioncardfirst {
     font-size: 30rpx;
     width: 80rpx;
@@ -295,6 +313,7 @@
     line-height: 80rpx;
     margin: 0 auto;
   }
+  
   .optioncardtip {
     margin-top: 8px;
     text-align: center;

@@ -61,7 +61,7 @@
                     },
                     success: function(res) {
                       wx.setStorageSync('openid', res.data.openId)
-                      that.ChangeUserParam(res)
+                      that.ChangeUserParam(res.data)
                     }
                   })
                 }

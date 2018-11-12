@@ -127,7 +127,7 @@ export default {
         niunai: this.optionList[4].checked,
         shucai: this.optionList[5].checked,
         shuiguo: this.optionList[6].checked,
-        uid: this.userParam.data.userid
+        uid: this.userParam.userid
       };
       request.GetWithData(url, data, res => {
         if (res.data.status != 200) {
@@ -141,7 +141,7 @@ export default {
     },
     init() {
       let data = {
-        uid: this.userParam.data.userid
+        uid: this.userParam.userid
       };
       let url="https://wx.biergao.vip/api/Yybg/getisbuka"
       request.Post(url, data, res => {

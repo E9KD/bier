@@ -22,7 +22,7 @@
         </div>
       </div>
     </div>
-    <div class="videobox">
+    <div class="videobox asd">
       <video class="video" :src="httpVideo" controls page-gesture direction show-fullscreen-btn show-play-btn show-center-play-btn></video>
     </div>
     <Pushcard></Pushcard>
@@ -93,6 +93,9 @@
 </script>
 
 <style scoped>
+page{
+  position: fixed;
+}
   .processleftimg {
     width: 100%;
     height: 100%;

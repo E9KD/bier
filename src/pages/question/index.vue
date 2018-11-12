@@ -142,9 +142,9 @@ export default {
         assess6: this.assess6,
         assess7: this.assess7,
         assess8: this.assess8,
-        userid: this.userParam.data.userid,
-        openid: this.userParam.data.openId,
-        unionid: this.userParam.data.unionId,
+        userid: this.userParam.userid,
+        openid: this.userParam.openId,
+        unionid: this.userParam.unionId,
         total: this.totalScore,
         pid: this.cardType
       };
