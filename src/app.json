@@ -21,7 +21,8 @@
     "pages/resultpage/main",
     "pages/cardpage/main",
     "pages/question/main",
-    "pages/evaluate/main"
+    "pages/evaluate/main",
+    "pages/exchange/main"
   ],
   "window": {
     "backgroundTextStyle": "light",

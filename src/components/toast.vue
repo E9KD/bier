@@ -1,5 +1,5 @@
 <template>
-    <div class="toastbox" v-show="toastshow">
+    <div class="toastbox" v-show="toastshow" >
 
         <!-- loading -->
         <div class="toast">
@@ -34,6 +34,8 @@
         data() {
             return {
                 toastcom: [],
+                a:'all',
+                b:'',
                 toastListload: [
                     '/static/image/loading.gif',
                     '请耐心等待'
@@ -45,6 +47,10 @@
                 toastListwarning: [ 
                     '/static/image/error.png',
                     '失败！'
+                ],
+                toastListnull: [ 
+                    '/static/image/error.png',
+                    '不能为空！'
                 ],
             }
         },
@@ -75,6 +81,8 @@
                     this.toastcom=this.toastListcomplete
                 }else if(this.toasttype==2){
                     this.toastcom=this.toastListwarning
+                }else if(this.toasttype==3){
+                    this.toastcom=this.toastListnull
                 }
             }
         }
@@ -91,7 +99,9 @@
         top: 0px;
         left: 0px;
     }
-    
+    .all{
+        background-color: white;
+    }
     
     /* box */
     

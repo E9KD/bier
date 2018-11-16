@@ -1,24 +1,24 @@
 [{
     "age": 12,
     "sex": 1,
-    "hight": 150,
+    "hight": [150,120],
     "name": 0
   },
   {
     "age": 17,
     "sex": 2,
-    "hight": 140,
+    "hight": [160,110],
     "name": 1
   },
   {
     "age": 13,
     "sex": 1,
-    "hight": 170,
+    "hight": [170,180],
     "name": 2
   }, {
     "age": 15,
     "sex": 2,
-    "hight": 90,
+    "hight": [90,100],
     "name": 3
   }
 ]

@@ -1,6 +1,6 @@
 <template>
-  <div class="buylesson">
-    <video class="video_list" :src="videoSrc" controls page-gesture direction show-fullscreen-btn show-play-btn show-center-play-btn></video>
+  <div  class="buylesson">
+    <video id="myVideo" class="video_list" :src="videoSrc" controls page-gesture direction show-fullscreen-btn show-play-btn show-center-play-btn></video>
     <scroll-view :scroll-y='true' @scroll="aaa" class="asd">
       <div class="listbox">
         <div class="listhead">
@@ -32,14 +32,16 @@
           </div>
           <!-- 课程目录 -->
           <div class="showlist_lessonindex" v-show="lessonlistshowtype==1">
-            <div class="lessonindex_list" v-for="(item,index) in lessonNumber " :key="index">
+            <div class="lessonindex_list" @click="ChangeVideo(item.content)" v-for="(item,index) in lessonNumber " :key="index" >
               <p class="list_p">{{item.title}}</p>
             </div>
           </div>
         </div>
       </div>
     </scroll-view>
-  
+    <div class="btn" v-if="isVip" @click="PlayVideo">{{i}}</div>
+    <div class="btn" v-else>{{n}}</div>
+    <Toast></Toast>
   </div>
 </template>
 
@@ -50,6 +52,7 @@
   } from "vuex";
   import wxParse from "mpvue-wxparse";
   import request from "../../utils/api.js";
+  import Toast from '../../components/toast.vue'
   export default {
     data() {
       return {
@@ -63,18 +66,24 @@
         lessonNumber: 123,
         f: "fixed",
         n: "nofixed",
-        videoSrc: null
+        videoSrc: null,
+        isVip: false,
+        n: '立刻查询',
+        i: '立刻观看',
+        videoContext:null
       };
     },
     components: {
-      wxParse
+      wxParse,
+      Toast
     },
     methods: {
-      ...mapMutations(["changevideo"]),
+      ...mapMutations(["changevideo",'toastshowtype','closeToast']),
       aaa(e) {
-        console.log(e);
       },
       init() {
+        this.toastshowtype(0)
+        this.videoContext = wx.createVideoContext('myVideo');
         let url = `https://wx.biergao.vip/api/index/getvideourl`;
         let data = {
           cid: this.lessonListcontent.id,
@@ -82,10 +91,31 @@
           openid: this.userParam.openId
         };
         request.GetWithData(url, data, res => {
+          console.log(res);
           this.lessonNumber = res.data;
           this.videoSrc = res.data[0].content;
         });
         this.showList = this.lessonListcontent;
+        this.GetVipState()
+        this.closeToast()
+      },
+      PlayVideo(){
+        this.videoContext.play()
+      },
+      ChangeVideo(x){
+        this.videoSrc=x
+        this.videoContext.play()
+      },
+      GetVipState() {
+        let url = 'https://wx.biergao.vip/api/vip/show'
+        let data = {
+          openid: this.userParam.openId
+        }
+        request.Post(url, data, res => {
+          if (res.data == 'success') {
+            this.isVip = true
+          }
+        })
       },
       preview(src, e) {
         // do something
@@ -110,12 +140,27 @@
     },
     onLoad() {
       this.init();
-      console.log(this.videoSrc);
     }
   };
 </script>
 
 <style scoped>
+.listhead_showlist{
+  margin-bottom: 100rpx;
+}
+  .btn {
+    width: 100%;
+    height: 100rpx;
+    position: fixed;
+    left: 0px;
+    bottom: 0px;
+    background-color: #f2892c;
+    color: white;
+    line-height: 100rpx;
+    font-size: 35rpx;
+    text-align: center;
+  }
+  
   @import url("~mpvue-wxparse/src/wxParse.css");
   .asd {
     width: 100%;

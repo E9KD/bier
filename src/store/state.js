@@ -4,8 +4,8 @@ export default {
   toasttype: 0, //展示toast的类型，默认为0是事件 1是等待
 
   // 获得用户信息
-  userInfo:[],
-  userParam:[],
+  userInfo:null,
+  userParam:null,
   teacherid: 0,
   httpHead: 'https://wx.biergao.vip/api/',
   httpLogin:'biaob/getOpenid2/code/',
@@ -24,9 +24,9 @@ export default {
   // 点击要去的课程的id
   lessoninfoid: 0,
   //  图表的当前参数,age\sex\youhight
-  chartAge:null,
-  chartSex:null,
-  youHight:null,
+  chartAge:10,
+  chartSex:0,
+  youHight:100,
   // 日历签到天数
   signDate:{},
   // 选择是那个孩子的index
@@ -37,4 +37,10 @@ export default {
   scoreState:null,
   // 打卡评价需要的参数
   evaluateParam:[],
+  // toast2状态
+  toast2State:0,
+  // buytoast的状态
+  buytoastState:null,
+  // buytoast的显示
+  buytoastShow:false
 }

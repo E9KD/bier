@@ -72,7 +72,7 @@
             },
             asd(){
                 wx.navigateTo({
-                    url: `/pages/question/main`
+                    url: `/pages/toolspage/main`
                 })
             }
         },

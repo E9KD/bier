@@ -70,6 +70,7 @@
 </template>
 
 <script>
+import {man,woman} from '../../utils/data.js'
   export default {
     data() {
       return {
@@ -82,16 +83,72 @@
         reportHight1: null,
         testHight: null,
         bottomhight: null,
+        normalHight:[],
+        perfectHight:[],
       }
     },
     methods: {
       init() {
         // 拿到我们需要的孩子的身份，就可以进行请求，并展示页面
+        this.ChangeData()
       },
       GoChartPage(){
         wx.navigateTo({
           url: '/pages/chartpage/main'
         })
+      },
+      ChangeData() {
+        this.normalHight = [];
+        this.perfectHight = [];
+        if (this.childrenSex == 1) {
+          let mandata = man;
+          this.HightComputed(0, this.normalHight, mandata);
+          this.HightComputed(1, this.perfectHight, mandata);
+        } else {
+          let womandata = woman;
+          this.HightComputed(0, this.normalHight, womandata);
+          this.HightComputed(1, this.perfectHight, womandata);
+        }
+      },
+      HightComputed(x, y, z) {
+        let age = JSON.parse(this.childrenAge);
+        let num = z[x][`${age + 1}`] - z[x][`${age}`];
+        let fixNum = num.toFixed(1) / 12;
+        for (let i = 0; i <= 12; i++) {
+          let item = JSON.parse(z[x][`${age}`]) + i * fixNum;
+          y.push(item.toFixed(1));
+        }
+      },
+      ComputedType(x, y, z, m) {
+        // x 当前身高 y 正常身高 z 期望身高 q 完美身高
+        let p = x - m;
+        let q = x - y;
+        let w = x - z;
+        if (p == 0) {
+          this.fuckHight = '正常'
+        } else if (p > 0) {
+          this.fuckHight = '超高'
+        } else if (p < 0) {
+          this.fuckHight = '矮小'
+        }
+        if (q == 0) {
+          this.type1 = 0;
+        } else if (q > 0) {
+          this.reportHight1 = q.toFixed(1);
+          this.type1 = 1;
+        } else if (q < 0) {
+          this.reportHight1 = q.toFixed(1);
+          this.type1 = 2;
+        }
+        if (w == 0) {
+          this.type2 = 0;
+        } else if (w > 0) {
+          this.reportHight2 = w.toFixed(1);
+          this.type2 = 1;
+        } else if (w < 0) {
+          this.reportHight2 = w.toFixed(1);
+          this.type2 = 2;
+        }
       }
     },
     onLoad(x) {

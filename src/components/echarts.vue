@@ -146,7 +146,8 @@
                     this.HightComputed(0, this.normalHight, womandata)
                     this.HightComputed(1, this.perfectHight, womandata)
                     this.HightComputed(2, this.lowHight, womandata)
-                    this.youHightlist.push(this.youHight)
+                    // this.youHightlist.push(this.youHight)
+                    this.youHightlist=this.youHight
                 }
             },
             ChangeNumber() {
@@ -179,6 +180,7 @@
         },
         mounted() {
             this.InitChart()
+            this.ChangeData()
         },
     
         /**
@@ -194,11 +196,15 @@
              */
             this.childrenSex = this.chartSex
             this.childrenAge = this.chartAge
-            this.ChangeData()
+            
+            
     
         },
         watch: {
             childrenIndex(x) {
+                console.log(this.youHight);
+                
+                this.youHightlist=this.youHight
                 this.childrenSex = this.chartSex
                 this.childrenAge = this.chartAge
                 this.ChangeData()
@@ -223,6 +229,7 @@
                         data: this.youHightlist
                     },
                 ]
+                console.log(this.youHightlist);
                 chart.setOption(this.option)
             }
         }

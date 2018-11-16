@@ -11,11 +11,11 @@
     <!-- 老师列表 -->
     <!-- 第一部分加载老师 -->
     <div class="teacher">
-      <div class="teacherrow" v-for='(item,index) in teacherinfolist' :key="index" @click="getTeacherid(index)">
+      <div class="teacherrow" v-for='(item,index) in teacherinfolist' :key="index" @click="getTeacherid(item.id)">
         <img class="teachercolleft teachercol" :src='item.faceimg'>
       </div>
       <!-- 第二部分加载老师 -->
-      <div class="teacherrow" v-for='(item,index) in teacherinfolist2' :key="index" @click="getTeacherid2(index)">
+      <div class="teacherrow" v-for='(item,index) in teacherinfolist2' :key="index" @click="getTeacherid2(item.id)">
         <img class="teachercolleft teachercol" :src='item.faceimg'>
       </div>
     </div>
@@ -47,58 +47,20 @@
       getTeacherinfo() {
         let that = this
         let url = this.httpHead + this.httpTeacherpage1
-        this.toastshowtype(1)
+        this.toastshowtype(0)
         request.api(url, function(res) {
           that.teacherinfolist = res.data.orderlist
           that.closeToast()
         })
       },
       getTeacherid(x) {
-        let id = 0
-        if (x == 0) {
-          id = 999
-        } else if (x == 1) {
-          id = 19
-        } else if (x == 2) {
-          id = 15
-        } else if (x == 3) {
-          id = 14
-        } else if (x == 4) {
-          id = 13
-        } else if (x == 5) {
-          id = 12
-        } else if (x == 6) {
-          id = 11
-        } else if (x == 7) {
-          id = 10
-        } else if (x == 8) {
-          id = 9
-        } else if (x == 9) {
-          id = 8
-        }
-        this.changeteacherid(id)
+        this.changeteacherid(x)
         wx.navigateTo({
           url: '/pages/teacherinfo/main'
         })
       },
       getTeacherid2(x) {
-        let id = 0
-        if (x == 0) {
-          id = 7
-        } else if (x == 1) {
-          id = 6
-        } else if (x == 2) {
-          id = 5
-        } else if (x == 3) {
-          id = 4
-        } else if (x == 4) {
-          id = 3
-        } else if (x == 5) {
-          id = 2
-        } else if (x == 6) {
-          id = 1
-        }
-        this.changeteacherid(id)
+        this.changeteacherid(x)
         wx.navigateTo({
           url: '/pages/teacherinfo/main'
         })

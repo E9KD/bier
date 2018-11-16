@@ -4,22 +4,22 @@
       <p>请先添加数据。</p>
     </div>
     <div class="groupreport_list" v-else>
-      <div class="list_box" v-for="(item,index) in childrenLIst" :key="index" @click="GoHightPrediction(item.sex,item.age,item.hight)">
+      <div class="list_box" v-for="(item,index) in childrenList" :key="index" @click="GoHightPrediction(item.sex,item.age,item.id,item.qiwangheight,item.fm.m,item.fm.f)">
         <div class="list_top list">
           <div class="top_name">
             <p class="name_p">{{item.name}}</p>
-            <img :src="sex==1?manimg:womanimg" class="name_icon">
+            <img :src="item.sex==1?manimg:womanimg" class="name_icon">
           </div>
           <div class="list_age">
             <p class="age_p">年龄：{{item.age}}岁</p>
           </div>
         </div>
         <div class="list_mid list">
-          <p class="mid_p">期待身高:{{item.hopeHight}}CM</p>
-          <p class="mid_p">目前身高:{{item.hightNow}}CM</p>
-          <p class="mid_p">母亲身高:{{item.motherHight}}CM</p>
-          <p class="mid_p">父亲身高:{{item.fatherHight}}CM</p>
-          <p class="mid_p">未来身高:{{item.futherHightA}}~{{item.futherHightB}}CM</p>
+          <p class="mid_p">期待身高:{{item.qiwangheight}}CM</p>
+          <p class="mid_p">目前身高:{{item.infos.nowheight}}CM</p>
+          <p class="mid_p">母亲身高:{{item.mheight}}CM</p>
+          <p class="mid_p">父亲身高:{{item.fheight}}CM</p>
+          <p class="mid_p">未来身高:{{item.fm.m}}~{{item.fm.f}}CM</p>
         </div>
         <div class="list_bottom list">
           <div class="bottom_box">
@@ -34,8 +34,9 @@
 
 <script>
   import {
-    mapMutations
+    mapMutations, mapState
   } from 'vuex';
+  import request from '../../utils/api.js'
   export default {
     data() {
       return {
@@ -44,60 +45,32 @@
         sex: 2,
         manimg: require('../../../static/image/man.png'),
         womanimg: require('../../../static/image/woman.png'),
-        childrenLIst: [{
-          name: 123,
-          age: 15,
-          hopeHight: 190,
-          hightNow: 110,
-          motherHight: 1000,
-          fatherHight: 1010,
-          futherHightA: 1004,
-          futherHightB: 5004,
-          time: '2018-01-01',
-          number: 11,
-          sex: 1,
-          hight:150
-        }, {
-          name: 123,
-          age: 8,
-          hopeHight: 190,
-          hightNow: 110,
-          motherHight: 1000,
-          fatherHight: 1010,
-          futherHightA: 1004,
-          futherHightB: 5004,
-          time: '2018-01-01',
-          number: 12,
-          sex: 2,
-          hight:100
-        }, {
-          name: 123,
-          age: 10,
-          hopeHight: 190,
-          hightNow: 110,
-          motherHight: 1000,
-          fatherHight: 1010,
-          futherHightA: 1004,
-          futherHightB: 5004,
-          time: '2018-01-01',
-          number: 13,
-          sex: 2,
-          hight:120
-        }]
+        childrenList: []
       }
     },
     methods: {
-      ...mapMutations(['ChangeEchartsParam']),
-      GoHightPrediction(sex, age,hight) {
-        this.ChangeEchartsParam({
-          sex,
-          age,
-          hight
-        })
+
+      GoHightPrediction(sex,age,id,hh,hd,hg) {
         wx.navigateTo({
-          url: `/pages/childrenhightreport/main`
+          url: `/pages/childrenhightreport/main?sex=${sex}&age=${age}&id=${id}&hh=${hh}&hd=${hd}&hg=${hg}`
+        })
+      },
+      init(){
+        let url=`https://wx.biergao.vip/api/biaob/userMorenew/`
+        let data={
+          openid:this.userParam.openId
+        }
+        request.GetWithData(url,data,res=>{
+          console.log(res);
+          this.childrenList=res.data
         })
       }
+    },
+    computed:{
+      ...mapState(['userParam'])
+    },
+    mounted(){
+      this.init()
     }
   }
 </script>

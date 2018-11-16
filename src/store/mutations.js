@@ -41,16 +41,20 @@ export default {
   ChangeUserParam(state,x){
     state.userParam=x
   },
-  // 修改当前echarts的参数，age&sex&hight
-  ChangeEchartsParam(state, x) {
-    state.chartSex = x.sex
-    state.chartAge = x.age
-    state.youHight = x.hight
-  },
-  // 修改选择展示孩子曲线的index，哪位孩子
-  ChangeChildrenIndex(state, x) {
-    state.childrenIndex = x
-  },
+  // // 修改当前echarts的参数，age&sex&hight
+  // ChangeEchartsParam(state, x) {
+  //   state.chartSex = x.sex
+  //   state.chartAge = x.age
+    
+  // },
+  // qwe(state,x){
+  //   state.youHight = x
+  //   console.log(state.youHight);
+  // },
+  // // 修改选择展示孩子曲线的index，哪位孩子
+  // ChangeChildrenIndex(state, x) {
+  //   state.childrenIndex = x
+  // },
   // 修改雷达图参数
   ChangePolarParam(state,x){
     state.polarParam=x
@@ -63,4 +67,18 @@ export default {
   ChangeEvaluateList(state,x){
     state.evaluateParam=x
   },
+  //  改变toast2状态
+  ChangeToast2State(state,x){
+    state.toast2State=x
+  },
+  // 修改buytoast状态，打开buytoast
+  ChangeBuyToastState(state,x){
+    // 0是课程 1是vip
+    state.buytoastState=x
+    state.buytoastShow=true
+  },
+  // 关闭buytoast
+  CloseBuyToast(state,x){
+    state.buytoastShow=false
+  }
 }

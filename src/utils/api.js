@@ -43,8 +43,24 @@ const Post=function(url,data,resolve){
 
 }
 
+const order=function(url, data,callback) {
+    wx.request({
+      url: url,
+      data: data,
+      method: 'GET',
+      header: { 'content-Type': 'application/json' },
+      success: function (res) {
+        if (res.statusCode == 200) {
+          callback(res.data);
+        }
+      }
+    })
+  }
+
+
 export default  {
     api,
     GetWithData,
-    Post
+    Post,
+    order
 }
