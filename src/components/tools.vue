@@ -99,7 +99,7 @@
     }
     .toolscol {
         width: 47vw;
-        background-color: #f3f2f8;
+        background-color: white;
         height: 100%;
         display: inline-block;
         position: relative;

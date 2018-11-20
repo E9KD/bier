@@ -1,61 +1,63 @@
 <template>
-  <div class="addchildren">
-    <div class="sexchoose">
-      <div class="radio_box_left">
-        <input type="radio" name="asd" :checked='checked==1' @click="ChangeChecked(1)" class="radio radio_man">
-        <p class="radio_p">男</p>
+  <div class="backgroundImg box">
+    <div class="addchildren ">
+      <div class="sexchoose">
+        <div class="radio_box_left">
+          <input type="radio" name="asd" :checked='checked==1' @click="ChangeChecked(1)" class="radio radio_man">
+          <p class="radio_p">男</p>
+        </div>
+        <div class="radio_box_right">
+          <input type="radio" name="asd" :checked='checked==2' @click="ChangeChecked(2)" class="radio radio_woman">
+          <p class="radio_p">女</p>
+        </div>
       </div>
-      <div class="radio_box_right">
-        <input type="radio" name="asd" :checked='checked==2' @click="ChangeChecked(2)" class="radio radio_woman">
-        <p class="radio_p">女</p>
+      <div class="add_input">
+        <div class="input_box">
+          <p class="input_box_p">姓名</p>
+          <input type="text" v-model="name" class="input_box_input" placeholder="请输入姓名">
+        </div>
+        <div class="input_box">
+          <p class="input_box_p">生日</p>
+          <picker mode="date" name="activity.endDate" class="input_box_input" :value="childrenBirthday" start="1990-01-01" end="2020-09-01" @change="ChangeChildrenBirthday">
+            <view class="weui-input">{{childrenBirthday}}</view>
+          </picker>
+        </div>
+        <div class="input_box">
+          <p class="input_box_p">期望身高</p>
+          <picker @change="ChangeChildrenHight" :value="childrenHightindex" :range="childrenHightlist" class="input_box_input">
+            <view class="picker">
+              当前选择：{{childrenHightlist[childrenHightindex]}}厘米
+            </view>
+          </picker>
+        </div>
+        <div class="input_box">
+          <p class="input_box_p">目前身高</p>
+          <picker @change="ChangeChildrenHightNow" :value="childrenHightnowIndex" :range="childrenHightlist" class="input_box_input">
+            <view class="picker">
+              当前选择：{{childrenHightlist[childrenHightnowIndex]}}厘米
+            </view>
+          </picker>
+        </div>
+        <div class="input_box" v-if="isParshow">
+          <p class="input_box_p">父亲身高</p>
+          <picker @change="ChangeFatherHightNow" :value="fatherHightnowIndex" :range="childrenHightlist" class="input_box_input">
+            <view class="picker">
+              当前选择：{{childrenHightlist[fatherHightnowIndex]}}厘米
+            </view>
+          </picker>
+        </div>
+        <div class="input_box" v-if="isParshow">
+          <p class="input_box_p">母亲身高</p>
+          <picker @change="ChangeMotherHightNow" :value="motherHightnowIndex" :range="childrenHightlist" class="input_box_input">
+            <view class="picker">
+              当前选择：{{childrenHightlist[motherHightnowIndex]}}厘米
+            </view>
+          </picker>
+        </div>
       </div>
-    </div>
-    <div class="add_input">
-      <div class="input_box">
-        <p class="input_box_p">姓名</p>
-        <input type="text" v-model="name" class="input_box_input" placeholder="请输入姓名">
+      <div class="add_btn_box">
+        <div class="add_btn" @click="GoTest">GO</div>
       </div>
-      <div class="input_box">
-        <p class="input_box_p">生日</p>
-        <picker mode="date" name="activity.endDate" class="input_box_input" :value="childrenBirthday" start="1990-01-01" end="2020-09-01" @change="ChangeChildrenBirthday">
-          <view class="weui-input">{{childrenBirthday}}</view>
-        </picker>
-      </div>
-      <div class="input_box">
-        <p class="input_box_p">期望身高</p>
-        <picker @change="ChangeChildrenHight" :value="childrenHightindex" :range="childrenHightlist" class="input_box_input">
-          <view class="picker">
-            当前选择：{{childrenHightlist[childrenHightindex]}}厘米
-          </view>
-        </picker>
-      </div>
-      <div class="input_box">
-        <p class="input_box_p">目前身高</p>
-        <picker @change="ChangeChildrenHightNow" :value="childrenHightnowIndex" :range="childrenHightlist" class="input_box_input">
-          <view class="picker">
-            当前选择：{{childrenHightlist[childrenHightnowIndex]}}厘米
-          </view>
-        </picker>
-      </div>
-      <div class="input_box" v-if="isparshow">
-        <p class="input_box_p">父亲身高</p>
-        <picker @change="ChangeFatherHightNow" :value="fatherHightnowIndex" :range="childrenHightlist" class="input_box_input">
-          <view class="picker">
-            当前选择：{{childrenHightlist[fatherHightnowIndex]}}厘米
-          </view>
-        </picker>
-      </div>
-      <div class="input_box" v-if="isparshow">
-        <p class="input_box_p">母亲身高</p>
-        <picker @change="ChangeMotherHightNow" :value="motherHightnowIndex" :range="childrenHightlist" class="input_box_input">
-          <view class="picker">
-            当前选择：{{childrenHightlist[motherHightnowIndex]}}厘米
-          </view>
-        </picker>
-      </div>
-    </div>
-    <div class="add_btn_box">
-      <div class="add_btn" @click="GoTest">GO</div>
     </div>
   </div>
 </template>
@@ -65,6 +67,7 @@
     mapMutations,
     mapState
   } from "vuex";
+  import request from '../../utils/api.js'
   export default {
     data() {
       return {
@@ -75,34 +78,97 @@
         childrenHightlist: [],
         childrenBirthday: '请选择生日',
         checked: null,
-        isparshow: true,
+        isParshow: true,
+        name: null,
+        motherHightnow:null,
+        fatherHightnow: null,
+        childrenHightnow: null,
+        childrenHight: null,
+        age:null
       };
     },
     methods: {
+      ...mapMutations(['toastshowtype', 'closeToast']),
       ChangeMotherHightNow(e) {
         this.motherHightnowIndex = e.mp.detail.value
+        this.motherHightnow=this.ComputeNumber(e.mp.detail.value)
       },
       ChangeFatherHightNow(e) {
         this.fatherHightnowIndex = e.mp.detail.value
+        this.fatherHightnow=this.ComputeNumber(e.mp.detail.value)
       },
       ChangeChildrenHightNow(e) {
         this.childrenHightnowIndex = e.mp.detail.value
+        this.childrenHightnow=this.ComputeNumber(e.mp.detail.value)
       },
       ChangeChildrenHight(e) {
         this.childrenHightindex = e.mp.detail.value
+        this.childrenHight=this.ComputeNumber(e.mp.detail.value)
       },
       ChangeChildrenBirthday(e) {
         this.childrenBirthday = e.mp.detail.value;
+        this.ComputeAge(e.mp.detail.value)
       },
       ChangeChecked(x) {
         // 1是男 2是nv
         this.checked = x;
       },
+      ComputeNumber(x){
+        let a=JSON.parse(x)
+        return a+100
+      },
+      ComputeAge(x){
+        let a=x.slice(0,4)
+        this.age=new Date().getFullYear()-parseInt(a)
+      },
+      showMessage(x){
+        wx.showToast({
+        title: x,
+        icon: 'none',
+        duration: 1500
+      })
+      },
       GoTest() {
-        // 获取所有信息，进行请求，然后跳转
-        wx.navigateTo({
-          url: '/pages/test/main'
-        })
+        //获取所有信息，进行请求，然后跳转
+        let nameRule = /^[\u4e00-\u9fa5]{2,4}$/i
+        if (this.checked == null) {
+          this.showMessage('请选择性别')
+        } else if (this.name == null) {
+          this.showMessage('请输入姓名')
+        } else if (!nameRule.test(this.name)) {
+          this.showMessage('请输入中文名2-4位')
+        } else if (this.childrenBirthday == null) {
+          this.showMessage('请选择生日')
+        } else if (this.age > 20) {
+          this.showMessage('您孩子已经大于20岁！')
+        } else if (this.age < 0) {
+          this.showMessage('您孩子不能小于0岁！')
+        } else if (this.childrenHightnow == null) {
+          this.showMessage('请选择期望身高')
+        } else if (this.childrenHight == null) {
+          this.showMessage('请选择目前身高')
+        } else {
+          let url=`https://wx.biergao.vip/api/biaob/addData/openid/${this.userParam.openId}`
+          let data={
+            sex:this.checked,
+            username:this.name,
+            brithday:this.childrenBirthday,
+            qiwangheight:this.childrenHight,
+            nowheight:this.childrenHightnow
+          }
+          request.GetWithData(url,data,res=>{
+             if (res.data == 'em') {
+            this.showMessage('添加失败已存在');
+          } else {
+            this.showMessage('添加成功已保存');
+            console.log(res);
+            let data=res.data
+            wx.navigateTo({
+              url: `/pages/hightpre/main?id=${data.id}&m=${data.m}&y=${data.y}`
+            })
+          }
+          })
+        }
       },
       init() {
         if (this.childrenHightlist.length > 0) {
@@ -112,23 +178,47 @@
             this.childrenHightlist.push(i);
           }
         }
+        this.GetDefaultState()
+      },
+      GetDefaultState() {
+        let url = `https://wx.biergao.vip/api/child/isChild`
+        let data = {
+          openid: this.userParam.openId
+        }
+        request.Post(url, data, res => {
+          if (res.data.result == 'true') {
+            this.isParshow = false
+          } else {
+            this.isParshow = true
+          }
+        })
       }
     },
+    computed: {
+      ...mapState(['userParam'])
+    },
     onLoad() {
-      this.init()
+  
       // 跳转到这个页面，先进行一次检查，如果已经添加过孩子，说明已经获取了父母的身高，则isparshow为false
+    },
+    onShow() {
+      this.init()
     }
   };
 </script>
 
 <style scoped>
+  .box {
+    height: 100vh;
+  }
+  
   .addchildren {
     width: 70%;
     margin: 0 auto;
   }
   
   .sexchoose {
-    margin-top: 60rpx;
+    padding-top: 100rpx;
     overflow: hidden;
   }
   

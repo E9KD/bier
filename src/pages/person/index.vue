@@ -120,15 +120,15 @@
     top: 40%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 200rpx;
-    height: 200rpx;
+    width: 150rpx;
+    height: 150rpx;
     border-radius: 180rpx;
     overflow: hidden;
   }
   
   .userinfoname {
     position: absolute;
-    top: 77%;
+    top: 70%;
     left: 50%;
     transform: translate(-50%, -50%);
     width: 200rpx;

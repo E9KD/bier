@@ -174,6 +174,8 @@
   
   .contexttitle {
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     font-size: 36rpx;
     padding: 10rpx 10rpx;
   }
@@ -183,7 +185,9 @@
     color: #999;
     padding: 0px 10rpx;
     height: 85rpx;
+    white-space: nowrap;
     overflow: hidden;
+    text-overflow: ellipsis;
   }
   
   .contextright {

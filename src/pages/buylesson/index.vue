@@ -1,7 +1,7 @@
 <template>
   <div  class="buylesson">
     <video id="myVideo" class="video_list" :src="videoSrc" controls page-gesture direction show-fullscreen-btn show-play-btn show-center-play-btn></video>
-    <scroll-view :scroll-y='true' @scroll="aaa" class="asd">
+    <scroll-div :scroll-y='true' @scroll="aaa" class="asd">
       <div class="listbox">
         <div class="listhead">
           <p class="listhead_title">{{showList.title}}</p>
@@ -38,9 +38,25 @@
           </div>
         </div>
       </div>
-    </scroll-view>
+    </scroll-div>
     <div class="btn" v-if="isVip" @click="PlayVideo">{{i}}</div>
-    <div class="btn" v-else>{{n}}</div>
+    <div class="btn" v-else @click="GoBuyLesson">{{z}}</div>
+
+    <div :class="isBuy?s:h" style='height:100px;border:1rpx solid #333;border-radius:5px;  position: absolute;background:#fff; top: 40%; left: 0; bottom: 0; right: 0;'>
+        <div style='width:100%;height:28px;'>
+          <div style='width:30px;height:30px;line-height:30px;margin:0 auto;float:right;font-size:16px;text-align:center;' @click='CloseTip'>
+            X
+          </div>
+        </div>
+        <div style='position:absolute;width:100%;height:30px;margin:0 auto;float:right;font-size:10pt;text-align:center;'>
+          进入客服消息后，发送"{{buyid}}"获取查询链接
+        </div>
+        <!-- 底部 -->
+        <div style='width:100%;height:40px;overflow:hidden;position:absolute;bottom:0;box-sizing:border-box;'>
+          <button plain='true' style='margin-bottom:0px;height:40px;line-height:40px;float:right;border:none;color:#00B26A;font-size:10pt;' open-type='contact' :session-from='link' >马上咨询</button>
+        </div>
+
+      </div>
     <Toast></Toast>
   </div>
 </template>
@@ -58,19 +74,21 @@
       return {
         lessonlistshowtype: 0,
         item: "200",
+        isBuy:false,
         changecardisshow: true,
         a: "active",
         n: "normal",
+        s:'show',
+        h:'hidden',
         showList: [],
         showlistcontent: "",
         lessonNumber: 123,
-        f: "fixed",
-        n: "nofixed",
         videoSrc: null,
         isVip: false,
-        n: '立刻查询',
+        z: '立刻查询',
         i: '立刻观看',
-        videoContext:null
+        videoContext:null,
+        link:'{"type": "keceng","unionId":"null","userid":"null","goodsid":"null"}',
       };
     },
     components: {
@@ -91,16 +109,31 @@
           openid: this.userParam.openId
         };
         request.GetWithData(url, data, res => {
-          console.log(res);
           this.lessonNumber = res.data;
           this.videoSrc = res.data[0].content;
-        });
+          this.ChangeParam()
+        }); 
         this.showList = this.lessonListcontent;
         this.GetVipState()
+        
         this.closeToast()
+      },
+      ChangeParam() {
+        let data = JSON.parse(this.link)
+        data.userid = this.userParam.userid
+        data.unionId = this.userParam.unionId
+        data.goodsid=this.lessonNumber[0].cid
+        this.link = JSON.stringify(data)
+        console.log(this.link);
+      },
+      CloseTip(){
+        this.isBuy=false
       },
       PlayVideo(){
         this.videoContext.play()
+      },
+      GoBuyLesson(){
+        this.isBuy=true
       },
       ChangeVideo(x){
         this.videoSrc=x
@@ -145,6 +178,13 @@
 </script>
 
 <style scoped>
+.show{
+  display: block;
+  z-index: 9999;
+}
+.hidden {
+  display: none;
+}
 .listhead_showlist{
   margin-bottom: 100rpx;
 }

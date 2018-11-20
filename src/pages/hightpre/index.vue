@@ -1,11 +1,12 @@
 <template>
   <div class="childrenreport">
-    <div class="report_top">
+    <div class="report_top ">
       <div class="top_one">
-        <div class="one_o">
+        <div class="one_o ">
           <div class="o_pone">{{heightEnd}}</div>
           <p class="o_ptwo">预计遗传身高(CM)</p>
         </div>
+        <div class="box_a loader8"></div>
       </div>
       <div class="top_head">
         <div class="head_title">
@@ -70,44 +71,105 @@
 </template>
 
 <script>
-import {man,woman} from '../../utils/data.js'
+  import {
+    man,
+    woman
+  } from "../../utils/data.js";
+  import request from "../../utils/api.js";
+  import {
+    mapState
+  } from "vuex";
   export default {
     data() {
       return {
         id: null,
+        m: null,
+        y: null,
         heightEnd: 180,
-        fuckHight: `超好`,
+        fuckHight: null,
         type1: 1,
         type2: 2,
         reportHight1: null,
-        reportHight1: null,
+        reportHight2: null,
         testHight: null,
         bottomhight: null,
-        normalHight:[],
-        perfectHight:[],
-      }
+        normalHight: [],
+        perfectHight: [],
+        childrenAge: null
+      };
     },
     methods: {
-      init() {
-        // 拿到我们需要的孩子的身份，就可以进行请求，并展示页面
-        this.ChangeData()
+      init(x, y, z) {
+        if (this.id == null) {
+          // 默认
+          let url = `https://wx.biergao.vip/api/child/issetChild`;
+          let data = {
+            openid: this.userParam.openId
+          };
+          request.GetWithData(url, data, res => {
+            let data = res.data;
+            let time = new Date(data.createtime * 1000);
+            let y = time.getFullYear();
+            let m = time.getMonth() + 1;
+            this.childrenSex = data.sex;
+            
+            this.GetChildrenParam(data.id, m, y);
+          });
+        } else {
+          // 传值
+          this.GetChildrenParam(x, y, z);
+        }
       },
-      GoChartPage(){
+      GetChildrenParam(x, y, z) {
+        // x id y 月 z 年
+        let url = `https://wx.biergao.vip/api/biaob/getcesinfo`;
+        let data = {
+          cid: x,
+          m: y,
+          y: z
+        };
+        request.GetWithData(url, data, res => {
+          console.log(res);
+          let data = res.data;
+          this.childrenAge = data[2].age;
+          // x 父亲身高 y 母亲身高
+          this.ComputeHight(data[0].fheight,data[0].mheight)
+          // x 当前身高 y 正常身高 z 期望身高 q 完美身高
+          this.ChangeData(data[1].nowheight, data[0].qiwangheight);
+        });
+      },
+      ComputeHight(x,y) {
+        console.log(x,y);
+        // x 父亲身高 y 母亲身高
+        if (this.childrenSex == 1) {
+          this.testHight = (Number(x) + Number(y) + 13) / 2 + 7.5;
+          this.bottomhight = (Number(x) + Number(y) + 13) / 2 - 7.5;
+          this.heightEnd = ((this.testHight + this.bottomhight) / 2).toFixed(0);
+        } else {
+          this.testHight = (Number(x) + Number(y) - 13) / 2 + 7.5;
+          this.bottomhight = (Number(x) + Number(y) - 13) / 2 - 7.5;
+          this.heightEnd = ((this.testHight + this.bottomhight) / 2).toFixed(0);
+        }
+      },
+      GoChartPage() {
         wx.navigateTo({
-          url: '/pages/chartpage/main'
-        })
+          url: "/pages/chartpage/main"
+        });
       },
-      ChangeData() {
+      ChangeData(x, y) {
         this.normalHight = [];
         this.perfectHight = [];
+        console.log(this.childrenSex);
         if (this.childrenSex == 1) {
           let mandata = man;
           this.HightComputed(0, this.normalHight, mandata);
           this.HightComputed(1, this.perfectHight, mandata);
+          this.ComputedType(x, this.normalHight[0], y, this.perfectHight[0]);
         } else {
           let womandata = woman;
           this.HightComputed(0, this.normalHight, womandata);
           this.HightComputed(1, this.perfectHight, womandata);
+          this.ComputedType(x, this.normalHight[0], y, this.perfectHight[0]);
         }
       },
       HightComputed(x, y, z) {
@@ -125,11 +187,11 @@ import {man,woman} from '../../utils/data.js'
         let q = x - y;
         let w = x - z;
         if (p == 0) {
-          this.fuckHight = '正常'
+          this.fuckHight = "正常";
         } else if (p > 0) {
-          this.fuckHight = '超高'
+          this.fuckHight = "超高";
         } else if (p < 0) {
-          this.fuckHight = '矮小'
+          this.fuckHight = "矮小";
         }
         if (q == 0) {
           this.type1 = 0;
@@ -152,10 +214,14 @@ import {man,woman} from '../../utils/data.js'
       }
     },
     onLoad(x) {
-      this.id = x.id
-      this.init()
+      this.id = x.id;
+      console.log(x.id, x.m, x.y);
+      this.init(x.id, x.m, x.y);
+    },
+    computed: {
+      ...mapState(["userParam"])
     }
-  }
+  };
 </script>
 
 <style scoped>
@@ -173,10 +239,12 @@ import {man,woman} from '../../utils/data.js'
     font-size: 30rpx;
     color: #999;
   }
-  .bottom_box{
-    padding-top:  30rpx;
+  
+  .bottom_box {
+    padding-top: 30rpx;
     text-align: center;
   }
+  
   .head_bottom {
     position: fixed;
     bottom: 0px;
@@ -333,7 +401,6 @@ import {man,woman} from '../../utils/data.js'
     width: 280rpx;
     height: 280rpx;
     border-radius: 300rpx;
-    border: 1px solid white;
   }
   
   .top_one {

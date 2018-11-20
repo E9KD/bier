@@ -98,7 +98,7 @@ import { mapMutations } from 'vuex';
     .system {
         height: 700rpx;
         width: 100%;
-        background-color: #f3f2f8;
+        background-color: white;
         position: relative;
     }
     .curbox {

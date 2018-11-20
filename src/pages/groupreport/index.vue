@@ -22,9 +22,13 @@
           <p class="mid_p">未来身高:{{item.fm.m}}~{{item.fm.f}}CM</p>
         </div>
         <div class="list_bottom list">
+          <div class="bottom_box-left">
+            
+          </div>
           <div class="bottom_box">
-            <img :src="timeicon" class="bottom_timeicon">
+            <p class="bottom_fixbtn">修改身高</p>
             <p class="bottom_time">{{item.time}}</p>
+            <img :src="timeicon" class="bottom_timeicon">
           </div>
         </div>
       </div>
@@ -78,22 +82,28 @@
 <style scoped>
   .bottom_time {
     font-size: 15px;
-    display: inline-block;
+    float: right;
     vertical-align: middle;
   }
-  
+  .bottom_fixbtn{
+    font-size: 15px;
+    float: left;
+    vertical-align: middle;
+  }
   .bottom_timeicon {
     width: 24px;
     margin-right: 10px;
     height: 24px;
     vertical-align: middle;
-    display: inline-block;
+    float: right;
   }
   
   .bottom_box {
     float: right;
   }
-  
+  .bottom_box-left{
+    float: left;
+  }
   .list_bottom {
     padding-top: 10px;
     overflow: hidden;

@@ -128,6 +128,8 @@ export default {
 <style scoped>
 .content_p {
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .vipList {

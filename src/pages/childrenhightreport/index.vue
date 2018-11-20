@@ -2,6 +2,7 @@
   <div class="childrenreport">
     <div class="report_top">
       <div class="top_one">
+        <div class="box_a loader8"></div>
         <div class="one_o">
           <div class="o_pone">{{heightEnd}}</div>
           <p class="o_ptwo">预计遗传身高(CM)</p>
@@ -456,7 +457,6 @@
     width: 280rpx;
     height: 280rpx;
     border-radius: 300rpx;
-    border: 1px solid white;
   }
   
   .top_one {

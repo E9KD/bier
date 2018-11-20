@@ -111,4 +111,49 @@
     height: 100%;
     z-index: 1;
   }
+  .loader8 {
+  font-size: 10px;
+  /* position: relative; */
+  text-indent: -9999em;
+  border-top: 1rpx dashed #fff;
+  border-right: 1rpx dashed #fff;
+  border-bottom: 1rpx dashed #fff;
+  border-left: 1rpx dashed #fff;
+  -webkit-animation: load8 15s infinite linear;
+  animation: load8 15s infinite linear;
+}
+@-webkit-keyframes load8 {
+  100% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+
+  0% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes load8 {
+  100% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+
+  0% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+.box_a{
+  margin: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  width: 300rpx;
+  height: 300rpx;
+  border-radius: 300rpx;
+}
 </style>
