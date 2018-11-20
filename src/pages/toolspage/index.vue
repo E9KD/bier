@@ -3,7 +3,7 @@
     <img src="../../../static/image/nutrition.png" alt="" class="bgi">
     <div class="toolspage_box">
       <div class="box_listbox">
-        <div class="listbox_div" v-for="(item,index) in list" :key="index">
+        <div class="listbox_div goldbg" v-for="(item,index) in list" :key="index">
           <div class="div_top">
             <img :src="item.img" alt="" class="top_img">
             <p class="top_content">{{item.title}}</p>
@@ -151,7 +151,6 @@ export default {
   border-radius: 20rpx;
   width: 70vw;
   margin: 0 auto;
-  background-color: rgb(227, 139, 39);
   margin-top: 60rpx;
 }
 </style>

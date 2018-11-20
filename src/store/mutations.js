@@ -17,7 +17,7 @@ export default {
   },
   // 获取type和显示toast
   toastshowtype(state, x) {
-    // 0是事件，1是等待
+    // 0loading 1完成 2警告
     state.toasttype = x,
     state.toastshow = true
   },

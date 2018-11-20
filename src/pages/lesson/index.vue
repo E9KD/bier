@@ -193,13 +193,13 @@
   .contextright {
     float: right;
     height: 200rpx;
-    width: 58%;
+    width: 65%;
     position: relative;
   }
   
   .contextleft {
     float: left;
-    width: 40%;
+    width: 32%;
     height: 200rpx;
   }
   

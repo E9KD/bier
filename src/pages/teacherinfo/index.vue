@@ -6,19 +6,21 @@
     <div class="teacherlist">
       <div class="listhead">我能为您提供的服务</div>
       <div class="listtext">
-        <div class="listextbox">购买后，您的孩子可以享受
-          <p class="listtextcom">：</p>
+        <div class="listextbox">
+          <p class="listtextcom">{{isBuy?t1:t2}}</p>
           <p class="listtextcom">量身定制月度/季度的身高管理服务</p>
-          <span class="listprice">
-                      <p class="listpriceb">￥399</p>
-                      <p class="listprices">/月</p>
-                    </span>
-          <span class="listprice">
-                      <p class="listpriceb">￥999</p>
-                      <p class="listprices">/月</p>
-                    </span>
+          <!-- <span class="listprice" v-if="isBuy">
+                          <p class="listpriceb">￥399</p>
+                          <p class="listprices">/月</p>
+                        </span>
+          <span class="listprice" v-if="isBuy">
+                          <p class="listpriceb">￥999</p>
+                          <p class="listprices">/月</p>
+                        </span> -->
           <div class="listbtnbox">
-            <button class="listbtn" @click="buyLesson">购买</button>
+            <button class="listbtn" @click="buyLesson" v-if="isBuy">查询</button>
+            <button open-type="contact" class="listbtn" v-else :session-from='link2' plain='true'>查询</button>
+            <!-- <button class="" @click="AindAll">查询</button> -->
             <p class="listbtntext">VIP免费</p>
           </div>
           <div class="listtext">
@@ -30,7 +32,7 @@
     <div class="buylinkbox" :class="[buyshow?s:h]">
       <div class="buylink">
         <div class="buyclose" @click="closebutlink">X</div>
-        <div class="buyhead">购买</div>
+        <div class="buyhead">查询</div>
         <div class="buytitle">1对1专业身高管理服务</div>
         <div class="buytip">
           <i></i>
@@ -46,7 +48,7 @@
             <p class="footheadtop">支付金额{{lessonprice}}元</p>
             <p class="footheadmid">进入客服消息后，发送“{{teacherinfo.id}}”获取购买链接</p>
           </div>
-          <button open-type="contact" class="footbtn" :session-from='link'  :contact="handleContact">马上咨询</button>
+          <button open-type="contact" class="footbtn" :session-from='link' :contact="handleContact">马上咨询</button>
         </div>
       </div>
     </div>
@@ -56,7 +58,7 @@
 
 <script>
   import request from "../../utils/api.js";
-  import Toast from '../../components/toast.vue'
+  import Toast from "../../components/toast.vue";
   import {
     mapState,
     mapMutations
@@ -65,6 +67,11 @@
   export default {
     data() {
       return {
+        isBuy: false,
+        t1: `购买后，您的孩子可以享受:`,
+        t2: `查询后,您的孩子可以享受:`,
+        t3: `购买`,
+        t4: "查询",
         teacherinfo: [],
         buyshow: false.buyshowa,
         s: "show",
@@ -73,7 +80,8 @@
         n: "normal",
         priceischoose: 0,
         price: 399,
-        link:`{"type": "fuwu","userid":"null","unionId":"null","goodsid":"null","price":"null"}`,
+        link: `{"type": "fuwu","userid":"null","unionId":"null","goodsid":"null","price":"null"}`,
+        link2: '{"type": "image", "title": "点击开启您的一站式专属身高管理服务之旅吧！", "url": "http://www.biergao.cn/kefu"}'
       };
     },
     components: {
@@ -82,23 +90,36 @@
     },
     methods: {
       ...mapMutations(["toastshowtype", "closeToast"]),
+      init() {
+        let url = `https://wx.biergao.vip/api/vip/show`
+        let data = {
+          openid: this.userParam.openId
+        }
+        request.GetWithData(url, data, res => {
+          if (data == 'success') {
+            this.isBuy = false
+          } else {
+            this.isBuy = true
+          }
+        })
+      },
       ChangeParam() {
-        let data = JSON.parse(this.link)
-        data.userid = this.userParam.userid
-        data.unionId = this.userParam.unionId
-        data.goodsid=this.teacherinfo.id
-        data.price=this.price
-        this.link = JSON.stringify(data)
+        let data = JSON.parse(this.link);
+        data.userid = this.userParam.userid;
+        data.unionId = this.userParam.unionId;
+        data.goodsid = this.teacherinfo.id;
+        data.price = this.price;
+        this.link = JSON.stringify(data);
         console.log(this.link);
       },
       changeprice(x) {
         this.priceischoose = x;
         if (x == 0) {
-          this.price = 399
-          this.ChangeParam()
+          this.price = 399;
+          this.ChangeParam();
         } else {
-          this.price = 999
-          this.ChangeParam()
+          this.price = 999;
+          this.ChangeParam();
         }
       },
       closebutlink() {
@@ -106,7 +127,7 @@
       },
       buyLesson() {
         this.buyshow = true;
-        this.ChangeParam()
+        this.ChangeParam();
       },
       getDefaultinfo() {
         this.toastshowtype(0);
@@ -121,12 +142,12 @@
     },
     onLoad() {
       this.buyshow = false;
-      this.teacherinfo = []
-  
+      this.teacherinfo = [];
+      this.init()
       this.getDefaultinfo();
     },
     computed: {
-      ...mapState(["httpTeacherinfo", "teacherid", 'userParam'])
+      ...mapState(["httpTeacherinfo", "teacherid", "userParam"])
     }
   };
 </script>
@@ -296,9 +317,10 @@
     height: 80rpx;
     background-color: rgb(227, 139, 39);
     text-align: center;
-    font-size: 30rpx;
+    font-size: 35rpx;
     color: white;
     float: left;
+    line-height: 80rpx;
   }
   
   .listbtnbox {
@@ -318,7 +340,7 @@
   .listpriceb {
     font-size: 60rpx;
     font-weight: bold;
-    color: #999999;
+    color: red;
     display: inline-block;
     margin-left: 50rpx;
   }
@@ -348,11 +370,11 @@
   .listhead {
     text-align: center;
     font-size: 40rpx;
-    color: #999999;
+    color: #616060;
     width: 100%;
     height: 120rpx;
     line-height: 120rpx;
-    margin-bottom: 10rpx;
+    margin-bottom: 5rpx;
     background-color: white;
   }
   

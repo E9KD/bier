@@ -26,7 +26,7 @@
             
           </div>
           <div class="bottom_box">
-            <p class="bottom_fixbtn">修改身高</p>
+            <p class="bottom_fixbtn" @click.stop="ChangeChildrenhight(item.qiwangheight,item.infos.nowheight,item.fheight,item.mheight,item.id,item.time,item.name)">修改身高</p>
             <p class="bottom_time">{{item.time}}</p>
             <img :src="timeicon" class="bottom_timeicon">
           </div>
@@ -68,6 +68,11 @@
           console.log(res);
           this.childrenList=res.data
         })
+      },
+      ChangeChildrenhight(x,y,z,q,w,e,r){
+        wx.navigateTo({
+          url: `/pages/changechildrenhight/main?x=${x}&y=${y}&z=${z}&q=${q}&w=${w}&e=${e}&r=${r}`
+        })
       }
     },
     computed:{
@@ -75,7 +80,11 @@
     },
     mounted(){
       this.init()
+    },
+    onShow(){
+      this.init()
     }
+
   }
 </script>
 
@@ -89,6 +98,7 @@
     font-size: 15px;
     float: left;
     vertical-align: middle;
+    color:red;
   }
   .bottom_timeicon {
     width: 24px;
@@ -98,9 +108,7 @@
     float: right;
   }
   
-  .bottom_box {
-    float: right;
-  }
+ 
   .bottom_box-left{
     float: left;
   }

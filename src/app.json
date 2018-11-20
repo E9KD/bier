@@ -22,7 +22,9 @@
     "pages/cardpage/main",
     "pages/question/main",
     "pages/evaluate/main",
-    "pages/exchange/main"
+    "pages/exchange/main",
+    "pages/changechildrenhight/main"
+    
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -31,29 +33,30 @@
     "navigationBarTextStyle": "black"
   },
   "tabBar": {
+    "borderStyle": "white",
     "color": "#FFF",
-    "selectedColor": "rgb(227, 139, 39)",
+    "selectedColor": "#ec881d",
     "backgroundColor": "black",
     "list": [{
       "pagePath": "pages/index/main",
       "text": "首页",
-      "iconPath": "/static/image/a1.png",
-      "selectedIconPath": "/static/image/a2.png"
+      "iconPath": "/static/image/a2.png",
+      "selectedIconPath": "/static/image/a1.png"
     }, {
       "pagePath": "pages/serve/main",
       "text": "服务",
-      "iconPath": "/static/image/a3.png",
-      "selectedIconPath": "/static/image/a4.png"
+      "iconPath": "/static/image/a4.png",
+      "selectedIconPath": "/static/image/a3.png"
     }, {
       "pagePath": "pages/lesson/main",
       "text": "课程",
-      "iconPath": "/static/image/a7.png",
-      "selectedIconPath": "/static/image/a8.png"
+      "iconPath": "/static/image/a6.png",
+      "selectedIconPath": "/static/image/a5.png"
     }, {
       "pagePath": "pages/person/main",
       "text": "我的",
-      "iconPath": "/static/image/a9.png",
-      "selectedIconPath": "/static/image/a10.png"
+      "iconPath": "/static/image/a10.png",
+      "selectedIconPath": "/static/image/a9.png"
     }]
   }
 }

@@ -396,6 +396,7 @@ export default {
   margin-top: 50rpx;
   text-align: center;
   background: linear-gradient(to left, #ff8c00, #fff);
+  background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
   font-weight: bold;
@@ -429,6 +430,7 @@ export default {
   display: inline-block;
   font-size: 80rpx;
   background: linear-gradient(to left, #ff8c00, #fff);
+  background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
 }
@@ -437,6 +439,7 @@ export default {
   display: inline-block;
   font-size: 40rpx;
   background: linear-gradient(to left, #ff8c00, #fff);
+  background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
 }

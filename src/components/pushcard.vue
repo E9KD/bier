@@ -6,7 +6,7 @@
                 <img src="/static/image/x.png" class="closeimg">
             </div>
             <div class="commenthead">
-                <p class="headtitle">想知道您的孩子当前营养情况<br>仅需<i class="headtip">2</i>步</p>
+                <p class="headtitle">想知道您的孩子当前{{title}}情况<br>仅需<i class="headtip">2</i>步</p>
             </div>
             <div class="commenttext">
                 <p class="textconent">第<i class="headtip">1</i>步&nbsp;&nbsp;完成《膳食调查表》答题</p>
@@ -16,8 +16,8 @@
                 </div>
             </div>
             <div class="commentbtn">
-                <div class="btncom btnleft" @click="GoAnswer">重新答题</div>
-                <div class="btncom btnright" @click="GoPastScore">往期评价</div>
+                <div class="btncom btnleft goldbg" :class="isPastShow?t:o" @click="GoAnswer">{{isPastShow?t1:t2}}</div>
+                <div class="btncom btnright goldbg" @click="GoPastScore" v-if="isPastShow">往期评价</div>
             </div>
             <div class="commenttip">（题目均为单选题）</div>
         </div>
@@ -30,10 +30,10 @@
                 <p class="textcom">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;坚持每天打卡，养成营养摄入好习惯，我会为小主统计每周打卡生成报告。请常来看我哦！</p>
             </div>
             <!-- <div class="btncom pushcardbtn">打卡&nbsp;></div>
-                        <div class="btncom pushcardbtn">评价&nbsp;></div> -->
+                                        <div class="btncom pushcardbtn">评价&nbsp;></div> -->
             <div class="commentbtn">
-                <div class="btncom btnleft" @click="GoPunch(index)">打卡 ></div>
-                <div class="btncom btnright" @click="GoEvaluate(index)">评价 ></div>
+                <div class="btncom btnleft goldbg" style="float:left;" @click="GoPunch(index)">打卡 ></div>
+                <div class="btncom btnright goldbg" @click="GoEvaluate(index)">评价 ></div>
             </div>
     
         </div>
@@ -45,17 +45,40 @@
         mapState,
         mapMutations
     } from "vuex";
+    import request from '../utils/api.js'
     export default {
         data() {
             return {
                 isshow: false,
                 s: "show",
                 h: "hide",
-                iscomment: true
+                iscomment: true,
+                isPastShow: true,
+                t: 'two',
+                o: 'one',
+                typeIndex: null,
+                title: `营养`,
+                t1:`重新答题`,
+                t2:`开始答题`,
             };
         },
         methods: {
             ...mapMutations(["closePushcardType"]),
+            init() {
+                let url = `https://wx.biergao.vip/api/Yypfjl/getlist`
+                let data = {
+                    userid: this.userParam.userid,
+                    pid: this.cardType
+                }
+                request.GetWithData(url, data, res => {
+                    let data = res.data
+                    if (data.status == 200) {
+                        this.isPastShow = true
+                    } else {
+                        this.isPastShow = false
+                    }
+                })
+            },
             GoEvaluate() {
                 wx.navigateTo({
                     url: '/pages/pastscore/main?show=1'
@@ -77,18 +100,39 @@
                     url: `/pages/question/main`
                 });
             },
-            GoPastScore(){
+            GoPastScore() {
                 wx.navigateTo({
-                    url: '/pages/pastscore/main?show=0'
+                    url: `/pages/pastscore/main?show=0`
                 })
             }
         },
         computed: {
-            ...mapState(["isPushcardshow", "pushCardtype"])
+            ...mapState(["isPushcardshow", "pushCardtype", 'cardType', 'userParam'])
+        },
+        onLoad() {
+    
         },
         watch: {
             isPushcardshow(x) {
                 this.isshow = x;
+                this.init()
+                switch (this.cardType) {
+                    case 0:
+                        this.title = "营养";
+                        break;
+                    case 1:
+                        this.title = "运动";
+                        break;
+                    case 2:
+                        this.title = "睡眠";
+                        break;
+                    case 3:
+                        this.title = "情绪";
+                        break;
+                    case 4:
+                        this.title = "内分泌";
+                        break;
+                }
             },
             pushCardtype(x) {
                 if (x == 0) {
@@ -96,7 +140,7 @@
                 } else {
                     this.iscomment = false;
                 }
-            }
+            },
         }
     };
 </script>
@@ -105,17 +149,14 @@
     .pushcardbtn {
         margin-top: 30rpx;
         display: inline-block;
-        /* position: absolute;
-              top: 80%;
-              left: 50%;
-              transform: translate(-50%, -50%); */
     }
     
     .textcom {
         font-size: 44rpx;
-        color: #999999;
+        color: #fff;
         line-height: 80rpx;
         padding-top: 20rpx;
+        font-weight: lighter;
     }
     
     .pushcardtext {
@@ -145,20 +186,28 @@
         color: #999999;
         text-align: center;
         width: 100%;
+        margin-top: 30rpx;
     }
     
     .btnright {
         float: right;
     }
     
-    .btnleft {
+    .two {
         float: left;
+    }
+    
+    .one {
+        width: 300rpx!important;
+        position: absolute;
+        top: 60rpx;
+        left: 50%;
+        transform: translate(-50%, 0px);
     }
     
     .btncom {
         text-align: center;
         color: white;
-        background-color: rgb(227, 139, 39);
         height: 80rpx;
         width: 210rpx;
         line-height: 80rpx;
@@ -171,13 +220,15 @@
         overflow: hidden;
         padding-top: 60rpx;
         width: 80%;
+        height: 80rpx;
         margin: 0 auto;
+        position: relative;
     }
     
     .textconent {
         vertical-align: top;
         font-size: 35rpx;
-        color: #999999;
+        color: #ffffff;
         line-height: 50rpx;
         margin-top: 50rpx;
         display: inline-block;
@@ -186,6 +237,8 @@
     .commenttext {
         width: 90%;
         margin: 0 auto;
+        font-weight: lighter;
+        margin-top: 70rpx;
     }
     
     .headtip {
@@ -201,9 +254,11 @@
     
     .headtitle {
         font-size: 40rpx;
-        color: #999999;
+        color: #fff;
         text-align: center;
         line-height: 60rpx;
+        position: absolute;
+        font-weight: lighter;
     }
     
     .commenthead {

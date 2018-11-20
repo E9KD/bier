@@ -114,9 +114,9 @@
     margin: 0 auto;
   }
   .teacherrow {
-    width: 47%;
+    width: 47vw;
     margin-left: 2%;
-    height: 400rpx;
+    height: 47vw;
     display: inline-block;
   }
   .teachercol {

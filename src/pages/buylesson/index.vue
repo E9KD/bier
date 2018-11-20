@@ -1,5 +1,5 @@
 <template>
-  <div  class="buylesson">
+  <div class="buylesson">
     <video id="myVideo" class="video_list" :src="videoSrc" controls page-gesture direction show-fullscreen-btn show-play-btn show-center-play-btn></video>
     <scroll-div :scroll-y='true' @scroll="aaa" class="asd">
       <div class="listbox">
@@ -32,7 +32,7 @@
           </div>
           <!-- 课程目录 -->
           <div class="showlist_lessonindex" v-show="lessonlistshowtype==1">
-            <div class="lessonindex_list" @click="ChangeVideo(item.content)" v-for="(item,index) in lessonNumber " :key="index" >
+            <div class="lessonindex_list" @click="ChangeVideo(item.content)" v-for="(item,index) in lessonNumber " :key="index">
               <p class="list_p">{{item.title}}</p>
             </div>
           </div>
@@ -41,22 +41,22 @@
     </scroll-div>
     <div class="btn" v-if="isVip" @click="PlayVideo">{{i}}</div>
     <div class="btn" v-else @click="GoBuyLesson">{{z}}</div>
-
+  
     <div :class="isBuy?s:h" style='height:100px;border:1rpx solid #333;border-radius:5px;  position: absolute;background:#fff; top: 40%; left: 0; bottom: 0; right: 0;'>
-        <div style='width:100%;height:28px;'>
-          <div style='width:30px;height:30px;line-height:30px;margin:0 auto;float:right;font-size:16px;text-align:center;' @click='CloseTip'>
-            X
-          </div>
+      <div style='width:100%;height:28px;'>
+        <div style='width:30px;height:30px;line-height:30px;margin:0 auto;float:right;font-size:16px;text-align:center;' @click='CloseTip'>
+          X
         </div>
-        <div style='position:absolute;width:100%;height:30px;margin:0 auto;float:right;font-size:10pt;text-align:center;'>
-          进入客服消息后，发送"{{buyid}}"获取查询链接
-        </div>
-        <!-- 底部 -->
-        <div style='width:100%;height:40px;overflow:hidden;position:absolute;bottom:0;box-sizing:border-box;'>
-          <button plain='true' style='margin-bottom:0px;height:40px;line-height:40px;float:right;border:none;color:#00B26A;font-size:10pt;' open-type='contact' :session-from='link' >马上咨询</button>
-        </div>
-
       </div>
+      <div style='position:absolute;width:100%;height:30px;margin:0 auto;float:right;font-size:10pt;text-align:center;'>
+        进入客服消息后，发送"{{buyId}}"获取查询链接
+      </div>
+      <!-- 底部 -->
+      <div style='width:100%;height:40px;overflow:hidden;position:absolute;bottom:0;box-sizing:border-box;'>
+        <button plain='true' style='margin-bottom:0px;height:40px;line-height:40px;float:right;border:none;color:#00B26A;font-size:10pt;' open-type='contact' :session-from='link'>马上咨询</button>
+      </div>
+  
+    </div>
     <Toast></Toast>
   </div>
 </template>
@@ -74,12 +74,12 @@
       return {
         lessonlistshowtype: 0,
         item: "200",
-        isBuy:false,
+        isBuy: false,
         changecardisshow: true,
         a: "active",
         n: "normal",
-        s:'show',
-        h:'hidden',
+        s: 'show',
+        h: 'hidden',
         showList: [],
         showlistcontent: "",
         lessonNumber: 123,
@@ -87,8 +87,9 @@
         isVip: false,
         z: '立刻查询',
         i: '立刻观看',
-        videoContext:null,
-        link:'{"type": "keceng","unionId":"null","userid":"null","goodsid":"null"}',
+        videoContext: null,
+        link: '{"type": "keceng","unionId":"null","userid":"null","goodsid":"null"}',
+        buyId:null,
       };
     },
     components: {
@@ -96,9 +97,8 @@
       Toast
     },
     methods: {
-      ...mapMutations(["changevideo",'toastshowtype','closeToast']),
-      aaa(e) {
-      },
+      ...mapMutations(["changevideo", 'toastshowtype', 'closeToast']),
+      aaa(e) {},
       init() {
         this.toastshowtype(0)
         this.videoContext = wx.createVideoContext('myVideo');
@@ -108,36 +108,42 @@
           scode: 1,
           openid: this.userParam.openId
         };
+        this.buyId=this.lessonListcontent.id
         request.GetWithData(url, data, res => {
           this.lessonNumber = res.data;
           this.videoSrc = res.data[0].content;
           this.ChangeParam()
-        }); 
+        });
         this.showList = this.lessonListcontent;
         this.GetVipState()
-        
+  
         this.closeToast()
       },
       ChangeParam() {
         let data = JSON.parse(this.link)
         data.userid = this.userParam.userid
         data.unionId = this.userParam.unionId
-        data.goodsid=this.lessonNumber[0].cid
+        data.goodsid = this.lessonNumber[0].cid
         this.link = JSON.stringify(data)
         console.log(this.link);
       },
-      CloseTip(){
-        this.isBuy=false
+      CloseTip() {
+        this.isBuy = false
       },
-      PlayVideo(){
+      PlayVideo() {
         this.videoContext.play()
       },
-      GoBuyLesson(){
-        this.isBuy=true
+      GoBuyLesson() {
+        this.isBuy = true
       },
-      ChangeVideo(x){
-        this.videoSrc=x
-        this.videoContext.play()
+      ChangeVideo(x) {
+        if (this.isVip) {
+          this.videoSrc = x
+          this.videoContext.play()
+        } else {
+          this.isBuy = true
+        }
+  
       },
       GetVipState() {
         let url = 'https://wx.biergao.vip/api/vip/show'
@@ -173,21 +179,27 @@
     },
     onLoad() {
       this.init();
+    },
+    onShow(){
+      this.isBuy=false
     }
   };
 </script>
 
 <style scoped>
-.show{
-  display: block;
-  z-index: 9999;
-}
-.hidden {
-  display: none;
-}
-.listhead_showlist{
-  margin-bottom: 100rpx;
-}
+  .show {
+    display: block;
+    z-index: 9999;
+  }
+  
+  .hidden {
+    display: none;
+  }
+  
+  .listhead_showlist {
+    margin-bottom: 100rpx;
+  }
+  
   .btn {
     width: 100%;
     height: 100rpx;
