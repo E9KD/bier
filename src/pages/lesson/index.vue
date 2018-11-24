@@ -213,14 +213,13 @@
   }
   
   .lessonlist {
-    margin-top: 20rpx;
+    margin-top: 10rpx;
   }
   
   .lessonlisthead {
     background-color: white;
     overflow: hidden;
-    padding-top: 60rpx;
-    padding-bottom: 30rpx;
+    padding: 30rpx 0px;
   }
   
   .lessonlisttext {

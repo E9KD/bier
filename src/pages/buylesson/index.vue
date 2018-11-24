@@ -21,19 +21,20 @@
               <div class="showlist_teacherimage" :style="{backgroundImage:'url(' + showList.teacherinfo.faceimg + ')'}"></div>
               <p class="showlist_teachername">{{showList.teacherinfo.name}}</p>
             </div>
-            <wxParse :content="showList.teacherinfo.teacher_text" @preview="preview" @navigate="navigate" />
+            <div v-html="showList.teacherinfo.teacher_text" class="html"> </div>
             <p class="showlist_introduce">适用人群</p>
             <p class="showlist_useinfo">一、不了解长高知识的父母</p>
             <p class="showlist_useinfo">二、想系统学习身高管理的父母</p>
             <p class="showlist_useinfo">三、想让孩子长到理想身高的父母</p>
             <p class="showlist_useinfo">四、0-18岁成长关键期孩子的父母</p>
             <p class="showlist_introduce">课程介绍</p>
-            <wxParse :content="showList.content " @preview="preview" @navigate="navigate" />
+            <div v-html="showList.content" class="html"></div>
           </div>
           <!-- 课程目录 -->
           <div class="showlist_lessonindex" v-show="lessonlistshowtype==1">
             <div class="lessonindex_list" @click="ChangeVideo(item.content)" v-for="(item,index) in lessonNumber " :key="index">
               <p class="list_p">{{item.title}}</p>
+              <img class="list_img" :src="isVip?playIcon:buyIcon" alt="">
             </div>
           </div>
         </div>
@@ -66,12 +67,13 @@
     mapState,
     mapMutations
   } from "vuex";
-  import wxParse from "mpvue-wxparse";
   import request from "../../utils/api.js";
   import Toast from '../../components/toast.vue'
   export default {
     data() {
       return {
+        playIcon: require('../../../static/image/play.png'),
+        buyIcon: require('../../../static/image/buy.png'),
         lessonlistshowtype: 0,
         item: "200",
         isBuy: false,
@@ -89,11 +91,10 @@
         i: '立刻观看',
         videoContext: null,
         link: '{"type": "keceng","unionId":"null","userid":"null","goodsid":"null"}',
-        buyId:null,
+        buyId: null,
       };
     },
     components: {
-      wxParse,
       Toast
     },
     methods: {
@@ -108,7 +109,7 @@
           scode: 1,
           openid: this.userParam.openId
         };
-        this.buyId=this.lessonListcontent.id
+        this.buyId = this.lessonListcontent.id
         request.GetWithData(url, data, res => {
           this.lessonNumber = res.data;
           this.videoSrc = res.data[0].content;
@@ -140,10 +141,9 @@
         if (this.isVip) {
           this.videoSrc = x
           this.videoContext.play()
-        } else {
-          this.isBuy = true
+          return
         }
-  
+        this.isBuy = true
       },
       GetVipState() {
         let url = 'https://wx.biergao.vip/api/vip/show'
@@ -180,13 +180,18 @@
     onLoad() {
       this.init();
     },
-    onShow(){
-      this.isBuy=false
+    onShow() {
+      this.isBuy = false
     }
   };
 </script>
 
 <style scoped>
+  .lessonindex_list {
+    overflow: hidden;
+    border-bottom: 3rpx solid #eee;
+  }
+  
   .show {
     display: block;
     z-index: 9999;
@@ -197,7 +202,7 @@
   }
   
   .listhead_showlist {
-    margin-bottom: 100rpx;
+    margin-bottom: 140rpx;
   }
   
   .btn {
@@ -213,7 +218,6 @@
     text-align: center;
   }
   
-  @import url("~mpvue-wxparse/src/wxParse.css");
   .asd {
     width: 100%;
     height: 400px;
@@ -223,7 +227,10 @@
     background-color: white;
     position: relative;
   }
-  
+  .html{
+    color: #999;
+    font-size: 30rpx;
+  }
   .fixed {
     position: -webkit-fixed;
     top: 0px;
@@ -236,10 +243,19 @@
   
   .list_p {
     padding: 30rpx;
-    border-bottom: 1px solid #999;
-    border-bottom: 3rpx solid #eee;
     font-size: 30rpx;
     color: #999;
+    float: left;
+    vertical-align: middle;
+  }
+  
+  .list_img {
+    width: 45rpx;
+    height: 45rpx;
+    float: right;
+    margin-right: 20rpx;
+    vertical-align: middle;
+    padding: 30rpx;
   }
   
   .showlist_teachername {

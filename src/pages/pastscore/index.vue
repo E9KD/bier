@@ -1,14 +1,15 @@
 <template>
-  <div class="pastscore">
-    <img src="../../../static/image/nutrition.png" class="bgi">
+  <div class="pastscore backgroundImg">
     <div class="pastscore_container">
       <div class="container_box">
-        <div class="box_div goldbg" v-for="(item,index) in scoreList" :key="index" @click="GoResult(index)">
+        <div style="height:1px;"></div>
+        <div class="box_div goldbg" v-for="(item,index) in scoreList" :key="index" @click="GoResult(index,item.total)">
           <img :src="userInfolist.avatarUrl" alt="" class="div_com img">
           <p class="div_p">{{item.createtime}}</p>
           <!-- 0显示分数 1不显示分数 -->
           <p class="div_com score" v-show='isScoreshow==0'>{{item.total}}分</p>
         </div>
+        <div style="height:100rpx;"></div>
       </div>
     </div>
   </div>
@@ -22,9 +23,8 @@ export default {
     return {
       img: require("../../../static/image/man.png"),
       userInfolist: [],
-      score: null,
       scoreList: [],
-      list1: [10, 20, 30, 40, 50, 60, 70, 80],
+      list1: [],
       isScoreshow: false
     };
   },
@@ -32,7 +32,9 @@ export default {
     ...mapMutations([
       "ChangePolarParam",
       "ChangeScoreState",
-      "ChangeEvaluateList"
+      "ChangeEvaluateList",
+      "toastshowtype",
+      "closeToast"
     ]),
     init(x) {
       // 这里进行请求，获取分数，并进行展示。0显示分数 1不显示分数
@@ -40,7 +42,6 @@ export default {
         console.log(`修改了1`);
         let url = `https://wx.biergao.vip/api/Yypfjl/getfuwu2`;
         this.GetHistoryScore(url);
-        this.ChangePolarParam(this.list1);
       } else {
         console.log(`修改了2`);
         let url = `https://wx.biergao.vip/api/Yybg/getyydkpfjl`;
@@ -60,11 +61,21 @@ export default {
         }
       });
     },
-    GoResult(x) {
+    GoResult(x,y) {
       if (this.isScoreshow == 0) {
         this.ChangeScoreState(this.scoreList[x]);
+        let polarList=[]
+        polarList.push(this.scoreList[x].assess1)
+        polarList.push(this.scoreList[x].assess2)
+        polarList.push(this.scoreList[x].assess3)
+        polarList.push(this.scoreList[x].assess4)
+        polarList.push(this.scoreList[x].assess5)
+        polarList.push(this.scoreList[x].assess6)
+        polarList.push(this.scoreList[x].assess7)
+        polarList.push(this.scoreList[x].assess8)
+        this.ChangePolarParam(polarList);
         wx.navigateTo({
-          url: `/pages/resultpage/main`
+          url: `/pages/resultpage/main?score=${y}`
         });
       } else {
         this.ChangeEvaluateList(this.scoreList[x].content);
@@ -81,9 +92,11 @@ export default {
     ...mapState(["userInfo", "userParam", "cardType", "evaluateParam"])
   },
   onLoad(x) {
+    this.toastshowtype(0)
     this.scoreList=[]
     this.isScoreshow = x.show;
     this.init(x.show);
+    this.closeToast()
   }
 };
 </script>
@@ -91,8 +104,6 @@ export default {
 <style scoped>
 .pastscore_container {
   width: 100vw;
-  height: 100vh;
-  margin-top: 100rpx;
 }
 
 .div_p {
@@ -109,7 +120,8 @@ export default {
   position: relative;
   overflow: hidden;
   width: 80%;
-  margin: 60rpx auto;
+  margin: 0px auto;
+  margin-top: 100rpx;
   border-radius: 150rpx;
 }
 

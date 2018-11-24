@@ -24,7 +24,7 @@
             <p class="listbtntext">VIP免费</p>
           </div>
           <div class="listtext">
-            <wxParse :content="teacherinfo.content" />
+            <div v-html="teacherinfo.content"></div>
           </div>
         </div>
       </div>
@@ -38,9 +38,9 @@
           <i></i>
         </div>
         <div class="buychoose">
-          <div class="choosecom chooseleft" :class="[priceischoose==0?a:n]" @click="changeprice(0)">￥399元/</div>
+          <div class="choosecom chooseleft" :class="[priceischoose==0?a:n]" @click="changeprice(0)">￥399元/月</div>
           <!-- <div class="choosemin"></div> -->
-          <div class="choosecom chooseright" :class="[priceischoose==1?a:n]" @click="changeprice(1)">￥999元/</div>
+          <div class="choosecom chooseright" :class="[priceischoose==1?a:n]" @click="changeprice(1)">￥999元/季</div>
         </div>
         <div class="buyfoot">
           <div class="foottip"></div>
@@ -63,7 +63,6 @@
     mapState,
     mapMutations
   } from "vuex";
-  import wxParse from "mpvue-wxparse";
   export default {
     data() {
       return {
@@ -85,7 +84,6 @@
       };
     },
     components: {
-      wxParse,
       Toast
     },
     methods: {
@@ -365,6 +363,7 @@
   .listtext {
     background-color: white;
     width: 100%;
+    font-size: 30rpx;
   }
   
   .listhead {
@@ -378,7 +377,6 @@
     background-color: white;
   }
   
-  @import url("~mpvue-wxparse/src/wxParse.css");
 </style>
 
 

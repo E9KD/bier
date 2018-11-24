@@ -1,6 +1,5 @@
 <template>
   <div class="resultpage backgroundImg" id="resultpage">
-    <!-- <img src="" alt="" class="bgi" :style="{height:pageHeight+'px'}"> -->
     <div class="result_container">
       <div class="container_top">
         <div class="top_title">小主，您此次膳食调查表的得分是：</div>
@@ -16,29 +15,147 @@
       </div>
       <div class="contianer_middle ">
         <p class="middle_content">合理营养、平衡膳食评价与对策</p>
-        <div class="echarts-wrap">
-          <mpvue-echarts :echarts="echarts" :onInit="HandleInit" ref="echarts" />
-        </div>
+        <!-- <div class="echarts-wrap">
+                    <mpvue-echarts :echarts="echarts" :onInit="onInit" ref="echarts" />
+                  </div> -->
+        <canvas canvas-id="radarCanvas" class="canvas" bindtouchstart="touchHandler"></canvas>
       </div>
+  
       <div class="container_bottom">
-        <div class="bottom_box" v-for="(item,index) in scoreList" :key="index">
+  
+        <div class="bottom_box" v-for="(item,index) in list0" :key="index">
           <div class="box_container">
             <div class="box_top">
-              <img class="bottom_img" :src="item.img" alt="">
-              <p class="bottom_p">{{item.listScroe}}</p>
-              <p class="bottom_title">{{item.listContent}}</p>
+              <img class="bottom_img" :src="imgList[0].img" alt="">
+              <p class="bottom_p">{{item.type}}</p>
+              <p class="bottom_title">{{item.title}}</p>
             </div>
             <div class="box_bottom">
-              <!-- <p class="box_bottom_bottom" :style="{height:listHeight+'rpx'}">{{content}}</p> -->
               <div class="box_bottom_bottom" :style="{height:item.heightList+'rpx'}">
-                <wxParse :content="item.parsecontent" id="a" />
-                <!-- <div class="a">{{asd}}</div> -->
+                <div class="html" v-html="item.content"></div>
               </div>
-              <img :src="item.listisshow?showimg:hideimg" alt="" class="arrow" @click="ChangeArrowState(index)">
+              <img :src="item.heightList?showimg:hideimg" alt="" class="arrow" @click="ChangeArrowState(index,list0)">
             </div>
           </div>
         </div>
+  
+        <div class="bottom_box" v-for="(item,index) in list1" :key="index">
+          <div class="box_container">
+            <div class="box_top">
+              <img class="bottom_img" :src="imgList[1].img" alt="">
+              <p class="bottom_p">{{item.type}}</p>
+              <p class="bottom_title">{{item.title}}</p>
+            </div>
+            <div class="box_bottom">
+              <div class="box_bottom_bottom" :style="{height:item.heightList+'rpx'}">
+                <div class="html" v-html="item.content"></div>
+              </div>
+              <img :src="item.heightList?showimg:hideimg" alt="" class="arrow" @click="ChangeArrowState(index,list1)">
+            </div>
+          </div>
+        </div>
+  
+  
+        <div class="bottom_box" v-for="(item,index) in list2" :key="index">
+          <div class="box_container">
+            <div class="box_top">
+              <img class="bottom_img" :src="imgList[2].img" alt="">
+              <p class="bottom_p">{{item.type}}</p>
+              <p class="bottom_title">{{item.title}}</p>
+            </div>
+            <div class="box_bottom">
+              <div class="box_bottom_bottom" :style="{height:item.heightList+'rpx'}">
+                <div  v-html="item.content" class="html"></div>
+              </div>
+              <img :src="item.heightList?showimg:hideimg" alt="" class="arrow" @click="ChangeArrowState(index,list2)">
+            </div>
+          </div>
+        </div>
+  
+  <div class="bottom_box" v-for="(item,index) in list3" :key="index">
+          <div class="box_container">
+            <div class="box_top">
+              <img class="bottom_img" :src="imgList[3].img" alt="">
+              <p class="bottom_p">{{item.type}}</p>
+              <p class="bottom_title">{{item.title}}</p>
+            </div>
+            <div class="box_bottom">
+              <div class="box_bottom_bottom" :style="{height:item.heightList+'rpx'}">
+                <div  v-html="item.content" class="html"></div>
+              </div>
+              <img :src="item.heightList?showimg:hideimg" alt="" class="arrow" @click="ChangeArrowState(index,list3)">
+            </div>
+          </div>
+        </div>
+
+        <div class="bottom_box" v-for="(item,index) in list4" :key="index">
+          <div class="box_container">
+            <div class="box_top">
+              <img class="bottom_img" :src="imgList[4].img" alt="">
+              <p class="bottom_p">{{item.type}}</p>
+              <p class="bottom_title">{{item.title}}</p>
+            </div>
+            <div class="box_bottom">
+              <div class="box_bottom_bottom" :style="{height:item.heightList+'rpx'}">
+                <div  v-html="item.content" class="html"></div>
+              </div>
+              <img :src="item.heightList?showimg:hideimg" alt="" class="arrow" @click="ChangeArrowState(index,list4)">
+            </div>
+          </div>
+        </div>
+
+        <div class="bottom_box" v-for="(item,index) in list5" :key="index">
+          <div class="box_container">
+            <div class="box_top">
+              <img class="bottom_img" :src="imgList[5].img" alt="">
+              <p class="bottom_p">{{item.type}}</p>
+              <p class="bottom_title">{{item.title}}</p>
+            </div>
+            <div class="box_bottom">
+              <div class="box_bottom_bottom" :style="{height:item.heightList+'rpx'}">
+                <div  v-html="item.content" class="html"></div>
+              </div>
+              <img :src="item.heightList?showimg:hideimg" alt="" class="arrow" @click="ChangeArrowState(index,list5)">
+            </div>
+          </div>
+        </div>
+
+        <div class="bottom_box" v-for="(item,index) in list6" :key="index">
+          <div class="box_container">
+            <div class="box_top">
+              <img class="bottom_img" :src="imgList[6].img" alt="">
+              <p class="bottom_p">{{item.type}}</p>
+              <p class="bottom_title">{{item.title}}</p>
+            </div>
+            <div class="box_bottom">
+              <div class="box_bottom_bottom" :style="{height:item.heightList+'rpx'}">
+                <div  v-html="item.content" class="html"></div>
+              </div>
+              <img :src="item.heightList?showimg:hideimg" alt="" class="arrow" @click="ChangeArrowState(index,list6)">
+            </div>
+          </div>
+        </div>
+
+        <div class="bottom_box" v-for="(item,index) in list7" :key="index">
+          <div class="box_container">
+            <div class="box_top">
+              <img class="bottom_img" :src="imgList[7].img" alt="">
+              <p class="bottom_p">{{item.type}}</p>
+              <p class="bottom_title">{{item.title}}</p>
+            </div>
+            <div class="box_bottom">
+              <div class="box_bottom_bottom" :style="{height:item.heightList+'rpx'}">
+                <div  v-html="item.content" class="html"></div>
+              </div>
+              <img :src="item.heightList?showimg:hideimg" alt="" class="arrow" @click="ChangeArrowState(index,list7)">
+            </div>
+          </div>
+        </div>
+
+
+  
       </div>
+  
     </div>
   </div>
 </template>
@@ -46,31 +163,28 @@
 <script>
 import Polar from "../../components/polar";
 import { mapMutations, mapState } from "vuex";
-import echarts from "echarts";
-import mpvueEcharts from "mpvue-echarts";
 import request from "../../utils/api.js";
-import wxParse from "mpvue-wxparse";
-let chart = null;
+import wxCharts from "../../utils/wxcharts.js";
+
 export default {
   data() {
     return {
       /**
-           * @msg: 
-           * listContent: "",//标题
-              parsecontent: "",//正文
-              listScroe: ""//分数等级
-           * @param {type} 
-           * @return: 
-           */
+               * @msg: 
+               * listContent: "",//标题
+                  parsecontent: "",//正文
+                  listScroe: ""//分数等级
+               * @param {type} 
+               * @return: 
+               */
+      // onInit: initChart,
       scoreList: [],
       asd: null,
-      listisshow: true,
+      heightList: true,
       showimg: require("../../../static/image/bottomarrow.png"),
       hideimg: require("../../../static/image/toparrow.png"),
-      score: 100,
+      score: null,
       topContent: "小主，您此次膳食调查表的得分是：",
-      echarts,
-      option: null,
       list: [],
       pageHeight: null,
       listHeight: 150,
@@ -85,34 +199,85 @@ export default {
         },
         {
           img: require("../../../static/image/egg.png")
-        }
-        ,
+        },
         {
           img: require("../../../static/image/zhifang.png")
-        }
-        ,
+        },
         {
           img: require("../../../static/image/vita.png")
-        }
-        ,
+        },
         {
           img: require("../../../static/image/gai.png")
-        }
-        ,
+        },
         {
           img: require("../../../static/image/tie.png")
-        }
-        ,
+        },
         {
           img: require("../../../static/image/xin.png")
+        }
+      ],
+      list0: [
+        {
+          title: null,
+          type: null,
+          content: null,
+          heightList:50
+        }
+      ],
+      list1: [
+        {
+          title: null,
+          type: null,
+          content: null,heightList:50
+
+        }
+      ],
+      list2: [
+        {
+          title: null,
+          type: null,
+          content: null,heightList:50
+        }
+      ],
+      list3: [
+        {
+          title: null,
+          type: null,
+          content: null,heightList:50
+        }
+      ],
+      list4: [
+        {
+          title: null,
+          type: null,
+          content: null,heightList:50
+        }
+      ],
+      list5: [
+        {
+          title: null,
+          type: null,
+          content: null,heightList:50
+        }
+      ],
+      list6: [
+        {
+          title: null,
+          type: null,
+          content: null,heightList:50
+        }
+      ],
+      list7: [
+        {
+          title: null,
+          type: null,
+          content: null,heightList:50
         }
       ]
     };
   },
   components: {
-    Polar,
-    mpvueEcharts,
-    wxParse
+    Polar
   },
   methods: {
     ...mapMutations(["ChangePolarParam"]),
@@ -120,26 +285,12 @@ export default {
       this.globalScore = this.scoreState;
       let url = "https://wx.biergao.vip/api/survey/getassess";
       request.api(url, res => {
-        //第一题计算等级
-        this.ComputeScore(this.globalScore.assess1, 6, 0, res, 0);
-        //第二题计算等级
-        this.ComputeScore(this.globalScore.assess2, 70, 15, res, 1);
-        //第三题计算等级
-        this.ComputeScore(this.globalScore.assess3, 28, 7, res, 2);
-        //第四题计算等级
-        this.ComputeScore(this.globalScore.assess4, 13, 3, res, 3);
-        //第五题计算等级
-        this.ComputeScore(this.globalScore.assess5, 38, 11, res, 4);
-        //第六题计算等级
-        this.ComputeScore(this.globalScore.assess6, 17, 6, res, 5);
-        //第七题计算等级
-        this.ComputeScore(this.globalScore.assess7, 8, 3, res, 6);
-        //第八题计算等级··
-        this.ComputeScore(this.globalScore.assess8, 10, 4, res, 7);
+        this.scoreList = [];
+        this.ComputeScore(res);
       });
     },
-
-    ComputeScore(q, w, e, res, index) {
+    touchHandler() {},
+    ComputeScore(res) {
       /**
        * @msg: q 得分 w 高分档 r 低分档
        * @param {type}
@@ -147,140 +298,196 @@ export default {
        */
       // 计算各项分数
       let lowList = {};
-      if (q >= w) {
-        lowList.listContent = res.data[index].assess_a;
-        lowList.parsecontent = res.data[index].pingfenzhibiao.assess_a.replace(
-          /16/g,
-          "12"
-        );
-        lowList.listScroe = res.data[index].type1;
-        lowList.img = this.imgList[index].img;
-        lowList.heightList = this.listHeight;
-        lowList.listisshow=true
-        this.scoreList.push(lowList);
-      } else if (q <= e) {
-        lowList.listContent = res.data[index].assess_c;
-        lowList.parsecontent = res.data[index].pingfenzhibiao.assess_c.replace(
-          /16/g,
-          "12"
-        );
-        lowList.listScroe = res.data[index].type3;
-        lowList.img = this.imgList[index].img;
-        lowList.heightList = this.listHeight;
-        lowList.listisshow=true
-        this.scoreList.push(lowList);
-      } else {
-        lowList.listContent = res.data[index].assess_b;
-        lowList.parsecontent = res.data[index].pingfenzhibiao.assess_b.replace(
-          /16/g,
-          "12"
-        );
-        lowList.listScroe = res.data[index].type2;
-        lowList.img = this.imgList[index].img;
-        lowList.heightList = this.listHeight;
-        lowList.listisshow=true
-        this.scoreList.push(lowList);
-      }
-    },
-    ChangeArrowState(index) {
-      if (this.scoreList[index].listisshow) {
-        this.scoreList[index].heightList = null;
-        this.scoreList[index].listisshow=false
-      } else {
-        this.scoreList[index].heightList = 150;
-        this.scoreList[index].listisshow=true
-      }
-      
-    },
-    InitChart() {
-      this.option = {
-        color: ["white"],
-        textStyle: {
-          color: "#fff"
-        },
-        tooltip: {
-          trigger: "axis"
-        },
 
-        polar: [
-          {
-            splitArea: {
-              show: true,
-              areaStyle: {
-                color: ["rgba(0,0,0,0)"]
-                // 图表背景网格的颜色
-              }
-            },
-            splitLine: {
-              show: true,
-              lineStyle: {
-                width: 1,
-                color: ["white"]
-                // 图表背景网格线的颜色
-              }
-            },
-            indicator: [
-              {
-                text: "食物种类",
-                max: 100
-              },
-              {
-                text: "锌",
-                max: 100
-              },
-              {
-                text: "铁",
-                max: 100
-              },
-              {
-                text: "钙",
-                max: 100
-              },
-              {
-                text: "维生素A、D",
-                max: 100
-              },
-              {
-                text: "脂肪酸",
-                max: 100
-              },
-              {
-                text: "蛋白",
-                max: 100
-              },
-              {
-                text: "膳食结构",
-                max: 100
-              }
-            ]
-          }
-        ],
-        calculable: true,
-        series: [
-          {
-            name: "营养参数",
-            type: "radar",
-            data: [
-              {
-                value: this.list,
-                name: "营养参数"
-              }
-            ]
-          }
-        ]
-      };
+      if (this.globalScore.assess1 >= 6) {
+        (this.list0[0].title = res.data[1 - 1].assess_a),
+          (this.list0[0].type = res.data[1 - 1].type1),
+          (this.list0[0].content = res.data[
+            1 - 1
+          ].pingfenzhibiao.assess_a.replace(/16/g, "12").replace(/pt/g, "px"));
+      } else if (this.globalScore.assess1 < 6 && this.globalScore.assess1 > 0) {
+        (this.list0[0].title = res.data[1 - 1].assess_b),
+          (this.list0[0].type = res.data[1 - 1].type2),
+          (this.list0[0].content = res.data[
+            1 - 1
+          ].pingfenzhibiao.assess_b.replace(/16/g, "12").replace(/pt/g, "px"));
+      } else {
+        (this.list0[0].title = res.data[1 - 1].assess_c),
+          (this.list0[0].type = res.data[1 - 1].type3),
+          (this.list0[0].content = res.data[
+            1 - 1
+          ].pingfenzhibiao.assess_c.replace(/16/g, "12").replace(/pt/g, "px"));
+      }
 
-      this.$refs.echarts.init();
+      if (this.globalScore.assess2 >= 70) {
+        (this.list1[0].title = res.data[2 - 1].assess_a),
+          (this.list1[0].type = res.data[2 - 1].type1),
+          (this.list1[0].content = res.data[
+            2 - 1
+          ].pingfenzhibiao.assess_a.replace(/16/g, "12").replace(/pt/g, "px"));
+      } else if (
+        this.globalScore.assess2 > 15 &&
+        this.globalScore.assess2 < 70
+      ) {
+        (this.list1[0].title = res.data[2 - 1].assess_b),
+          (this.list1[0].type = res.data[2 - 1].type2),
+          (this.list1[0].content = res.data[
+            2 - 1
+          ].pingfenzhibiao.assess_b.replace(/16/g, "12").replace(/pt/g, "px"));
+      } else {
+        (this.list1[0].title = res.data[2 - 1].assess_c),
+          (this.list1[0].type = res.data[2 - 1].type3),
+          (this.list1[0].content = res.data[
+            2 - 1
+          ].pingfenzhibiao.assess_c.replace(/16/g, "12").replace(/pt/g, "px"));
+      }
+
+      if (this.globalScore.assess3 >= 28) {
+        (this.list2[0].title = res.data[3 - 1].assess_a),
+          (this.list2[0].type = res.data[3 - 1].type1),
+          (this.list2[0].content = res.data[
+            3 - 1
+          ].pingfenzhibiao.assess_a.replace(/16/g, "12").replace(/pt/g, "px"));
+      } else if (
+        this.globalScore.assess3 < 28 &&
+        this.globalScore.assess3 > 7
+      ) {
+        (this.list2[0].title = res.data[3 - 1].assess_b),
+          (this.list2[0].type = res.data[3 - 1].type2),
+          (this.list2[0].content = res.data[
+            3 - 1
+          ].pingfenzhibiao.assess_b.replace(/16/g, "12").replace(/pt/g, "px"));
+      } else {
+        (this.list2[0].title = res.data[3 - 1].assess_c),
+          (this.list2[0].type = res.data[3 - 1].type3),
+          (this.list2[0].content = res.data[
+            3 - 1
+          ].pingfenzhibiao.assess_c.replace(/16/g, "12").replace(/pt/g, "px"));
+      }
+
+      if (this.globalScore.assess4 >= 13) {
+        (this.list3[0].title = res.data[3 - 1].assess_a),
+          (this.list3[0].type = res.data[3 - 1].type1),
+          (this.list3[0].content = res.data[
+            3 - 1
+          ].pingfenzhibiao.assess_a.replace(/16/g, "12").replace(/pt/g, "px"));
+      } else if (
+        this.globalScore.assess4 < 13 &&
+        this.globalScore.assess4 > 3
+      ) {
+        (this.list3[0].title = res.data[3 - 1].assess_b),
+          (this.list3[0].type = res.data[3 - 1].type2),
+          (this.list3[0].content = res.data[
+            3 - 1
+          ].pingfenzhibiao.assess_b.replace(/16/g, "12").replace(/pt/g, "px"));
+      } else {
+        (this.list3[0].title = res.data[3 - 1].assess_c),
+          (this.list3[0].type = res.data[3 - 1].type3),
+          (this.list3[0].content = res.data[
+            3 - 1
+          ].pingfenzhibiao.assess_c.replace(/16/g, "12").replace(/pt/g, "px"));
+      }
+
+      if (this.globalScore.assess5 >= 38) {
+        (this.list4[0].title = res.data[5 - 1].assess_a),
+          (this.list4[0].type = res.data[5 - 1].type1),
+          (this.list4[0].content = res.data[
+            5 - 1
+          ].pingfenzhibiao.assess_a.replace(/16/g, "12").replace(/pt/g, "px"));
+      } else if (
+        this.globalScore.assess5 < 38 &&
+        this.globalScore.assess5 > 11
+      ) {
+        (this.list4[0].title = res.data[5 - 1].assess_b),
+          (this.list4[0].type = res.data[5 - 1].type2),
+          (this.list4[0].content = res.data[
+            5 - 1
+          ].pingfenzhibiao.assess_b.replace(/16/g, "12").replace(/pt/g, "px"));
+      } else {
+        (this.list4[0].title = res.data[5 - 1].assess_c),
+          (this.list4[0].type = res.data[5 - 1].type3),
+          (this.list4[0].content = res.data[
+            5 - 1
+          ].pingfenzhibiao.assess_c.replace(/16/g, "12").replace(/pt/g, "px"));
+      }
+
+      if (this.globalScore.assess6 >= 17) {
+        (this.list5[0].title = res.data[6 - 1].assess_a),
+          (this.list5[0].type = res.data[6 - 1].type1),
+          (this.list5[0].content = res.data[
+            6 - 1
+          ].pingfenzhibiao.assess_a.replace(/16/g, "12").replace(/pt/g, "px"));
+      } else if (
+        this.globalScore.assess6 < 17 &&
+        this.globalScore.assess6 > 6
+      ) {
+        (this.list5[0].title = res.data[6 - 1].assess_b),
+          (this.list5[0].type = res.data[6 - 1].type2),
+          (this.list5[0].content = res.data[
+            6 - 1
+          ].pingfenzhibiao.assess_b.replace(/16/g, "12").replace(/pt/g, "px"));
+      } else {
+        (this.list5[0].title = res.data[6 - 1].assess_c),
+          (this.list5[0].type = res.data[6 - 1].type3),
+          (this.list5[0].content = res.data[
+            6 - 1
+          ].pingfenzhibiao.assess_c.replace(/16/g, "12").replace(/pt/g, "px"));
+      }
+
+      if (this.globalScore.assess7 >= 8) {
+        (this.list6[0].title = res.data[7 - 1].assess_a),
+          (this.list6[0].type = res.data[7 - 1].type1),
+          (this.list6[0].content = res.data[
+            7 - 1
+          ].pingfenzhibiao.assess_a.replace(/16/g, "12").replace(/pt/g, "px"));
+      } else if (this.globalScore.assess7 < 8 && this.globalScore.assess7 > 3) {
+        (this.list6[0].title = res.data[7 - 1].assess_b),
+          (this.list6[0].type = res.data[7 - 1].type2),
+          (this.list6[0].content = res.data[
+            7 - 1
+          ].pingfenzhibiao.assess_b.replace(/16/g, "12").replace(/pt/g, "px"));
+      } else {
+        (this.list6[0].title = res.data[7 - 1].assess_c),
+          (this.list6[0].type = res.data[7 - 1].type3),
+          (this.list6[0].content = res.data[
+            7 - 1
+          ].pingfenzhibiao.assess_c.replace(/16/g, "12").replace(/pt/g, "px"));
+      }
+
+      if (this.globalScore.assess8 >= 10) {
+        (this.list7[0].title = res.data[8 - 1].assess_a),
+          (this.list7[0].type = res.data[8 - 1].type1),
+          (this.list7[0].content = res.data[
+            8 - 1
+          ].pingfenzhibiao.assess_a.replace(/16/g, '12').replace(/pt/g, "px"));
+      } else if (
+        this.globalScore.assess8 < 10 &&
+        this.globalScore.assess8 > 4
+      ) {
+        (this.list7[0].title = res.data[8 - 1].assess_b),
+          (this.list7[0].type = res.data[8 - 1].type2),
+          (this.list7[0].content = res.data[
+            8 - 1
+          ].pingfenzhibiao.assess_b.replace(/16/g, '12').replace(/pt/g, "px"));
+      } else {
+        (this.list7[0].title = res.data[8 - 1].assess_c),
+          (this.list7[0].type = res.data[8 - 1].type3),
+          (this.list7[0].content = res.data[
+            8 - 1
+          ].pingfenzhibiao.assess_c.replace(/16/g, '12').replace(/pt/g, "px"));
+      }
+      console.log(`执行了列表`);
     },
-    // 已经会使用了鸭
-    HandleInit(canvas, width, height) {
-      chart = echarts.init(canvas, null, {
-        width: width,
-        height: height
-      });
-      canvas.setChart(chart);
-      chart.setOption(this.option);
-      return chart;
+    ChangeArrowState(index,item) {
+      console.log(`点击了箭头`);
+      console.log(item);
+      if (item[0].heightList) {
+        console.log(`xiao`);
+        item[0].heightList = null;
+      } else {
+        console.log(`da`);
+        item[0].heightList = 50;
+      }
     },
     ChangePageHight() {
       //创建节点选择器
@@ -290,23 +497,77 @@ export default {
       query.exec(res => {
         this.pageHeight = res[0].bottom;
       });
+    },
+    ComputePolarParam(x) {
+      let scoreLL = [];
+      this.list = [];
+      scoreLL[0] = (x[0] / 6 * 100).toFixed(0);
+      scoreLL[1] = (x[1] / 78 * 100).toFixed(0);
+      scoreLL[2] = (x[2] / 33 * 100).toFixed(0);
+      scoreLL[3] = (x[3] / 15 * 100).toFixed(0);
+      scoreLL[4] = (x[4] / 44 * 100).toFixed(0);
+      scoreLL[5] = (x[5] / 20 * 100).toFixed(0);
+      scoreLL[6] = (x[6] / 10 * 100).toFixed(0);
+      scoreLL[7] = (x[7] / 12 * 100).toFixed(0);
+      for (let i = 0; i < 8; i++) {
+        this.list.push(scoreLL[i]);
+      }
+      console.log(this.list);
+    },
+    qwe() {
+      let res = wx.getSystemInfoSync();
+      let windowWidth = res.windowWidth;
+      console.log(windowWidth);
+      let radarChart = new wxCharts({
+        canvasId: "radarCanvas",
+        type: "radar",
+        categories: [
+          "食物种类",
+          "膳食结构",
+          "蛋白",
+          "脂肪酸",
+          "维生素A、D",
+          "钙",
+          "铁",
+          "锌"
+        ],
+        series: [
+          {
+            name: "",
+            color: "#FF8C00",
+            data: this.list
+          }
+        ],
+        width: windowWidth,
+        height: 200,
+        extra: {
+          radar: {
+            max: 100,
+            labelColor: "#ffffff"
+          }
+        }
+      });
     }
   },
+
   computed: {
     ...mapState(["polarParam", "scoreState"])
   },
-  mounted() {
-    this.list = this.polarParam;
-    this.InitChart();
+  onLoad(x) {
+    this.score = x.score;
     this.ChangePageHight();
     this.init();
+    console.log(`onload`);
+  },
+  onReady() {
+    console.log(`ready`);
+    this.ComputePolarParam(this.polarParam);
+    this.qwe();
   }
 };
 </script>
 
 <style scoped>
-@import url("~mpvue-wxparse/src/wxParse.css");
-
 .box_bottom {
   margin-top: 20rpx;
   padding-bottom: 100rpx;
@@ -326,11 +587,6 @@ export default {
   font-size: 20rpx;
   color: white;
   overflow: hidden;
-}
-
-#a {
-  color: red;
-  font-size: 15px;
 }
 
 .bottom_box {
@@ -393,7 +649,7 @@ export default {
 }
 
 .top_title {
-  margin-top: 50rpx;
+  padding-top: 50rpx;
   text-align: center;
   background: linear-gradient(to left, #ff8c00, #fff);
   background-clip: text;
@@ -454,5 +710,12 @@ export default {
   width: 100%;
   height: 300px;
   margin-bottom: 30rpx;
+}
+
+.canvas {
+  margin-top: 3vh;
+  height: 200px;
+  width: 100vw;
+  margin-bottom: 5vh;
 }
 </style>

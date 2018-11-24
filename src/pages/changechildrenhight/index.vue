@@ -172,7 +172,7 @@
   
   .box_botton {
     position: relative;
-    margin-top: 40rpx;
+    margin-top: 100rpx;
     height: 100rpx;
   }
   
@@ -183,10 +183,9 @@
     transform: translate(-50%, -50%);
     font-size: 40rpx;
     color: white;
-    
-    width: 150rpx;
-    height: 150rpx;
-    line-height: 150rpx;
+    width: 130rpx;
+    height: 130rpx;
+    line-height: 130rpx;
     background-color: rgb(227, 139, 39);
     border-radius: 100%;
     text-align: center;

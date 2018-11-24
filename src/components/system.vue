@@ -29,30 +29,44 @@
                 <div class="systemtypetext">
                     <img src="/static/image/icon16.png" alt="" srcset="" class="systeminco">
                 </div>
+                <div class="systemtypedot dot0"></div>
+                <div class="systemtypetitle title0">营养</div>
             </div>
+
             <!-- 0 营养 1 运动 2 睡眠 3情绪 4 内分泌 -->
-            <div class="systemtype systemtype2" @click="GetCurCard(1)">
-                <div class="systemtypetext">
-                    <img src="/static/image/icon17.png" alt="" srcset="" class="systeminco">
-                </div>
-                <div class="systemtypedot"></div>
-                <div class="systemtypetitle">运动</div>
-            </div>
-            <div class="systemtype systemtype3" @click="GetCurCard(2)">
+            <!-- // 0 营养 1 情绪 2 没有 3运动 4 睡眠 -->
+            <div class="systemtype systemtype2" @click="GetCurCard(4)">
                 <div class="systemtypetext">
                     <img src="/static/image/icon18.png" alt="" srcset="" class="systeminco">
                 </div>
+                <div class="systemtypedot dot1"></div>
+                <div class="systemtypetitle title1">睡眠</div>
             </div>
-            <div class="systemtype systemtype4" @click="GetCurCard(3)">
+
+            <div class="systemtype systemtype3" @click="GetCurCard(1)">
                 <div class="systemtypetext">
                     <img src="/static/image/icon19.png" alt="" srcset="" class="systeminco">
                 </div>
+                <div class="systemtypedot dot2"></div>
+                <div class="systemtypetitle title2">情绪</div>
             </div>
-            <div class="systemtype systemtype5" @click="GetCurCard(4)">
+
+            <div class="systemtype systemtype4" @click="GetCurCard(3)">
+                <div class="systemtypetext">
+                    <img src="/static/image/icon17.png" alt="" srcset="" class="systeminco">
+                </div>
+                <div class="systemtypedot dot3"></div>
+                <div class="systemtypetitle title3">运动</div>
+            </div>
+
+            <div class="systemtype systemtype5" @click="GetCurCard(2)">
                 <div class="systemtypetext">
                     <img src="/static/image/icon20.png" alt="" srcset="" class="systeminco">
                 </div>
+                <div class="systemtypedot dot4"></div>
+                <div class="systemtypetitle title4">内分泌</div>
             </div>
+            
         </div>
     </div>
 </template>
@@ -75,9 +89,10 @@
             ...mapMutations(['openPushcardType', 'ChangePolarParam']),
             GetCurCard(x) {
                 // 0 营养 1 运动 2 睡眠 3情绪 4 内分泌
-                if (x == 4) {
+                // 0 营养 1 情绪 2 内分泌没有 3运动 4 睡眠
+                if (x == 2) {
                     this.isBoxShow = !this.isBoxShow
-                    this.iscurcard=false
+                    this.iscurcard = false
                     return
                 }
                 this.iscurcard = !this.iscurcard
@@ -308,8 +323,6 @@
     
     .systemtypedot {
         position: absolute;
-        top: -41%;
-        right: 10%;
         display: inline-block;
         width: 10rpx;
         height: 10rpx;
@@ -319,10 +332,58 @@
     
     .systemtypetitle {
         position: absolute;
-        top: -51%;
-        right: -35%;
         font-size: 20rpx;
         display: inline-block;
         font-size: 25rpx;
+    }
+    
+    .dot0 {
+        top: 54%;
+        right: -49%;
+    }
+    
+    .title0 {
+        top: 45%;
+        right: -95%;
+    }
+    
+    .dot1 {
+        top: -41%;
+        right: 10%;
+    }
+    
+    .title1 {
+        top: -51%;
+        right: -35%;
+    }
+    
+    .dot2 {
+        bottom: -37%;
+        left: 43%;
+    }
+    
+    .title2 {
+        bottom: -46%;
+        left: -2%;
+    }
+    
+    .dot3 {
+        top: -41%;
+        left: -28%;
+    }
+    
+    .title3 {
+        top: -52%;
+        left: -17%;
+    }
+    
+    .dot4 {
+        bottom: 13%;
+        left: -24%;
+    }
+    
+    .title4 {
+        bottom: 5%;
+        left: -94%;
     }
 </style>

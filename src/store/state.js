@@ -42,5 +42,7 @@ export default {
   // buytoast的状态
   buytoastState:null,
   // buytoast的显示
-  buytoastShow:false
+  buytoastShow:false,
+  //全局绑定手机号
+  phoneNumber:``
 }

@@ -23,7 +23,6 @@ export default {
   },
   // 关闭toast，需要关闭toast就调用这个是mutations
   closeToast(state) {
-    console.log(`zhixingle`);
     state.toastshow = false
   },
   // 获得全部的课程列表信息
@@ -81,5 +80,9 @@ export default {
   // 关闭buytoast
   CloseBuyToast(state,x){
     state.buytoastShow=false
+  },
+  // 修改手机号
+  ChangePhoneNumber(state,x){
+    state.phoneNumber=x
   }
 }

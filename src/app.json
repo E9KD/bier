@@ -23,7 +23,12 @@
     "pages/question/main",
     "pages/evaluate/main",
     "pages/exchange/main",
-    "pages/changechildrenhight/main"
+    "pages/changechildrenhight/main",
+    "pages/userinfo/main",
+    "pages/changenumber/main",
+    "pages/resultpage2/main",
+    "pages/space/main",
+    "pages/writemsg/main"
     
   ],
   "window": {
@@ -52,7 +57,13 @@
       "text": "课程",
       "iconPath": "/static/image/a6.png",
       "selectedIconPath": "/static/image/a5.png"
-    }, {
+    }, 
+    {
+      "pagePath": "pages/space/main",
+      "text": "圈子",
+      "iconPath": "/static/image/a8.png",
+      "selectedIconPath": "/static/image/a7.png"
+    },{
       "pagePath": "pages/person/main",
       "text": "我的",
       "iconPath": "/static/image/a10.png",

@@ -10,6 +10,7 @@
       getuserinfo(x) {
         let that = this
         wx.getUserInfo({
+          lang:"zh_CN",
           success: function(res) {
             // 授权成功
             console.log(`授权成功`);
@@ -60,6 +61,7 @@
     },
     onLaunch() {
       this.getuserinfo()
+      
     }
   }
 </script>
@@ -157,4 +159,8 @@
     height: 300rpx;
     border-radius: 300rpx;
   }
+  .html {
+  color: #999;
+  font-size: 30rpx;
+}
 </style>

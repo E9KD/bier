@@ -9,10 +9,10 @@
                 <p class="headtitle">想知道您的孩子当前{{title}}情况<br>仅需<i class="headtip">2</i>步</p>
             </div>
             <div class="commenttext">
-                <p class="textconent">第<i class="headtip">1</i>步&nbsp;&nbsp;完成《膳食调查表》答题</p>
+                <p class="textconent">第<i class="headtip">1</i>步&nbsp;&nbsp;完成《{{title}}调查表》答题</p>
                 <div class="textdiv">
                     <span class="textconent">第<i class="headtip">2</i>步</span>
-                    <span class="textconent">&nbsp;&nbsp;获得一对一个性化营养膳食<br>&nbsp;&nbsp;评价及建议</span>
+                    <span class="textconent">&nbsp;&nbsp;获得一对一个性化{{title}}<br>&nbsp;&nbsp;评价及建议</span>
                 </div>
             </div>
             <div class="commentbtn">
@@ -30,7 +30,7 @@
                 <p class="textcom">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;坚持每天打卡，养成营养摄入好习惯，我会为小主统计每周打卡生成报告。请常来看我哦！</p>
             </div>
             <!-- <div class="btncom pushcardbtn">打卡&nbsp;></div>
-                                        <div class="btncom pushcardbtn">评价&nbsp;></div> -->
+                                                <div class="btncom pushcardbtn">评价&nbsp;></div> -->
             <div class="commentbtn">
                 <div class="btncom btnleft goldbg" style="float:left;" @click="GoPunch(index)">打卡 ></div>
                 <div class="btncom btnright goldbg" @click="GoEvaluate(index)">评价 ></div>
@@ -45,7 +45,7 @@
         mapState,
         mapMutations
     } from "vuex";
-    import request from '../utils/api.js'
+    import request from "../utils/api.js";
     export default {
         data() {
             return {
@@ -54,40 +54,47 @@
                 h: "hide",
                 iscomment: true,
                 isPastShow: true,
-                t: 'two',
-                o: 'one',
+                t: "two",
+                o: "one",
                 typeIndex: null,
                 title: `营养`,
-                t1:`重新答题`,
-                t2:`开始答题`,
+                t1: `重新答题`,
+                t2: `开始答题`
             };
         },
         methods: {
             ...mapMutations(["closePushcardType"]),
             init() {
-                let url = `https://wx.biergao.vip/api/Yypfjl/getlist`
+                let url = `https://wx.biergao.vip/api/Yypfjl/getlist`;
                 let data = {
                     userid: this.userParam.userid,
                     pid: this.cardType
-                }
+                };
                 request.GetWithData(url, data, res => {
-                    let data = res.data
+                    let data = res.data;
                     if (data.status == 200) {
-                        this.isPastShow = true
+                        if(this.cardType!=0){
+                            this.isPastShow=false
+                            return
+                        }
+                        this.isPastShow = true;
                     } else {
-                        this.isPastShow = false
+                        
+                        this.isPastShow = false;
                     }
-                })
+                });
             },
             GoEvaluate() {
+                this.closePushcardType();
                 wx.navigateTo({
-                    url: '/pages/pastscore/main?show=1'
-                })
+                    url: "/pages/pastscore/main?show=1"
+                });
             },
             GoPunch() {
+                this.closePushcardType();
                 wx.navigateTo({
-                    url: '/pages/cardpage/main'
-                })
+                    url: "/pages/cardpage/main"
+                });
             },
             // 阻止冒泡
             preventD() {},
@@ -96,41 +103,41 @@
                 this.closePushcardType();
             },
             GoAnswer() {
+                this.closePushcardType();
                 wx.navigateTo({
-                    url: `/pages/question/main`
+                    url: `/pages/question/main?id=${this.cardType}`
                 });
             },
             GoPastScore() {
+                this.closePushcardType();
                 wx.navigateTo({
                     url: `/pages/pastscore/main?show=0`
-                })
+                });
             }
         },
         computed: {
-            ...mapState(["isPushcardshow", "pushCardtype", 'cardType', 'userParam'])
+            ...mapState(["isPushcardshow", "pushCardtype", "cardType", "userParam"])
         },
-        onLoad() {
-    
-        },
+        onLoad() {},
         watch: {
             isPushcardshow(x) {
                 this.isshow = x;
-                this.init()
+                this.init();
                 switch (this.cardType) {
                     case 0:
                         this.title = "营养";
                         break;
                     case 1:
-                        this.title = "运动";
-                        break;
-                    case 2:
-                        this.title = "睡眠";
-                        break;
-                    case 3:
                         this.title = "情绪";
                         break;
-                    case 4:
+                    case 2:
                         this.title = "内分泌";
+                        break;
+                    case 3:
+                        this.title = "运动";
+                        break;
+                    case 4:
+                        this.title = "睡眠";
                         break;
                 }
             },
@@ -140,7 +147,7 @@
                 } else {
                     this.iscomment = false;
                 }
-            },
+            }
         }
     };
 </script>
@@ -198,7 +205,7 @@
     }
     
     .one {
-        width: 300rpx!important;
+        width: 300rpx !important;
         position: absolute;
         top: 60rpx;
         left: 50%;
