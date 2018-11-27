@@ -20,17 +20,38 @@
 </template>
 
 <script>
+import request from '../../utils/api.js'
+import { mapState } from 'vuex';
 export default {
   data() {
     return {
       childrenHightlist: [],
       index: 0,
-      hightNow: null
+      hightNow: null,
+      openId:null,
+      id:null,
+      name:null,
+      hight:null
+
     };
   },
   methods: {
     ChangeHightButton() {
       // 进行请求，发送数据
+      let url=`https://wx.biergao.vip/api/child/addData/openid/${this.userParam.openId}`
+      let data={
+        openid:this.openId,
+        id:this.id,
+        name:this.name,
+        hight:this.hight
+      }
+      request.GetWithData(url,data,res=>{
+        if(res.data){
+          wx.navigateBack({
+              delta: 1
+            })
+        }
+      })
     },
     AddList() {
       if (this.childrenHightlist.length > 0) {
@@ -43,15 +64,24 @@ export default {
     ChangeChildren(e) {
       this.index = e.mp.detail.value;
     },
-    init() {},
+    init(x) {
+      this.openId=x.openId
+      this.name=x.name
+      this.id=x.id
+      this.hight=x.hight
+    },
     ComputeHight(x) {
       this.index = x - 50;
     }
+  },
+  computed:{
+    ...mapState(['userParam'])
   },
   created() {
     this.AddList();
   },
   onLoad(x) {
+    this.init(x)
     this.ComputeHight(x.hight);
   }
 };

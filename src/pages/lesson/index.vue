@@ -21,13 +21,14 @@
       </div>
       <!-- 课程列表 -->
       <div class="lessonlisttitle">
-        <div class="contextbox" v-for='(item,index) in goodsinfo' :key="index" @click="GoLessonPage(index)">
+        <div class="contextbox" v-for='(item,index) in goodsinfo' :key="index" @click="GoLessonPage(index,item.status)">
           <img :src="item.class_url_img" alt="" srcset="" class="contextleft">
           <div class="contextright">
             <h3 class="contexttitle">{{item.title}}</h3>
             <p class="contextin">{{item.video_text}}</p>
             <p class="contextteacher">{{item.teacherinfo.name}}</p>
-            <p class="contextprice">￥{{item.price}}/VIP免费</p>
+            <p class="contextprice" v-if="item.status==0">￥{{item.price}}/VIP免费</p>
+            <p class="contextprice" v-else>强烈推荐</p>
           </div>
         </div>
       </div>
@@ -130,13 +131,13 @@
         })
   
       },
-      GoLessonPage(x) {
+      GoLessonPage(x,y) {
         // 获得点击课程的index
         // this.changeClicklessonPageindex(x)
         //存放选中的课程全部信息
         this.GetLessonlistContent(this.goodsinfo[x])
         wx.navigateTo({
-          url: '/pages/buylesson/main'
+          url: `/pages/buylesson/main?state=${y}`
         })
       }
     },

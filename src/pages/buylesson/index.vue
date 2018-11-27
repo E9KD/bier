@@ -2,12 +2,12 @@
   <div class="buylesson">
     <video id="myVideo" class="video_list" :src="videoSrc" controls page-gesture direction show-fullscreen-btn show-play-btn show-center-play-btn></video>
     <scroll-div :scroll-y='true' @scroll="aaa" class="asd">
-      <div class="listbox">
+      <div class="listbox"> 
         <div class="listhead">
           <p class="listhead_title">{{showList.title}}</p>
-          <p class="listhead_tip">热销中</p>
-          <p class="listhead_price" v-if="showList.price">{{showList.price}}&nbsp;¥</p>
-          <p class="listhead_price" v-else>&nbsp;</p>
+          <p class="listhead_tip"  v-if="state==0">热销中</p>
+          <p class="listhead_price" v-if="state==0">{{showList.price}}&nbsp;¥</p>
+          <p class="listhead_price" v-else> 强烈推荐</p>
         </div>
         <div class="listhead_changecard">
           <div class="changecardcom" :class="[changecardisshow?a:n]" @click="changecardtype(0)">课程概述</div>
@@ -177,8 +177,9 @@
     computed: {
       ...mapState(["lessonListcontent", "userParam"])
     },
-    onLoad() {
+    onLoad(x) {
       this.init();
+      this.state=x
     },
     onShow() {
       this.isBuy = false

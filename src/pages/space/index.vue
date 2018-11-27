@@ -1,7 +1,7 @@
 <template>
   <div class="space">
     <div v-if="isshow > 0">
-      <scroll-div scroll-y="true">
+      <scroll-view scroll-y="true">
         <!-- <div class='box'> -->
         <div class="result-item" v-for="(item,index) in searchSongList" :key="index">
           <!-- <div class="content" wx:for="{{resultData}}" wx:key="item"> -->
@@ -27,14 +27,14 @@
               </div>
             </div>
             <!-- <div v-else style="margin-left: 20rpx;">
-                            <div class="images-wrapper">
-                              <div class="images-list">
-                                <div v-for="(item,index3) in item.imglist" :key='index3'>
-                                  <img class="images-img" src="https://wx.biergao.vip/uploads/thumb">
+                              <div class="images-wrapper">
+                                <div class="images-list">
+                                  <div v-for="(item,index3) in item.imglist" :key='index3'>
+                                    <img class="images-img" src="https://wx.biergao.vip/uploads/thumb">
+                                  </div>
                                 </div>
                               </div>
-                            </div>
-                          </div> -->
+                            </div> -->
             <!--显示发布时间-->
             <div class="time">
               <p class="time_p">{{item.datatime}}</p>
@@ -58,8 +58,8 @@
             <div v-if="item.dianzanlist" style="margin-left: 20rpx;">
               <div class="dianzan-box">
                 <!-- <div class="dianzan-biao">
-                                  <img class="xin2" src="../../../static/image/zan.png"  style='line-height:35rpx;'>
-                                </div> -->
+                                    <img class="xin2" src="../../../static/image/zan.png"  style='line-height:35rpx;'>
+                                  </div> -->
                 <div class="dianzan-text">
                   <img class="xin2" src="../../../static/image/zan1.png">
                   <p class="dianzan_text_p">{{item.dianzanlist}}</p>
@@ -71,7 +71,7 @@
   
         </div>
   
-      </scroll-div>
+      </scroll-view>
   
       <div class="qbutton">
         <div style='width:100%;height:100%; ' @click='WriteMsg' v-if="isshow > 0">
@@ -103,6 +103,9 @@
     },
     methods: {
       init() {
+        this.pageall =null
+        this.searchSongList = null
+        this.pagenumber =null
         this.DefaultRequest()
       },
       DefaultRequest() {
@@ -113,11 +116,11 @@
         }
         request.GetWithData(url, data, res => {
           let data = res.data
-          // if (data.pageall == 0) {
-          //   this.isshow = 0
-          //   this.isDoom=false
-          //   return
-          // }
+          if (data.pageall == 0) {
+            this.isshow = 0
+            this.isDoom=false
+            return
+          }
           this.pageall = data.pageall
           this.searchSongList = data.orderlist
           this.pagenumber = data.pageall
@@ -149,10 +152,10 @@
           url: '/pages/writemsg/main'
         })
       },
-      PreviewImage(x,y) {
-        let url=`https://wx.biergao.vip/uploads/qzone${x}`
-        let list=[]
-        for(let i =0;i<y.length;i++){
+      PreviewImage(x, y) {
+        let url = `https://wx.biergao.vip/uploads/qzone${x}`
+        let list = []
+        for (let i = 0; i < y.length; i++) {
           list.push(`https://wx.biergao.vip/uploads/qzone${y[i]}`)
         }
         console.log(list);
@@ -166,6 +169,10 @@
       ...mapState(['userParam'])
     },
     onLoad() {
+      this.init()
+    },
+    onShow(){
+      console.log(123);
       this.init()
     },
     onReachBottom() {
@@ -187,6 +194,12 @@
         })
       }
     },
+    onPullDownRefresh() {
+      wx.showNavigationBarLoading()
+      this.init()
+      wx.hideNavigationBarLoading()
+      wx.stopPullDownRefresh()
+    }
   }
 </script>
 
@@ -483,7 +496,7 @@
     font-size: 30rpx;
     padding: 10rpx 0px;
     /* margin-top: -29rpx;
-                          margin-left: 50rpx; */
+                            margin-left: 50rpx; */
   }
   
   

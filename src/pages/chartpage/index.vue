@@ -57,7 +57,8 @@
         agelist: this.sage,
         sexlist: this.ssex,
         chart: null,
-        id: []
+        id: [],
+        nowHeightneed:null
       };
     },
     components: {
@@ -214,6 +215,7 @@
           for (let i = 0; i < 12; i++) {
             list.push(res.data[i].nowheight);
           }
+          this.nowHeightneed=res.data[0].nowheight
           this.childrenSex = this.childrenInfolist[this.index].sex;
           this.childrenAge = this.childrenInfolist[this.index].age;
           this.ChangeData();
@@ -270,7 +272,11 @@
       ChangeHightNow() {
         wx.navigateTo({
           url: `/pages/changehight/main?hight=${
-            this.childrenInfolist[this.index].hight
+            this.nowHeightneed
+          }&id=${this.childrenInfolist[this.index].id}&openId=${
+            this.childrenInfolist[this.index].pid
+          }&name=${
+            this.childrenInfolist[this.index].name
           }`
         });
       }

@@ -31,7 +31,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 23,
+			"current": 24,
 			"list": [
 				{
 					"id": -1,
@@ -176,6 +176,17 @@
 					"name": "得分画面2",
 					"pathName": "pages/resultpage2/main",
 					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "123123",
+					"pathName": "pages/test/main",
+					"scene": "1044",
+					"shareInfo": {
+						"groupName": "测试模拟群0",
+						"shareName": "8e4xkfI2TzM5t_rTD-Sj7nL1EQE3iFjThN0lPFRfvRc@cr4dev",
+						"shareKey": "C7DYDAv_iFTLukq6ykzPSADsvsjHtcUO60tCVm87QDvqHVkpO9hXrhwDkzBdByublNnRr0S6wAJaUxX_Tojhgw~~"
+					}
 				}
 			]
 		}

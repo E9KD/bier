@@ -71,8 +71,11 @@
                 })
             },
             asd(){
-                wx.navigateTo({
-                    url: `/pages/toolspage/main`
+                // wx.navigateTo({
+                //     url: `/pages/toolspage/main`
+                // })
+                 wx.navigateTo({
+                    url: `/pages/test/main?id=123123`
                 })
             }
         },

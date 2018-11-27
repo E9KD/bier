@@ -29,17 +29,17 @@
       </form>
   
     </div>
+    <Toast></Toast>
   </div>
 </template>
 
 <script>
   import request from '../../utils/api.js'
   import {
-    mapState
+    mapState,
+    mapMutations
   } from 'vuex';
-  import {
-    resolve
-  } from 'url';
+  import Toast from '../../components/toast'
   export default {
     data() {
       return {
@@ -50,25 +50,29 @@
         imgLength: 0
       }
     },
+    components: {
+      Toast
+    },
     methods: {
+      ...mapMutations(['toastshowtype', 'closeToast']),
       PushMsg() {
         console.log(`这个是上传`);
         console.log(this.picSrc + 123123123123123123123123);
-        // let url = `https://wx.biergao.vip/api/qzone/setresouse`
-        // let data = {
-        //   nickName: this.userParam.nickName,
-        //   content: this.keyWord,
-        //   userId: this.userParam.openId,
-        //   imgStr: this.picSrc,
-        //   headimg: this.userParam.avatarUrl
-        // }
-        // request.Post(url, data, res => {
-        //   // setTimeout(() => {
-        //   //   wx.navigateBack({
-        //   //     delta: 1
-        //   //   })
-        //   // }, 1000)
-        // })
+        let url = `https://wx.biergao.vip/api/qzone/setresouse`
+        let data = {
+          nickName: this.userParam.nickName,
+          content: this.keyWord,
+          userId: this.userParam.openId,
+          imgStr: this.picSrc,
+          headimg: this.userParam.avatarUrl
+        }
+        request.Post(url, data, res => {
+          setTimeout(() => {
+            wx.navigateBack({
+              delta: 1
+            })
+          }, 1000)
+        })
       },
       PreviewImage(x) {
         let b = this.picSrc.split(",")
@@ -90,7 +94,6 @@
           sourceType: ['album', 'camera'],
           success(res) {
             // tempFilePath可以作为img标签的src属性显示图片
-            console.log(res);
             const tempFilePaths = res.tempFilePaths
             that.imglist.push(tempFilePaths[0])
             that.imgLength = that.imglist.length
@@ -100,13 +103,20 @@
               filePath: tempFilePaths[0],
               name: 'image',
               success: function(res) {
-                console.log(res);
+                if (JSON.parse(res.data).status == 0) {
+                  that.toastshowtype(4)
+                  that.imglist.pop()
+                  setTimeout(() => {
+                    that.closeToast()
+                  }, 2000)
+                  return
+                }
                 if (that.picSrc == '') {
                   that.picSrc += `${JSON.parse(res.data).img}`
                 } else {
                   that.picSrc += `,${JSON.parse(res.data).img}`
                 }
-                console.log(that.picSrc);
+                that.closeToast()
               },
               fail: function(res) {
                 console.debug(res)
@@ -140,12 +150,12 @@
     computed: {
       ...mapState(['userParam'])
     },
-    onLoad() {
+    onUnload(){
+      this.keyWord=''
       this.picSrc = ''
       this.imglist = []
       this.index = 0
-    },
-  
+    }
   }
 </script>
 

@@ -1,27 +1,40 @@
 <template>
-    <div class="toastbox" v-show="toastshow" >
-
+    <div class="toastbox" v-show="toastshow">
+    
         <!-- loading -->
         <div class="toast">
             <!-- <img src="/static/image/close.png" alt="#" class="toastclose" v-show="toastcom[1]" @click="toastclose"> -->
-            <img :src="toastcom[0]" class="toastimg" >
+            <img :src="toastcom[0]" class="toastimg">
             <p class="toastext">{{toastcom[1]}}</p>
         </div>
-
+    
         <!-- 完成-->
         <div class="toast">
             <!-- <img src="/static/image/close.png" alt="#" class="toastclose" v-show="toastcom[1]" @click="toastclose"> -->
-            <img :src="toastcom[0]" class="toastimg" >
+            <img :src="toastcom[0]" class="toastimg">
             <p class="toastext">{{toastcom[1]}}</p>
         </div>
-
+    
         <!-- 警告 -->
         <div class="toast">
             <!-- <img src="/static/image/close.png" alt="#" class="toastclose" v-show="toastcom[1]" @click="toastclose"> -->
-            <img :src="toastcom[0]" class="toastimg" >
+            <img :src="toastcom[0]" class="toastimg">
+            <p class="toastext">{{toastcom[1]}}</p>
+        </div>
+    
+        <div class="toast">
+            <!-- <img src="/static/image/close.png" alt="#" class="toastclose" v-show="toastcom[1]" @click="toastclose"> -->
+            <img :src="toastcom[0]" class="toastimg">
+            <p class="toastext">{{toastcom[1]}}</p>
+        </div>
+    
+        <div class="toast">
+            <!-- <img src="/static/image/close.png" alt="#" class="toastclose" v-show="toastcom[1]" @click="toastclose"> -->
+            <img :src="toastcom[0]" class="toastimg">
             <p class="toastext">{{toastcom[1]}}</p>
         </div>
 
+        
     </div>
 </template>
 
@@ -34,23 +47,27 @@
         data() {
             return {
                 toastcom: [],
-                a:'all',
-                b:'',
+                a: 'all',
+                b: '',
                 toastListload: [
                     '/static/image/loading.gif',
                     '请耐心等待'
                 ],
-                toastListcomplete: [ 
+                toastListcomplete: [
                     '/static/image/success.png',
                     '成功！'
                 ],
-                toastListwarning: [ 
+                toastListwarning: [
                     '/static/image/error.png',
                     '失败！'
                 ],
-                toastListnull: [ 
+                toastListnull: [
                     '/static/image/error.png',
                     '不能为空！'
+                ],
+                toastListlarge: [
+                    '/static/image/error.png',
+                    '图片过大！'
                 ],
             }
         },
@@ -77,12 +94,14 @@
                  */
                 if (this.toasttype == 0) {
                     this.toastcom = this.toastListload
-                } else if(this.toasttype==1){
-                    this.toastcom=this.toastListcomplete
-                }else if(this.toasttype==2){
-                    this.toastcom=this.toastListwarning
-                }else if(this.toasttype==3){
-                    this.toastcom=this.toastListnull
+                } else if (this.toasttype == 1) {
+                    this.toastcom = this.toastListcomplete
+                } else if (this.toasttype == 2) {
+                    this.toastcom = this.toastListwarning
+                } else if (this.toasttype == 3) {
+                    this.toastcom = this.toastListnull
+                } else if (this.toasttype == 4) {
+                    this.toastcom = this.toastListlarge
                 }
             }
         }
@@ -99,9 +118,11 @@
         top: 0px;
         left: 0px;
     }
-    .all{
+    
+    .all {
         background-color: white;
     }
+    
     
     /* box */
     

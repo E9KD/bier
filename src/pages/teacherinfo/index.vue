@@ -38,9 +38,9 @@
           <i></i>
         </div>
         <div class="buychoose">
-          <div class="choosecom chooseleft" :class="[priceischoose==0?a:n]" @click="changeprice(0)">￥399元/月</div>
+          <div class="choosecom chooseleft" :class="[priceischoose==0?a:n]" @click="changeprice(0)">{{price1}}</div>
           <!-- <div class="choosemin"></div> -->
-          <div class="choosecom chooseright" :class="[priceischoose==1?a:n]" @click="changeprice(1)">￥999元/季</div>
+          <div class="choosecom chooseright" :class="[priceischoose==1?a:n]" @click="changeprice(1)">{{price2}}</div>
         </div>
         <div class="buyfoot">
           <div class="foottip"></div>
@@ -78,6 +78,8 @@
         a: "active",
         n: "normal",
         priceischoose: 0,
+        price1:null,
+        price2:null,
         price: 399,
         link: `{"type": "fuwu","userid":"null","unionId":"null","goodsid":"null","price":"null"}`,
         link2: '{"type": "image", "title": "点击开启您的一站式专属身高管理服务之旅吧！", "url": "http://www.biergao.cn/kefu"}'
@@ -89,6 +91,7 @@
     methods: {
       ...mapMutations(["toastshowtype", "closeToast"]),
       init() {
+        this.GetDefaultPrice()
         let url = `https://wx.biergao.vip/api/vip/show`
         let data = {
           openid: this.userParam.openId
@@ -99,6 +102,14 @@
           } else {
             this.isBuy = true
           }
+        })
+      },
+      GetDefaultPrice(){
+        let url=`https://wx.biergao.vip/api/vip/price2`
+        request.api(url,res=>{
+          let data=res.data
+          this.price1=data[0]
+          this.price2=data[1]
         })
       },
       ChangeParam() {

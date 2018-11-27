@@ -1,6 +1,4 @@
 {
     "navigationBarTitleText": "比尔高",
-    "usingComponents": {
-        "van-popup": "/static/vant/popup/index"
-      }
+    "enablePullDownRefresh": true
 }
