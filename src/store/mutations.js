@@ -18,7 +18,8 @@ export default {
   // 获取type和显示toast
   toastshowtype(state, x) {
     // 0loading 1完成 2警告
-    state.toasttype = x,
+    state.toasttype = x.t,
+    state.toastContent=x.p
     state.toastshow = true
   },
   // 关闭toast，需要关闭toast就调用这个是mutations
@@ -81,8 +82,4 @@ export default {
   CloseBuyToast(state,x){
     state.buytoastShow=false
   },
-  // 修改手机号
-  ChangePhoneNumber(state,x){
-    state.phoneNumber=x
-  }
 }

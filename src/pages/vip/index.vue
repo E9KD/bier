@@ -94,7 +94,7 @@
     mapMutations,
     mapState
   } from 'vuex';
-  import request from '../../utils/api.js'
+  import ajax from '../../utils/ajax.js'
   export default {
     data() {
       return {
@@ -116,12 +116,14 @@
       ...mapMutations(['ChangeToast2State']),
       init() {
         let url = `https://wx.biergao.vip/api/vip/price`
-        request.api(url, res => {
-          this.price1 = res.data[0]
-          this.price2 = res.data[1]
+        ajax.Get(url).then((result) => {
+          this.price1 = result[0]
+          this.price2 = result[1]
           this.price = this.price1
           this.ChangeParam()
-        })
+        }).catch((err) => {
+          console.log(err);
+        });
         this.GetVipState()
       },
       GetVipState() {
@@ -129,16 +131,18 @@
         let data = {
           openid: this.userParam.openId
         }
-        request.Post(url, data, res => {
-          if (res.data.status == 500) {
-            this.isvip=false
-          } else if (res.data.status == 404) {
-            this.isvip=false
+        ajax.Post(url, data).then((result) => {
+          if (result.status == 500) {
+            this.isvip = false
+          } else if (result.status == 404) {
+            this.isvip = false
           } else {
-            this.isvip=true
-            this.time=res.status
+            this.isvip = true
+            this.time = result
           }
-        })
+        }).catch((err) => {
+          console.log(err);
+        });
       },
       GoExchange() {
         wx.navigateTo({
@@ -437,10 +441,10 @@
     background-position: center;
     background-size: cover;
     /* -webkit-filter: blur(15px);
-          -moz-filter: blur(15px);
-          -o-filter: blur(15px);
-          -ms-filter: blur(15px);
-          filter: blur(15px); */
+                -moz-filter: blur(15px);
+                -o-filter: blur(15px);
+                -ms-filter: blur(15px);
+                filter: blur(15px); */
   }
   
   
@@ -479,15 +483,15 @@
   
   
   /* .div1:before {
-          position: absolute;
-          top: 20px;
-          width: 0;
-          height: 0;
-          left: 50%;
-          margin-left: -5px;
-          content: " ";
-          border-bottom: 15px solid #000;
-          border-left: 15px solid transparent;
-          border-right: 15px solid transparent;
-        } */
+                position: absolute;
+                top: 20px;
+                width: 0;
+                height: 0;
+                left: 50%;
+                margin-left: -5px;
+                content: " ";
+                border-bottom: 15px solid #000;
+                border-left: 15px solid transparent;
+                border-right: 15px solid transparent;
+              } */
 </style>

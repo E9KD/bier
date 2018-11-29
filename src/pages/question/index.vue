@@ -27,7 +27,7 @@
 </template>
 
 <script>
-  import request from "../../utils/api.js";
+  import ajax from '../../utils/ajax.js'
   import {
     mapState,
     mapMutations
@@ -64,7 +64,9 @@
       ...mapMutations(["toastshowtype", "closeToast", 'ChangeScoreState']),
       GoNext(x) {
         if (this.currentScore != null) {
-          this.toastshowtype(0);
+          this.toastshowtype({
+            t:0,p:'Loading...'
+          });
           this.ComputeScore(this.nowOfquestion);
           this.totalScore += this.currentScore;
           console.log(this.totalScore);
@@ -74,17 +76,18 @@
             questionid: this.nextRequestnumber,
             pid: this.cardType
           };
-          request.GetWithData(url, data, res => {
-            let json = res.data;
-            this.questionList = json.anwserdata;
-            this.nowOfquestion = json.questiondata[0].questionid;
-            this.questionTitle = json.questiondata[0].question;
-            this.nextRequestnumber = json.questiondata[0].questionid + 1;
+          ajax.Get(url, data).then((result) => {
+            this.questionList = result.anwserdata;
+            this.nowOfquestion = result.questiondata[0].questionid;
+            this.questionTitle = result.questiondata[0].question;
+            this.nextRequestnumber = result.questiondata[0].questionid + 1;
             this.number = null;
             if (this.nowOfquestion == this.allOfquestion) {
               this.isComplete = false;
             }
             this.closeToast();
+          }).catch((err) => {
+            console.log(err);
           });
         } else {
           console.log(`没选择`);
@@ -132,7 +135,9 @@
         }
       },
       GoSubmit() {
-        this.toastshowtype(0);
+        this.toastshowtype({
+          t:0,p:'Loading...'
+        });
         this.ComputeScore(this.nowOfquestion);
         this.totalScore += this.currentScore;
         this.currentScore = null;
@@ -152,8 +157,7 @@
           total: this.totalScore,
           pid: this.cardType
         };
-        request.GetWithData(url, data, res => {
-          console.log(res);
+        ajax.Get(url, data).then((result) => {
           setTimeout(() => {
             this.closeToast();
             if (this.cardType == 0) {
@@ -168,8 +172,9 @@
             }
   
           }, 1000);
-        });
+        }).catch((err) => {
   
+        });
       },
       ChangeChecked(index) {
         this.number = index;
@@ -177,21 +182,22 @@
       },
       // 0 营养 1 情绪 2 没有 3运动 4 睡眠
       init() {
-        this.toastshowtype(0);
+        this.toastshowtype({
+          t:0,p:'Loading...'
+        });
         let url = `https://wx.biergao.vip/api/survey/firstgetquestion2`;
         let data = {
           id: this.cardType
         };
-        request.GetWithData(url, data, res => {
-          console.log(res);
-          let json = res.data;
-          this.questionList = json.anwserdata;
-          this.allOfquestion = json.count;
-          this.nowOfquestion = json.questiondata[0].questionid;
-          this.questionTitle = json.questiondata[0].question;
-          this.nextRequestnumber = json.questiondata[0].questionid + 1;
+        ajax.Get(url, data).then((result) => {
+          this.questionList = result.anwserdata;
+          this.allOfquestion = result.count;
+          this.nowOfquestion = result.questiondata[0].questionid;
+          this.questionTitle = result.questiondata[0].question;
+          this.nextRequestnumber = result.questiondata[0].questionid + 1;
           this.closeToast();
-          console.log(this.allOfquestion, this.nowOfquestion);
+        }).catch((err) => {
+          console.log(err);
         });
       }
     },
@@ -202,15 +208,15 @@
       this.init();
     },
     onShow() {
-      this.isComplete=true
-      this.assess1=0
-      this.assess2=0
-      this.assess3=0
-      this.assess4=0
-      this.assess5=0
-      this.assess6=0
-      this.assess7=0
-      this.assess8=0
+      this.isComplete = true
+      this.assess1 = 0
+      this.assess2 = 0
+      this.assess3 = 0
+      this.assess4 = 0
+      this.assess5 = 0
+      this.assess6 = 0
+      this.assess7 = 0
+      this.assess8 = 0
     }
   };
 </script>
@@ -218,9 +224,9 @@
 <style scoped>
   .question_button {
     /* position: absolute;
-      top: 80%;
-      left: 50%;
-      transform: translate(-50%, -50%); */
+                top: 80%;
+                left: 50%;
+                transform: translate(-50%, -50%); */
     margin: 0 auto;
     margin-top: 50rpx;
     color: white;
@@ -274,9 +280,9 @@
     margin: 0 auto;
     margin-top: 15%;
     /* position: absolute;
-      top: 42%;
-      left: 50%;
-      transform: translate(-50%, -50%); */
+                top: 42%;
+                left: 50%;
+                transform: translate(-50%, -50%); */
     border-radius: 50rpx;
     overflow: hidden;
     border: 1px solid #999999;

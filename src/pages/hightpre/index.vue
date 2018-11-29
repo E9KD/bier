@@ -75,10 +75,11 @@
     man,
     woman
   } from "../../utils/data.js";
-  import request from "../../utils/api.js";
+  import ajax from '../../utils/ajax.js'
   import {
     mapState
   } from "vuex";
+import { clearTimeout } from 'timers';
   export default {
     data() {
       return {
@@ -106,14 +107,14 @@
           let data = {
             openid: this.userParam.openId
           };
-          request.GetWithData(url, data, res => {
-            let data = res.data;
-            let time = new Date(data.createtime * 1000);
+          ajax.Get(url, data).then((result) => {
+            let time = new Date(result.createtime * 1000);
             let y = time.getFullYear();
             let m = time.getMonth() + 1;
-            this.childrenSex = data.sex;
-            
-            this.GetChildrenParam(data.id, m, y);
+            this.childrenSex = result.sex;
+            this.GetChildrenParam(result.id, m, y);
+          }).catch((err) => {
+            console.log(err);
           });
         } else {
           // 传值
@@ -128,18 +129,18 @@
           m: y,
           y: z
         };
-        request.GetWithData(url, data, res => {
-          console.log(res);
-          let data = res.data;
-          this.childrenAge = data[2].age;
+        ajax.Get(url,data).then((result) => {
+          this.childrenAge = result[2].age;
           // x 父亲身高 y 母亲身高
-          this.ComputeHight(data[0].fheight,data[0].mheight)
+          this.ComputeHight(result[0].fheight, result[0].mheight)
           // x 当前身高 y 正常身高 z 期望身高 q 完美身高
-          this.ChangeData(data[1].nowheight, data[0].qiwangheight);
+          this.ChangeData(result[1].nowheight, result[0].qiwangheight);
+        }).catch((err) => {
+          console.log(err);
         });
       },
-      ComputeHight(x,y) {
-        console.log(x,y);
+      ComputeHight(x, y) {
+        console.log(x, y);
         // x 父亲身高 y 母亲身高
         if (this.childrenSex == 1) {
           this.testHight = (Number(x) + Number(y) + 13) / 2 + 7.5;

@@ -34,7 +34,7 @@
 </template>
 
 <script>
-  import request from '../../utils/api.js'
+  import ajax from '../../utils/ajax.js'
   import {
     mapState,
     mapMutations
@@ -66,13 +66,15 @@
           imgStr: this.picSrc,
           headimg: this.userParam.avatarUrl
         }
-        request.Post(url, data, res => {
+        ajax.Post(url, data).then((result) => {
           setTimeout(() => {
             wx.navigateBack({
               delta: 1
             })
           }, 1000)
-        })
+        }).catch((err) => {
+          console.log(err);
+        });
       },
       PreviewImage(x) {
         let b = this.picSrc.split(",")
@@ -104,7 +106,9 @@
               name: 'image',
               success: function(res) {
                 if (JSON.parse(res.data).status == 0) {
-                  that.toastshowtype(4)
+                  that.toastshowtype({
+                    t:2,p:'图片过大！'
+                  })
                   that.imglist.pop()
                   setTimeout(() => {
                     that.closeToast()
@@ -150,8 +154,8 @@
     computed: {
       ...mapState(['userParam'])
     },
-    onUnload(){
-      this.keyWord=''
+    onUnload() {
+      this.keyWord = ''
       this.picSrc = ''
       this.imglist = []
       this.index = 0

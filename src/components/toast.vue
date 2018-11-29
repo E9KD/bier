@@ -4,37 +4,12 @@
         <!-- loading -->
         <div class="toast">
             <!-- <img src="/static/image/close.png" alt="#" class="toastclose" v-show="toastcom[1]" @click="toastclose"> -->
-            <img :src="toastcom[0]" class="toastimg">
-            <p class="toastext">{{toastcom[1]}}</p>
+            <img :src="toastcom.img" class="toastimg">
+            <p class="toastext">{{toastcom.content}}</p>
         </div>
     
-        <!-- 完成-->
-        <div class="toast">
-            <!-- <img src="/static/image/close.png" alt="#" class="toastclose" v-show="toastcom[1]" @click="toastclose"> -->
-            <img :src="toastcom[0]" class="toastimg">
-            <p class="toastext">{{toastcom[1]}}</p>
-        </div>
     
-        <!-- 警告 -->
-        <div class="toast">
-            <!-- <img src="/static/image/close.png" alt="#" class="toastclose" v-show="toastcom[1]" @click="toastclose"> -->
-            <img :src="toastcom[0]" class="toastimg">
-            <p class="toastext">{{toastcom[1]}}</p>
-        </div>
     
-        <div class="toast">
-            <!-- <img src="/static/image/close.png" alt="#" class="toastclose" v-show="toastcom[1]" @click="toastclose"> -->
-            <img :src="toastcom[0]" class="toastimg">
-            <p class="toastext">{{toastcom[1]}}</p>
-        </div>
-    
-        <div class="toast">
-            <!-- <img src="/static/image/close.png" alt="#" class="toastclose" v-show="toastcom[1]" @click="toastclose"> -->
-            <img :src="toastcom[0]" class="toastimg">
-            <p class="toastext">{{toastcom[1]}}</p>
-        </div>
-
-        
     </div>
 </template>
 
@@ -46,42 +21,24 @@
     export default {
         data() {
             return {
-                toastcom: [],
+                toastcom: {
+                    img: '',
+                    content: ''
+                },
                 a: 'all',
                 b: '',
-                toastListload: [
-                    '/static/image/loading.gif',
-                    '请耐心等待'
-                ],
-                toastListcomplete: [
-                    '/static/image/success.png',
-                    '成功！'
-                ],
-                toastListwarning: [
-                    '/static/image/error.png',
-                    '失败！'
-                ],
-                toastListnull: [
-                    '/static/image/error.png',
-                    '不能为空！'
-                ],
-                toastListlarge: [
-                    '/static/image/error.png',
-                    '图片过大！'
-                ],
+                loadUrl: '/static/image/loading.gif',
+                completeUrl: '/static/image/success.png',
+                warningUrl: '/static/image/error.png',
             }
         },
         methods: {
-            // ...mapMutations(['closeToast']),
-            // 点击关闭执行mutations，将组件隐藏
-            // toastclose() {
-            //     this.closeToast()
-            // },
         },
         computed: {
             ...mapState([
                 'toastshow',
                 'toasttype',
+                'toastContent'
             ]),
         },
         watch: {
@@ -93,16 +50,14 @@
                  * @return: 
                  */
                 if (this.toasttype == 0) {
-                    this.toastcom = this.toastListload
+                    this.toastcom.img = this.loadUrl
                 } else if (this.toasttype == 1) {
-                    this.toastcom = this.toastListcomplete
+                    this.toastcom.img = this.completeUrl
                 } else if (this.toasttype == 2) {
-                    this.toastcom = this.toastListwarning
-                } else if (this.toasttype == 3) {
-                    this.toastcom = this.toastListnull
-                } else if (this.toasttype == 4) {
-                    this.toastcom = this.toastListlarge
+                    this.toastcom.img = this.warningUrl
                 }
+                this.toastcom.content = this.toastContent
+    
             }
         }
     }

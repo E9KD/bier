@@ -7,7 +7,7 @@
       <div class="userinfoname">
         <p class="username">{{userInfolist.nickName}}</p>
       </div>
-      <button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber" class="changephonenumber">绑定手机号</button> 
+      <button v-if="isPhone" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber" class="changephonenumber">绑定手机号</button>
       <div class="userinfo" @click="GoUserInfo">个人资料</div>
     </div>
     <div class="fucbox">
@@ -41,11 +41,11 @@
       </div>
     </div>
     <!-- <div class="userfuncbox">
-          <div class="userfunc" @click="GoChildrenPage(0)">成长报告</div>
-          <div class="userfunc" @click="GoChildrenPage(1)">添加孩子</div>
-          <div class="userfunc" @click="GoChildrenPage(2)">我的订单</div>
-          <div class="userfunc" @click="GoChildrenPage(3)">成为VIP</div>
-        </div> -->
+              <div class="userfunc" @click="GoChildrenPage(0)">成长报告</div>
+              <div class="userfunc" @click="GoChildrenPage(1)">添加孩子</div>
+              <div class="userfunc" @click="GoChildrenPage(2)">我的订单</div>
+              <div class="userfunc" @click="GoChildrenPage(3)">成为VIP</div>
+            </div> -->
   </div>
 </template>
 
@@ -54,35 +54,45 @@
     mapState,
     mapMutations
   } from "vuex";
-  import request from '../../utils/api.js'
+  import ajax from '../../utils/ajax.js'
   export default {
     data() {
       return {
         canIUse: wx.canIUse("button.open-type.getUserInfo"),
         openid: "",
-        userInfolist: []
+        userInfolist: [],
+        isPhone: false
       };
     },
     computed: {
-      ...mapState(['userInfo','userParam'])
+      ...mapState(['userInfo', 'userParam'])
     },
     methods: {
       ...mapMutations(['ChangePhoneNumber']),
-      getPhoneNumber(e){
-        let url=`https://wx.biergao.vip/api/biaob/setmobile`
-        console.log(this.userParam);
-        let data={
-          iv:e.mp.detail.iv,
-          encryptedData:e.mp.detail.encryptedData,
-          sessionKey:this.userParam.sessionKey,
-          userid:this.userParam.userid
+      init() {
+        if (this.userParam.mobile) {
+          this.isPhone = false
+        } else {
+          this.isPhone = true
         }
-      request.GetWithData(url,data,res=>{
-        let data=res.data
-        this.ChangePhoneNumber(data.phoneNumber)
-      })
       },
-      GoUserInfo(){
+      getPhoneNumber(e) {
+        console.log(e);
+        let url = `https://wx.biergao.vip/api/biaob/setmobile`
+        console.log(this.userParam);
+        let data = {
+          iv: e.mp.detail.iv,
+          encryptedData: e.mp.detail.encryptedData,
+          sessionKey: this.userParam.sessionKey,
+          userid: this.userParam.userid
+        }
+        ajax.Get(url, data).then((result) => {
+          this.ChangePhoneNumber(result.phoneNumber)
+        }).catch((err) => {
+          console.log(err);
+        });
+      },
+      GoUserInfo() {
         wx.navigateTo({
           url: `/pages/userinfo/main`
         })
@@ -240,7 +250,8 @@
     height: 50rpx;
     line-height: 50rpx;
   }
-  .changephonenumber{
+  
+  .changephonenumber {
     position: absolute;
     top: 70%;
     left: 50%;
@@ -251,6 +262,7 @@
     font-size: 30rpx;
     /* color: white; */
   }
+  
   .userinfobox {
     width: 100%;
     height: 45vh;

@@ -3,7 +3,7 @@
     <swiper :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval" :duration="duration" class="swiper">
       <block v-for="(item,index) in imgUrls" v-bind:key="index">
         <swiper-item>
-          <image :src="item.url" class="slide-image"  />
+          <image :src="item.url" class="slide-image" />
         </swiper-item>
       </block>
     </swiper>
@@ -15,9 +15,9 @@
     mapState,
     mapActions
   } from "vuex";
-  import request from '../utils/api.js'
+import ajax from "../utils/ajax.js";
   export default {
-
+  
     data() {
       return {
         imgUrls: [],
@@ -27,33 +27,35 @@
         duration: 2000
       }
     },
-    methods:{
-      click(){
-        this.imgUrls=[]
-        
+    methods: {
+      click() {
+        this.imgUrls = []
+  
       },
       getBanner() {
-        let that = this
-        request.api(this.httpHead + this.httpBanner, function(res) {
-          that.imgUrls = res.data.banner
+        let url = `https://wx.biergao.vip/api/index/getArrimg`
+        ajax.Get(url).then(res => {
+          this.imgUrls = res.banner
         })
+  
       }
     },
     computed: {
       ...mapState(['httpHead', 'httpBanner'])
     },
-   onLoad(){
+    onLoad() {
       this.getBanner()
-   },
+    },
   };
 </script>
 
 <style>
-.swiper {
-  height: 40vh;
-}
-.slide-image {
-  width: 100%;
-  height: 40vh;
-}
+  .swiper {
+    height: 40vh;
+  }
+  
+  .slide-image {
+    width: 100%;
+    height: 40vh;
+  }
 </style>

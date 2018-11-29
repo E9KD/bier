@@ -31,7 +31,7 @@
     mapState,
     mapMutations
   } from "vuex";
-  import request from "../../utils/api.js";
+  import ajax from '../../utils/ajax.js'
   export default {
     data() {
       return {
@@ -48,7 +48,9 @@
       ...mapMutations(["toastshowtype", "closeToast"]),
       setVipToUser() {
         if (this.keyWord == null) {
-          this.toastshowtype(3);
+          this.toastshowtype({
+            t:2,p:'不能为空！'
+          });
           setTimeout(() => {
             this.closeToast();
           }, 1500);
@@ -65,23 +67,28 @@
         let data = {
           token: token
         };
-        console.log(data);
-        request.Post(url, data, res => {
-          if (res.data.res == "success") {
-            this.toastshowtype(1);
+        ajax.Post(url, data).then((result) => {
+          if (result.res == "success") {
+            this.toastshowtype({
+              t:1,p:'兑换成功！'
+            });
             setTimeout(function() {
               wx.navigateBack({
                 delta: 1
               });
             }, 1000);
           } else {
-            console.log(`shibai`);
-            this.toastshowtype(2);
+            this.toastshowtype({
+              t:2,p:'兑换失败！'
+            });
             setTimeout(() => {
               this.closeToast();
             }, 1500);
           }
+        }).catch((err) => {
+          console.log(err);
         });
+  
       }
     }
   };

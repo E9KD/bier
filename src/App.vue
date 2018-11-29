@@ -3,6 +3,7 @@
     mapMutations,
     mapState
   } from 'vuex';
+  import ajax from './utils/ajax.js'
   export default {
     methods: {
       ...mapMutations(['ChangeUserInfo', 'ChangeUserParam']),
@@ -26,7 +27,7 @@
           }
         })
       },
-      login(x) {
+      async login(x) {
         let that = this
         wx.login({
           success: function(res) {
@@ -35,20 +36,14 @@
             if (res.code) {
               wx.getUserInfo({
                 success: function(res) {
-                  wx.request({
-                    url: 'https://wx.biergao.vip/api/biaob/getOpenid3',
-                    data: {
-                      encryptedData: res.encryptedData,
-                      iv: res.iv,
-                      code: code
-                    },
-                    method: 'post',
-                    header: {
-                      'content-type': 'application/x-www-form-urlencoded'
-                    },
-                    success: function(res) {
-                      that.ChangeUserParam(res.data)
-                    }
+                  let url = `https://wx.biergao.vip/api/biaob/login`
+                  let data = {
+                    encryptedData: res.encryptedData,
+                    iv: res.iv,
+                    code: code
+                  }
+                  ajax.Post(url, data).then(res => {
+                    that.ChangeUserParam(res)
                   })
                 }
               })

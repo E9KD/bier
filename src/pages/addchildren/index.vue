@@ -67,7 +67,7 @@
     mapMutations,
     mapState
   } from "vuex";
-  import request from '../../utils/api.js'
+  import ajax from '../../utils/ajax.js'
   export default {
     data() {
       return {
@@ -80,30 +80,29 @@
         checked: null,
         isParshow: true,
         name: null,
-        motherHightnow:null,
+        motherHightnow: null,
         fatherHightnow: null,
         childrenHightnow: null,
         childrenHight: null,
-        age:null
+        age: null
       };
     },
     methods: {
-      ...mapMutations(['toastshowtype', 'closeToast']),
       ChangeMotherHightNow(e) {
         this.motherHightnowIndex = e.mp.detail.value
-        this.motherHightnow=this.ComputeNumber(e.mp.detail.value)
+        this.motherHightnow = this.ComputeNumber(e.mp.detail.value)
       },
       ChangeFatherHightNow(e) {
         this.fatherHightnowIndex = e.mp.detail.value
-        this.fatherHightnow=this.ComputeNumber(e.mp.detail.value)
+        this.fatherHightnow = this.ComputeNumber(e.mp.detail.value)
       },
       ChangeChildrenHightNow(e) {
         this.childrenHightnowIndex = e.mp.detail.value
-        this.childrenHightnow=this.ComputeNumber(e.mp.detail.value)
+        this.childrenHightnow = this.ComputeNumber(e.mp.detail.value)
       },
       ChangeChildrenHight(e) {
         this.childrenHightindex = e.mp.detail.value
-        this.childrenHight=this.ComputeNumber(e.mp.detail.value)
+        this.childrenHight = this.ComputeNumber(e.mp.detail.value)
       },
       ChangeChildrenBirthday(e) {
         this.childrenBirthday = e.mp.detail.value;
@@ -113,20 +112,20 @@
         // 1是男 2是nv
         this.checked = x;
       },
-      ComputeNumber(x){
-        let a=JSON.parse(x)
-        return a+100
+      ComputeNumber(x) {
+        let a = JSON.parse(x)
+        return a + 100
       },
-      ComputeAge(x){
-        let a=x.slice(0,4)
-        this.age=new Date().getFullYear()-parseInt(a)
+      ComputeAge(x) {
+        let a = x.slice(0, 4)
+        this.age = new Date().getFullYear() - parseInt(a)
       },
-      showMessage(x){
+      showMessage(x) {
         wx.showToast({
-        title: x,
-        icon: 'none',
-        duration: 1500
-      })
+          title: x,
+          icon: 'none',
+          duration: 1500
+        })
       },
       GoTest() {
         //获取所有信息，进行请求，然后跳转
@@ -148,26 +147,25 @@
         } else if (this.childrenHight == null) {
           this.showMessage('请选择目前身高')
         } else {
-          let url=`https://wx.biergao.vip/api/biaob/addData/openid/${this.userParam.openId}`
-          let data={
-            sex:this.checked,
-            username:this.name,
-            brithday:this.childrenBirthday,
-            qiwangheight:this.childrenHight,
-            nowheight:this.childrenHightnow
+          let url = `https://wx.biergao.vip/api/biaob/addData/openid/${this.userParam.openId}`
+          let data = {
+            sex: this.checked,
+            username: this.name,
+            brithday: this.childrenBirthday,
+            qiwangheight: this.childrenHight,
+            nowheight: this.childrenHightnow
           }
-          request.GetWithData(url,data,res=>{
-             if (res.data == 'em') {
-            this.showMessage('添加失败已存在');
-          } else {
-            this.showMessage('添加成功已保存');
-            console.log(res);
-            let data=res.data
-            wx.navigateTo({
-              url: `/pages/hightpre/main?id=${data.id}&m=${data.m}&y=${data.y}`
-            })
-          }
+          ajax.Get(url, data).then(res => {
+            if (res == 'em') {
+              this.showMessage('添加失败已存在');
+            } else {
+              this.showMessage('添加成功已保存');
+              wx.navigateTo({
+                url: `/pages/hightpre/main?id=${res.id}&m=${res.m}&y=${res.y}`
+              })
+            }
           })
+  
         }
       },
       init() {
@@ -185,13 +183,14 @@
         let data = {
           openid: this.userParam.openId
         }
-        request.Post(url, data, res => {
-          if (res.data.result == 'true') {
+        ajax.Post(url, data).then(res => {
+          if (res.result == 'true') {
             this.isParshow = false
           } else {
             this.isParshow = true
           }
         })
+  
       }
     },
     computed: {

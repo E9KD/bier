@@ -29,7 +29,7 @@
 
 <script>
 import { mapState, mapMutations } from "vuex";
-import request from "../utils/api.js";
+import ajax from "../utils/ajax.js";
 export default {
   data() {
     return {
@@ -75,13 +75,11 @@ export default {
     },
     init() {
       let url = `https://wx.biergao.vip/api/vip/price`;
-      request.api(url, res => {
+      ajax.Get(url).then(res=>{
         this.price1 = res.data[0];
         this.price2 = res.data[1];
         this.price = this.price1;
-      });
-
-      // console.log(this.userParam);
+      })
     },
 
     Close() {

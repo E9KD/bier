@@ -25,7 +25,7 @@
 
 <script>
   import Swiper from '../../components/swiper';
-  import request from '../../utils/api.js'
+  import ajax from '../../utils/ajax.js'
   import Toast from '../../components/toast.vue'
   import {
     mapState,
@@ -43,15 +43,19 @@
       Toast
     },
     methods: {
-      ...mapMutations(['changeteacherid','toastshowtype','closeToast']),
+      ...mapMutations(['changeteacherid', 'toastshowtype', 'closeToast']),
       getTeacherinfo() {
         let that = this
         let url = this.httpHead + this.httpTeacherpage1
-        this.toastshowtype(0)
-        request.api(url, function(res) {
-          that.teacherinfolist = res.data.orderlist
-          that.closeToast()
-        })
+        this.toastshowtype({
+          t:0,p:'Loading...'
+        });
+        ajax.Get(url).then((result) => {
+          this.teacherinfolist = result.orderlist
+          this.closeToast()
+        }).catch((err) => {
+          console.log(err);
+        });
       },
       getTeacherid(x) {
         this.changeteacherid(x)
@@ -75,10 +79,11 @@
     onReachBottom() {
       let that = this
       let url = this.httpHead + this.httpTeacherpage2
-      request.api(url, function(res) {
-        that.teacherinfolist2 = res.data.orderlist
-        // that.isteacherpage2=true
-      })
+      ajax.Get(url).then((result) => {
+        this.teacherinfolist2 = result.orderlist
+      }).catch((err) => {
+        console.log(err);
+      });
     },
     onPullDownRefresh() {
       wx.showNavigationBarLoading()
@@ -98,27 +103,33 @@
     width: 90%;
     margin: 30rpx auto;
   }
+  
   .servetext {
     text-align: center;
   }
+  
   .texthead {
     font-size: 60rpx;
   }
+  
   .phead {
     font-size: 30rpx;
     padding: 10rpx;
     color: #888888;
   }
+  
   .teacher {
     width: 100%;
     margin: 0 auto;
   }
+  
   .teacherrow {
     width: 47vw;
     margin-left: 2%;
     height: 47vw;
     display: inline-block;
   }
+  
   .teachercol {
     width: 100%;
     height: 100%;

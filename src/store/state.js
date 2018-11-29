@@ -2,10 +2,10 @@ export default {
   // toast
   toastshow: false, //toast显示隐藏切换
   toasttype: 0, //展示toast的类型，默认为0是事件 1是等待
-
+  toastContent:'',//toast展示的文字
   // 获得用户信息
   userInfo:null,
-  userParam:null,
+  userParam:{},
   teacherid: 0,
   httpHead: 'https://wx.biergao.vip/api/',
   httpLogin:'biaob/getOpenid2/code/',
@@ -43,6 +43,4 @@ export default {
   buytoastState:null,
   // buytoast的显示
   buytoastShow:false,
-  //全局绑定手机号
-  phoneNumber:``
 }

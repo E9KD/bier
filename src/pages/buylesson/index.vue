@@ -2,10 +2,10 @@
   <div class="buylesson">
     <video id="myVideo" class="video_list" :src="videoSrc" controls page-gesture direction show-fullscreen-btn show-play-btn show-center-play-btn></video>
     <scroll-div :scroll-y='true' @scroll="aaa" class="asd">
-      <div class="listbox"> 
+      <div class="listbox">
         <div class="listhead">
           <p class="listhead_title">{{showList.title}}</p>
-          <p class="listhead_tip"  v-if="state==0">热销中</p>
+          <p class="listhead_tip" v-if="state==0">热销中</p>
           <p class="listhead_price" v-if="state==0">{{showList.price}}&nbsp;¥</p>
           <p class="listhead_price" v-else> 强烈推荐</p>
         </div>
@@ -67,7 +67,7 @@
     mapState,
     mapMutations
   } from "vuex";
-  import request from "../../utils/api.js";
+  import ajax from '../../utils/ajax.js'
   import Toast from '../../components/toast.vue'
   export default {
     data() {
@@ -101,7 +101,10 @@
       ...mapMutations(["changevideo", 'toastshowtype', 'closeToast']),
       aaa(e) {},
       init() {
-        this.toastshowtype(0)
+        this.toastshowtype({
+          t: 0,
+          p: '请耐心等待'
+        })
         this.videoContext = wx.createVideoContext('myVideo');
         let url = `https://wx.biergao.vip/api/index/getvideourl`;
         let data = {
@@ -110,14 +113,13 @@
           openid: this.userParam.openId
         };
         this.buyId = this.lessonListcontent.id
-        request.GetWithData(url, data, res => {
-          this.lessonNumber = res.data;
-          this.videoSrc = res.data[0].content;
+        ajax.Get(url, data).then(res => {
+          this.lessonNumber = res;
+          this.videoSrc = res[0].content;
           this.ChangeParam()
-        });
+        })
         this.showList = this.lessonListcontent;
         this.GetVipState()
-  
         this.closeToast()
       },
       ChangeParam() {
@@ -150,8 +152,8 @@
         let data = {
           openid: this.userParam.openId
         }
-        request.Post(url, data, res => {
-          if (res.data == 'success') {
+        ajax.Post(url, data).then(res => {
+          if (res == 'success') {
             this.isVip = true
           }
         })
@@ -179,7 +181,7 @@
     },
     onLoad(x) {
       this.init();
-      this.state=x
+      this.state = x
     },
     onShow() {
       this.isBuy = false
@@ -228,10 +230,12 @@
     background-color: white;
     position: relative;
   }
-  .html{
+  
+  .html {
     color: #999;
     font-size: 30rpx;
   }
+  
   .fixed {
     position: -webkit-fixed;
     top: 0px;

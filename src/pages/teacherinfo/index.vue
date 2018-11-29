@@ -10,13 +10,13 @@
           <p class="listtextcom">{{isBuy?t1:t2}}</p>
           <p class="listtextcom">量身定制月度/季度的身高管理服务</p>
           <!-- <span class="listprice" v-if="isBuy">
-                          <p class="listpriceb">￥399</p>
-                          <p class="listprices">/月</p>
-                        </span>
-          <span class="listprice" v-if="isBuy">
-                          <p class="listpriceb">￥999</p>
-                          <p class="listprices">/月</p>
-                        </span> -->
+                                <p class="listpriceb">￥399</p>
+                                <p class="listprices">/月</p>
+                              </span>
+                <span class="listprice" v-if="isBuy">
+                                <p class="listpriceb">￥999</p>
+                                <p class="listprices">/月</p>
+                              </span> -->
           <div class="listbtnbox">
             <button class="listbtn" @click="buyLesson" v-if="isBuy">查询</button>
             <button open-type="contact" class="listbtn" v-else :session-from='link2' plain='true'>查询</button>
@@ -57,7 +57,7 @@
 </template>
 
 <script>
-  import request from "../../utils/api.js";
+  import ajax from '../../utils/ajax.js'
   import Toast from "../../components/toast.vue";
   import {
     mapState,
@@ -78,8 +78,8 @@
         a: "active",
         n: "normal",
         priceischoose: 0,
-        price1:null,
-        price2:null,
+        price1: null,
+        price2: null,
         price: 399,
         link: `{"type": "fuwu","userid":"null","unionId":"null","goodsid":"null","price":"null"}`,
         link2: '{"type": "image", "title": "点击开启您的一站式专属身高管理服务之旅吧！", "url": "http://www.biergao.cn/kefu"}'
@@ -96,21 +96,24 @@
         let data = {
           openid: this.userParam.openId
         }
-        request.GetWithData(url, data, res => {
-          if (data == 'success') {
+        ajax.Get(url, data).then((result) => {
+          if (result == 'success') {
             this.isBuy = false
           } else {
             this.isBuy = true
           }
-        })
+        }).catch((err) => {
+          console.log(err);
+        });
       },
-      GetDefaultPrice(){
-        let url=`https://wx.biergao.vip/api/vip/price2`
-        request.api(url,res=>{
-          let data=res.data
-          this.price1=data[0]
-          this.price2=data[1]
-        })
+      GetDefaultPrice() {
+        let url = `https://wx.biergao.vip/api/vip/price2`
+        ajax.Get(url).then((result) => {
+          this.price1 = result[0]
+          this.price2 = result[1]
+        }).catch((err) => {
+          console.log(err);
+        });
       },
       ChangeParam() {
         let data = JSON.parse(this.link);
@@ -139,13 +142,16 @@
         this.ChangeParam();
       },
       getDefaultinfo() {
-        this.toastshowtype(0);
+        this.toastshowtype({
+          t:0,p:'Loading...'
+        });
         let that = this;
         let url = this.httpTeacherinfo + this.teacherid;
-        request.api(url, function(res) {
-          console.log(res);
-          that.teacherinfo = res.data;
-          that.closeToast();
+        ajax.Get(url).then((result) => {
+          this.teacherinfo = result;
+          this.closeToast();
+        }).catch((err) => {
+          console.log(err);
         });
       }
     },
@@ -387,7 +393,6 @@
     margin-bottom: 5rpx;
     background-color: white;
   }
-  
 </style>
 
 

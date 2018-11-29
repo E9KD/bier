@@ -61,7 +61,7 @@ import { mapState } from 'vuex';
       init(){
         this.img=this.userInfo.avatarUrl
         this.name=this.userInfo.nickName
-        this.userPhone=this.phoneNumber
+        this.userPhone=this.userParam.mobile
         this.local=`${this.userInfo.city}  ${this.userInfo.province}`
         if(this.userInfo.gender==1){
           this.sex=`男`
@@ -84,7 +84,7 @@ import { mapState } from 'vuex';
       },
     },
     computed:{
-      ...mapState(['userParam','userInfo','phoneNumber'])
+      ...mapState(['userParam','userInfo'])
     },
     onLoad(){
       this.init()
@@ -97,6 +97,8 @@ import { mapState } from 'vuex';
   margin-top: 30rpx;
 }
 .contnet_p{
+  font-size:30rpx;
+
   margin-left: 10rpx;
   color: #999;
   float: right;

@@ -40,7 +40,7 @@
   import {
     mapMutations, mapState
   } from 'vuex';
-  import request from '../../utils/api.js'
+  import ajax from '../../utils/ajax.js'
   export default {
     data() {
       return {
@@ -64,10 +64,11 @@
         let data={
           openid:this.userParam.openId
         }
-        request.GetWithData(url,data,res=>{
-          console.log(res);
-          this.childrenList=res.data
-        })
+        ajax.Get(url,data).then((result) => {
+          this.childrenList=result
+        }).catch((err) => {
+          console.log(err);
+        });
       },
       ChangeChildrenhight(x,y,z,q,w,e,r){
         wx.navigateTo({
@@ -83,6 +84,12 @@
     },
     onShow(){
       this.init()
+    },
+    onPullDownRefresh() {
+      wx.showNavigationBarLoading()
+      this.init()
+      wx.hideNavigationBarLoading()
+      wx.stopPullDownRefresh()
     }
 
   }

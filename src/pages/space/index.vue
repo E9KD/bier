@@ -27,14 +27,14 @@
               </div>
             </div>
             <!-- <div v-else style="margin-left: 20rpx;">
-                              <div class="images-wrapper">
-                                <div class="images-list">
-                                  <div v-for="(item,index3) in item.imglist" :key='index3'>
-                                    <img class="images-img" src="https://wx.biergao.vip/uploads/thumb">
-                                  </div>
-                                </div>
-                              </div>
-                            </div> -->
+                                        <div class="images-wrapper">
+                                          <div class="images-list">
+                                            <div v-for="(item,index3) in item.imglist" :key='index3'>
+                                              <img class="images-img" src="https://wx.biergao.vip/uploads/thumb">
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div> -->
             <!--显示发布时间-->
             <div class="time">
               <p class="time_p">{{item.datatime}}</p>
@@ -58,8 +58,8 @@
             <div v-if="item.dianzanlist" style="margin-left: 20rpx;">
               <div class="dianzan-box">
                 <!-- <div class="dianzan-biao">
-                                    <img class="xin2" src="../../../static/image/zan.png"  style='line-height:35rpx;'>
-                                  </div> -->
+                                              <img class="xin2" src="../../../static/image/zan.png"  style='line-height:35rpx;'>
+                                            </div> -->
                 <div class="dianzan-text">
                   <img class="xin2" src="../../../static/image/zan1.png">
                   <p class="dianzan_text_p">{{item.dianzanlist}}</p>
@@ -85,7 +85,7 @@
 </template>
 
 <script>
-  import request from '../../utils/api.js'
+  import ajax from '../../utils/ajax.js'
   import {
     mapState
   } from 'vuex';
@@ -103,9 +103,9 @@
     },
     methods: {
       init() {
-        this.pageall =null
+        this.pageall = null
         this.searchSongList = null
-        this.pagenumber =null
+        this.pagenumber = null
         this.DefaultRequest()
       },
       DefaultRequest() {
@@ -114,17 +114,19 @@
           uid: this.userParam.userid,
           page: 1
         }
-        request.GetWithData(url, data, res => {
-          let data = res.data
-          if (data.pageall == 0) {
+        ajax.Get(url, data).then((result) => {
+          if (data.enum == 0) {
             this.isshow = 0
-            this.isDoom=false
+            this.isDoom = false
             return
           }
-          this.pageall = data.pageall
-          this.searchSongList = data.orderlist
-          this.pagenumber = data.pageall
-        })
+          this.pageall = result.pageall
+          this.searchSongList = result.orderlist
+          this.pagenumber = result.pageall
+        }).catch((err) => {
+          console.log(err);
+        });
+  
       },
       UpStar(x, y, z) {
         if (y) {
@@ -136,16 +138,16 @@
           id: x,
           nickname: this.userParam.nickName
         }
-        request.GetWithData(url, data, res => {
-          console.log(res);
+        ajax.Get(url, data).then((result) => {
           this.searchSongList[z].dianzan = true
           if (this.searchSongList[z].dianzanlist) {
             this.searchSongList[z].dianzanlist += `,${this.userParam.nickName}`
           } else {
             this.searchSongList[z].dianzanlist = this.userParam.nickName
           }
-  
-        })
+        }).catch((err) => {
+          console.log(res);
+        });
       },
       WriteMsg() {
         wx.navigateTo({
@@ -169,10 +171,9 @@
       ...mapState(['userParam'])
     },
     onLoad() {
-      this.init()
+      // this.init()
     },
-    onShow(){
-      console.log(123);
+    onShow() {
       this.init()
     },
     onReachBottom() {
@@ -187,11 +188,13 @@
           uid: this.userParam.userid,
           page: this.reachIndex
         }
-        request.GetWithData(url, data, res => {
-          for (let i = 0; i < res.data.orderlist.length; i++) {
-            this.searchSongList.push(res.data.orderlist[i])
+        ajax.Get(url, data).then((result) => {
+          for (let i = 0; i < result.orderlist.length; i++) {
+            this.searchSongList.push(result.orderlist[i])
           }
-        })
+        }).catch((err) => {
+          console.log(err);
+        });
       }
     },
     onPullDownRefresh() {
@@ -496,7 +499,7 @@
     font-size: 30rpx;
     padding: 10rpx 0px;
     /* margin-top: -29rpx;
-                            margin-left: 50rpx; */
+                                      margin-left: 50rpx; */
   }
   
   

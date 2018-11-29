@@ -61,7 +61,7 @@
 
 <script>
   import Datelist from "../../components/datelist";
-  import request from "../../utils/api.js";
+  import ajax from '../../utils/ajax.js'
   import echarts from "echarts";
   import mpvueEcharts from "mpvue-echarts";
   import {
@@ -251,10 +251,10 @@
         let data2 = {
           cid: this.id
         };
-        request.Post(url2, data2, res => {
+        ajax.Post(url2, data2).then((result) => {
           this.youHightlist = [];
           for (let i = 0; i < 12; i++) {
-            this.youHightlist.push(res.data[i].nowheight);
+            this.youHightlist.push(result[i].nowheight);
           }
           // x 当前身高 y 正常身高 z 期望身高 m 完美身高
           this.ComputedType(
@@ -286,7 +286,12 @@
             }
           ];
           chart.setOption(this.option);
+        }).catch((err) => {
+          console.log(err);
         });
+  
+  
+  
       },
       ComputedType(x, y, z, m) {
         // x 当前身高 y 正常身高 z 期望身高 q 完美身高
@@ -338,7 +343,7 @@
       this.hopeHight = x.hh;
       this.hightHight = x.hg;
       this.lowerHight = x.hd;
-      this.heightEnd =(parseFloat(this.hightHight)+parseFloat(this.lowerHight))/2
+      this.heightEnd = (parseFloat(this.hightHight) + parseFloat(this.lowerHight)) / 2
     }
   };
 </script>

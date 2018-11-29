@@ -30,7 +30,7 @@
                 <p class="textcom">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;坚持每天打卡，养成营养摄入好习惯，我会为小主统计每周打卡生成报告。请常来看我哦！</p>
             </div>
             <!-- <div class="btncom pushcardbtn">打卡&nbsp;></div>
-                                                <div class="btncom pushcardbtn">评价&nbsp;></div> -->
+                                                    <div class="btncom pushcardbtn">评价&nbsp;></div> -->
             <div class="commentbtn">
                 <div class="btncom btnleft goldbg" style="float:left;" @click="GoPunch(index)">打卡 ></div>
                 <div class="btncom btnright goldbg" @click="GoEvaluate(index)">评价 ></div>
@@ -45,7 +45,7 @@
         mapState,
         mapMutations
     } from "vuex";
-    import request from "../utils/api.js";
+import ajax from "../utils/ajax.js";
     export default {
         data() {
             return {
@@ -70,19 +70,21 @@
                     userid: this.userParam.userid,
                     pid: this.cardType
                 };
-                request.GetWithData(url, data, res => {
-                    let data = res.data;
-                    if (data.status == 200) {
-                        if(this.cardType!=0){
-                            this.isPastShow=false
+                ajax.Get(url, data).then(res => {
+                    if (res.status == 200) {
+                        if (this.cardType != 0) {
+                            this.isPastShow = false
                             return
                         }
                         this.isPastShow = true;
                     } else {
-                        
+    
                         this.isPastShow = false;
                     }
-                });
+                })
+    
+    
+    
             },
             GoEvaluate() {
                 this.closePushcardType();

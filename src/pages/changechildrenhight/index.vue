@@ -50,7 +50,7 @@
 </template>
 
 <script>
-  import request from '../../utils/api.js'
+  import ajax from '../../utils/ajax.js'
   import Toast from '../../components/toast.vue'
   import {
     mapState,
@@ -128,10 +128,12 @@
           id: this.id,
           name: this.name,
         }
-        request.GetWithData(url, data, res => {
-          let data = res.data
-          if (data.code == 200) {
-            this.toastshowtype(1)
+        ajax.Get(url,data).then(res=>{
+          if (res.code == 200) {
+            this.toastshowtype({
+              t:1,
+              p:'修改完成！'
+            })
             setTimeout(() => {
               this.closeToast()
               wx.navigateBack({
@@ -139,12 +141,16 @@
               })
             }, 1500)
           } else {
-            this.toastshowtype(2)
+            this.toastshowtype({
+              t:2,p:'修改失败！'
+            })
             setTimeout(() => {
               this.closeToast()
             }, 1500)
           }
         })
+
+
       },
       AddList() {
         if (this.hightList.length > 0) {

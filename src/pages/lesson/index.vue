@@ -37,7 +37,7 @@
 </template>
 
 <script>
-  import request from "../../utils/api.js";
+  import ajax from '../../utils/ajax.js'
   import Swiper from '../../components/swiper';
   import {
     mapState,
@@ -119,17 +119,20 @@
         this.getLessonlist(x)
       },
       getDefaultlist() {
-        let url = this.httpHead + this.httpGoods
-        request.api(url, res => {
-          this.goodsinfo = res.data
-        })
+        let url=`https://wx.biergao.vip/api/index/getTeachers?is_goods=1`
+        ajax.Get(url).then((result) => {
+          this.goodsinfo = result
+        }).catch((err) => {
+          console.log(err);
+        });
       },
       getLessonlist(x) {
         let url = this.httpHead + 'index/getClasstypeResource?catid=' + this.targetid + '&classtypeid=' + x
-        request.api(url, res => {
-          this.goodsinfo = res.data
-        })
-  
+        ajax.Get(url).then((result) => {
+          this.goodsinfo = result
+        }).catch((err) => {
+          console.log(err);
+        });
       },
       GoLessonPage(x,y) {
         // 获得点击课程的index

@@ -10,6 +10,7 @@
     mapMutations,
     mapState
   } from "vuex";
+  import ajax from '../../utils/ajax.js'
   export default {
     methods: {
       ...mapMutations(["ChangeUserInfo", "ChangeUserParam"]),
@@ -24,28 +25,22 @@
             if (res.code) {
               wx.getUserInfo({
                 success: function(res) {
-                  wx.request({
-                    url: "https://wx.biergao.vip/api/biaob/getOpenid3",
-                    data: {
-                      encryptedData: e.mp.detail.encryptedData,
-                      iv: e.mp.detail.iv,
-                      code: code
-                    },
-                    method: "post",
-                    header: {
-                      "content-type": "application/x-www-form-urlencoded"
-                    },
-                    success: function(res) {
-                      that.ChangeUserParam(res.data);
-                      console.log(JSON.stringify(that.userParam));
-                      if ( JSON.stringify(that.userParam)!="{}") {
-                        // 回到主页
-                        console.log(`进来了`);
-                        wx.reLaunch({
-                          url: "/pages/index/main"
-                        });
-                      }
+                  let url = `https://wx.biergao.vip/api/biaob/login`
+                  let data = {
+                    encryptedData: e.mp.detail.encryptedData,
+                    iv: e.mp.detail.iv,
+                    code: code
+                  }
+                  ajax.Post(url, data).then((result) => {
+                    that.ChangeUserParam(result);
+                    if (JSON.stringify(that.userParam) != "{}") {
+                      // 回到主页
+                      wx.reLaunch({
+                        url: "/pages/index/main"
+                      });
                     }
+                  }).catch((err) => {
+                    console.log(err);
                   });
                 }
               });

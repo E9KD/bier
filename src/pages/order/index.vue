@@ -15,8 +15,8 @@
   
   
         <button open-type='contact' :session-from="item.link" class="img">
-                      <img :src="currentTab==3 ?item.orderimg :imgsrc" alt=""  >
-            </button>
+                        <img :src="currentTab==3 ?item.orderimg :imgsrc" alt=""  >
+              </button>
   
   
         <div class="infor">
@@ -36,7 +36,7 @@
 </template>ss
 
 <script>
-  import request from "../../utils/api.js";
+  import ajax from '../../utils/ajax.js'
   import {
     mapState
   } from "vuex";
@@ -64,9 +64,12 @@
           oid: this.userParam.openId,
           page: pageindex
         };
-        request.order(url, data, res => {
-          this.list = res.orderlist;
+
+        ajax.Order(url, data).then((result) => {
+          this.list = result.orderlist;
           this.AddLink();
+        }).catch((err) => {
+          console.log(err);
         });
         this.ChangeParamUserifo();
       },
@@ -94,7 +97,6 @@
             this.list[i].link = JSON.stringify(b);
           }
         }
-        console.log(this.list);
       },
       ChangeParam(x, y, z) {
         if (z == 3) {
@@ -102,12 +104,10 @@
           data1.goodsid = x;
           data1.price = y;
           this.linkcom = JSON.stringify(data1);
-          console.log(this.linkcom);
         } else {
           let data2 = JSON.parse(this.link2);
           data2.goodsid = x;
           this.linkcom = JSON.stringify(data2);
-          console.log(this.linkcom);
         }
       },
       ChangeParamUserifo() {
@@ -275,114 +275,114 @@
   
   
   /* .content_p {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      margin-top: 20rpx;
-    }
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        margin-top: 20rpx;
+      }
+      
+      .content_order {
+        width: 100%;
+        float: left;
+        margin-top: 20rpx;
+        font-size: 30rpx;
+        color: #999;
+      }
+      
+      .vipList {
+        overflow: hidden;
+        width: 80%;
+        margin: 0 auto;
+        padding: 30rpx 0px;
+        border-bottom: 1px solid #eee;
+      }
+      
+      .listBox_img {
+        float: left;
+        width: 15vw;
+        height: 15vw;
+        vertical-align: middle;
+      }
+      
+      .img {
+        width: 100%;
+        height: 100%;
+      }
+      
+      .contentBox {
+        width: 50vw;
+        overflow: hidden;
+        float: right;
+        font-size: 30rpx;
+        border-radius: 20rpx;
+        vertical-align: middle;
+      }
+      
+      .order {
+        background-color: white;
+      }
+      
+      .box {
+        width: 50vw;
+      }
+      
+      .item {
+        padding: 10px;
+        height: auto;
+        background: #fff;
+        border-radius: 5px;
+        margin-top: 5px;
+        float: right;
+        font-size: 73%;
+        margin: 0 auto;
+        background: #eeedf2;
+      }
+      
+      
     
-    .content_order {
-      width: 100%;
-      float: left;
-      margin-top: 20rpx;
-      font-size: 30rpx;
-      color: #999;
-    }
-    
-    .vipList {
-      overflow: hidden;
-      width: 80%;
-      margin: 0 auto;
-      padding: 30rpx 0px;
-      border-bottom: 1px solid #eee;
-    }
-    
-    .listBox_img {
-      float: left;
-      width: 15vw;
-      height: 15vw;
-      vertical-align: middle;
-    }
-    
-    .img {
-      width: 100%;
-      height: 100%;
-    }
-    
-    .contentBox {
-      width: 50vw;
-      overflow: hidden;
-      float: right;
-      font-size: 30rpx;
-      border-radius: 20rpx;
-      vertical-align: middle;
-    }
-    
-    .order {
-      background-color: white;
-    }
-    
-    .box {
-      width: 50vw;
-    }
-    
-    .item {
-      padding: 10px;
-      height: auto;
-      background: #fff;
-      border-radius: 5px;
-      margin-top: 5px;
-      float: right;
-      font-size: 73%;
-      margin: 0 auto;
-      background: #eeedf2;
-    }
-    
-    
-  
-    
-    .search {
-      flex: auto;
-      display: flex;
-      flex-direction: column;
-      background: white;
-    }
-    
-    .search-bar {
-      flex: none;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 20rpx;
-      background: #fff;
-    }
-    
-    
-    
-    .search-result {
-      flex: auto;
-      position: relative;
-    }
-    
-    .search-result scroll-div {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      top: 0;
-    }
-    
-    .on {
-      background: #f08519;
-      color: #fff;
-      border: 1px solid #f08519;
-      box-sizing: border-box;
-    }
-    
-    .off {
-      background: #fff;
-      color: #000;
-      border: 1px solid #f08519;
-      box-sizing: border-box;
-    }  */
+      
+      .search {
+        flex: auto;
+        display: flex;
+        flex-direction: column;
+        background: white;
+      }
+      
+      .search-bar {
+        flex: none;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 20rpx;
+        background: #fff;
+      }
+      
+      
+      
+      .search-result {
+        flex: auto;
+        position: relative;
+      }
+      
+      .search-result scroll-div {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        top: 0;
+      }
+      
+      .on {
+        background: #f08519;
+        color: #fff;
+        border: 1px solid #f08519;
+        box-sizing: border-box;
+      }
+      
+      .off {
+        background: #fff;
+        color: #000;
+        border: 1px solid #f08519;
+        box-sizing: border-box;
+      }  */
 </style>

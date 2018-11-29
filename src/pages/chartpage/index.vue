@@ -32,7 +32,7 @@
     mapMutations,
     mapState
   } from "vuex";
-  import request from "../../utils/api.js";
+  import ajax from '../../utils/ajax.js'
   import echarts from "echarts";
   import mpvueEcharts from "mpvue-echarts";
   import {
@@ -58,7 +58,7 @@
         sexlist: this.ssex,
         chart: null,
         id: [],
-        nowHeightneed:null
+        nowHeightneed: null
       };
     },
     components: {
@@ -210,12 +210,12 @@
         let data2 = {
           cid: this.id[this.index]
         };
-        request.Post(url2, data2, res => {
+        ajax.Post(url2, data2).then((result) => {
           let list = [];
           for (let i = 0; i < 12; i++) {
-            list.push(res.data[i].nowheight);
+            list.push(result[i].nowheight);
           }
-          this.nowHeightneed=res.data[0].nowheight
+          this.nowHeightneed = result[0].nowheight
           this.childrenSex = this.childrenInfolist[this.index].sex;
           this.childrenAge = this.childrenInfolist[this.index].age;
           this.ChangeData();
@@ -241,10 +241,10 @@
             }
           ];
           chart.setOption(this.option);
+        }).catch((err) => {
+          console.log(err);
         });
       },
-  
-  
       init() {
         //  请求获取孩子的数量和信息，获取成功push到childrenList中,获取年龄和性别，还有自己的身高
         // 如今之后第一次更新图表
@@ -252,17 +252,21 @@
         let data1 = {
           openid: this.userParam.openId
         };
-        request.Post(url1, data1, res => {
-          if (this.childrenList.length ==0) {
-            for (let i = 0; i < res.data.length; i++) {
-              this.childrenList.push(res.data[i].name);
-              this.id.push(res.data[i].id);
+        ajax.Post(url1, data1).then((result) => {
+          if (this.childrenList.length == 0) {
+            for (let i = 0; i < result.length; i++) {
+              this.childrenList.push(result[i].name);
+              this.id.push(result[i].id);
             }
           }
-          this.childrenInfolist = res.data;
+          this.childrenInfolist = result;
           this.index = 0
           this.Requesta()
+        }).catch((err) => {
+          console.log(err);
         });
+  
+  
       },
       EchartsDefaultParam() {
         this.childrenSex = 0;
@@ -272,12 +276,12 @@
       ChangeHightNow() {
         wx.navigateTo({
           url: `/pages/changehight/main?hight=${
-            this.nowHeightneed
-          }&id=${this.childrenInfolist[this.index].id}&openId=${
-            this.childrenInfolist[this.index].pid
-          }&name=${
-            this.childrenInfolist[this.index].name
-          }`
+                      this.nowHeightneed
+                    }&id=${this.childrenInfolist[this.index].id}&openId=${
+                      this.childrenInfolist[this.index].pid
+                    }&name=${
+                      this.childrenInfolist[this.index].name
+                    }`
         });
       }
     },
@@ -290,7 +294,7 @@
       this.init();
     },
     computed: {
-      ...mapState([ "userParam"])
+      ...mapState(["userParam"])
     },
   };
 </script>

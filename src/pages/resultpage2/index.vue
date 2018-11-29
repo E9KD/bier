@@ -22,8 +22,7 @@
 </template>
 
 <script>
-
-  import request from "../../utils/api.js";
+  import ajax from '../../utils/ajax.js'
   import {
     mapState,
     mapMutations
@@ -36,7 +35,7 @@
         content: null
       }
     },
-
+  
     methods: {
       init(x) {
         let url = `https://wx.biergao.vip/api/survey/getassess2`
@@ -44,19 +43,20 @@
           pid: this.cardType,
           total: x
         }
-        this.score=null
+        this.score = null
         this.topContent = null
-        this.content ==null
-        request.GetWithData(url, data, res => {
-          let data = res.data
+        this.content == null
+        ajax.Get(url, data).then((result) => {
           this.score = x
-          this.topContent = data.title
-          this.content = data.jielun.replace(
+          this.topContent = result.title
+          this.content = result.jielun.replace(
             /16/g,
             "12").replace(
             /background-color:rgb(255, 255, 255)/g,
             "")
-        })
+        }).catch((err) => {
+          console.log(err);
+        });
       }
     },
     computed: {
@@ -69,9 +69,10 @@
 </script>
 
 <style scoped>
-.a{
-  background-color: none;
-}
+  .a {
+    background-color: none;
+  }
+  
   .parse {
     width: 80%;
     margin: 0 auto;
@@ -79,7 +80,6 @@
     padding-bottom: 50rpx;
   }
   
-  .resultpage2 {}
   
   .result_container {
     position: relative;

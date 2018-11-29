@@ -21,9 +21,6 @@
                 boxTop: 0
             }
         },
-        methods: {
-    
-        },
         onReachBottom() {
             this.boxTop -= 100
             console.log(this.boxTop);
