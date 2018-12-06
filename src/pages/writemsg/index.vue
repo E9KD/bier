@@ -54,7 +54,7 @@
       Toast
     },
     methods: {
-      ...mapMutations(['toastshowtype', 'closeToast']),
+      ...mapMutations(['toastshowtype', 'closeToast','ChangeSpaceState']),
       PushMsg() {
         console.log(`这个是上传`);
         console.log(this.picSrc + 123123123123123123123123);
@@ -68,8 +68,9 @@
         }
         ajax.Post(url, data).then((result) => {
           setTimeout(() => {
-            wx.navigateBack({
-              delta: 1
+            this.ChangeSpaceState(1)
+            wx.switchTab({
+              url: '/pages/space/main'
             })
           }, 1000)
         }).catch((err) => {
@@ -107,7 +108,8 @@
               success: function(res) {
                 if (JSON.parse(res.data).status == 0) {
                   that.toastshowtype({
-                    t:2,p:'图片过大！'
+                    t: 2,
+                    p: '图片过大！'
                   })
                   that.imglist.pop()
                   setTimeout(() => {

@@ -27,14 +27,14 @@
               </div>
             </div>
             <!-- <div v-else style="margin-left: 20rpx;">
-                                        <div class="images-wrapper">
-                                          <div class="images-list">
-                                            <div v-for="(item,index3) in item.imglist" :key='index3'>
-                                              <img class="images-img" src="https://wx.biergao.vip/uploads/thumb">
+                                          <div class="images-wrapper">
+                                            <div class="images-list">
+                                              <div v-for="(item,index3) in item.imglist" :key='index3'>
+                                                <img class="images-img" src="https://wx.biergao.vip/uploads/thumb">
+                                              </div>
                                             </div>
                                           </div>
-                                        </div>
-                                      </div> -->
+                                        </div> -->
             <!--显示发布时间-->
             <div class="time">
               <p class="time_p">{{item.datatime}}</p>
@@ -58,8 +58,8 @@
             <div v-if="item.dianzanlist" style="margin-left: 20rpx;">
               <div class="dianzan-box">
                 <!-- <div class="dianzan-biao">
-                                              <img class="xin2" src="../../../static/image/zan.png"  style='line-height:35rpx;'>
-                                            </div> -->
+                                                <img class="xin2" src="../../../static/image/zan.png"  style='line-height:35rpx;'>
+                                              </div> -->
                 <div class="dianzan-text">
                   <img class="xin2" src="../../../static/image/zan1.png">
                   <p class="dianzan_text_p">{{item.dianzanlist}}</p>
@@ -87,7 +87,7 @@
 <script>
   import ajax from '../../utils/ajax.js'
   import {
-    mapState
+    mapState, mapMutations
   } from 'vuex';
   export default {
     data() {
@@ -102,6 +102,7 @@
       }
     },
     methods: {
+      ...mapMutations(['ChangeSpaceState']),
       init() {
         this.pageall = null
         this.searchSongList = null
@@ -168,13 +169,16 @@
       },
     },
     computed: {
-      ...mapState(['userParam'])
+      ...mapState(['userParam', 'spaceState'])
     },
     onLoad() {
-      // this.init()
+      this.init()
     },
     onShow() {
-      this.init()
+      if (this.spaceState == 1) {
+        this.init()
+        this.ChangeSpaceState(0)
+      }
     },
     onReachBottom() {
       console.log(this.reachIndex, this.pageall);
@@ -499,7 +503,7 @@
     font-size: 30rpx;
     padding: 10rpx 0px;
     /* margin-top: -29rpx;
-                                      margin-left: 50rpx; */
+                                        margin-left: 50rpx; */
   }
   
   

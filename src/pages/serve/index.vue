@@ -1,6 +1,5 @@
 <template>
   <div>
-    <Swiper></Swiper>
     <div class="servehead">
       <div class="seveheadbox">
         <h2 class="servetext texthead">TEAM</h2>
@@ -24,7 +23,6 @@
 </template>
 
 <script>
-  import Swiper from '../../components/swiper';
   import ajax from '../../utils/ajax.js'
   import Toast from '../../components/toast.vue'
   import {
@@ -39,7 +37,6 @@
       }
     },
     components: {
-      Swiper,
       Toast
     },
     methods: {

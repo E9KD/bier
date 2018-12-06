@@ -1,6 +1,6 @@
 <template>
 
-  <div class="userinfo">
+  <div class="userinfoa">
     <div class="userinfo_top">
   
       <div class="top_name">

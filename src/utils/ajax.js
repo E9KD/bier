@@ -41,7 +41,7 @@ function Order(url, data) {
       },
       success: function (res) {
         if (res.statusCode == 200) {
-            resolve(res.data);
+          resolve(res.data);
         }
       }
     })
@@ -49,21 +49,21 @@ function Order(url, data) {
 }
 
 function GetWithOutData(url, data) {
-    return new Promise(resolve => {
-      wx.request({
-        url: url,
-        data: data,
-        method: "POST",
-        header: {
-          'Content-Type': 'application/json'
-        },
-        success: function (res) {
-            resolve(res)
-        }
-      })
+  return new Promise(resolve => {
+    wx.request({
+      url: url,
+      data: data,
+      method: "POST",
+      header: {
+        'Content-Type': 'application/json'
+      },
+      success: function (res) {
+        resolve(res)
+      }
     })
-  }
-  
+  })
+}
+
 
 export default {
   Get,

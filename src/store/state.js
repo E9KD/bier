@@ -43,4 +43,6 @@ export default {
   buytoastState:null,
   // buytoast的显示
   buytoastShow:false,
+  //space判定
+  spaceState:0,
 }

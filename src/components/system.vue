@@ -251,6 +251,7 @@
     }
     
     .curtextbtn {
+        margin-top: 15rpx;
         width: 200rpx;
         height: 70rpx;
         border-radius: 20rpx;

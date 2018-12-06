@@ -18,6 +18,7 @@ export default {
   // 获取type和显示toast
   toastshowtype(state, x) {
     // 0loading 1完成 2警告
+    // t 类型 p 文字 
     state.toasttype = x.t,
     state.toastContent=x.p
     state.toastshow = true
@@ -42,20 +43,6 @@ export default {
   ChangeUserParam(state,x){
     state.userParam=x
   },
-  // // 修改当前echarts的参数，age&sex&hight
-  // ChangeEchartsParam(state, x) {
-  //   state.chartSex = x.sex
-  //   state.chartAge = x.age
-    
-  // },
-  // qwe(state,x){
-  //   state.youHight = x
-  //   console.log(state.youHight);
-  // },
-  // // 修改选择展示孩子曲线的index，哪位孩子
-  // ChangeChildrenIndex(state, x) {
-  //   state.childrenIndex = x
-  // },
   // 修改雷达图参数
   ChangePolarParam(state,x){
     state.polarParam=x
@@ -81,5 +68,9 @@ export default {
   // 关闭buytoast
   CloseBuyToast(state,x){
     state.buytoastShow=false
+  },
+  // 修改spaceState
+  ChangeSpaceState(state,x){
+    state.spaceState=x
   },
 }

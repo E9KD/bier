@@ -162,4 +162,30 @@
     color: #999;
     font-size: 30rpx;
   }
+      .shareIcon {
+        display: inline-block;
+        margin-left: 10rpx;
+        width: 30rpx;
+        height: 30rpx;
+        vertical-align: middle;
+    }
+    
+    .userinfo p {
+        vertical-align: middle;
+        margin-left: 10rpx;
+        display: inline-block;
+    }
+    
+    .userinfo {
+        opacity: 0.9;
+        background-color: #ff5da2;
+        position: fixed;
+        bottom: 20%;
+        right: 0px;
+        color: white;
+        padding: 10rpx 20rpx;
+        font-size: 25rpx;
+        border-bottom-left-radius: 30rpx;
+        border-top-left-radius: 30rpx;
+    }
 </style>

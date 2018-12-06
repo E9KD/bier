@@ -71,12 +71,12 @@
                 })
             },
             asd(){
-                wx.navigateTo({
-                    url: `/pages/toolspage/main`
-                })
-                //  wx.navigateTo({
-                //     url: `/pages/test/main?id=123123`
+                // wx.navigateTo({
+                //     url: `/pages/toolspage/main`
                 // })
+                 wx.navigateTo({
+                    url: `/pages/share/main`
+                })
             }
         },
     }
@@ -144,9 +144,9 @@
         margin-bottom: 10rpx;
     }
     .toolstitle {
-
+        letter-spacing:10rpx;
         font-size: 40rpx;
-        font-weight: bold;
+        /* font-weight: bold; */
         text-align: center;
         white-space: nowrap;
     }

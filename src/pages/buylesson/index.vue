@@ -1,398 +1,493 @@
+
 <template>
-  <div class="buylesson">
-    <video id="myVideo" class="video_list" :src="videoSrc" controls page-gesture direction show-fullscreen-btn show-play-btn show-center-play-btn></video>
-    <scroll-div :scroll-y='true' @scroll="aaa" class="asd">
-      <div class="listbox">
-        <div class="listhead">
-          <p class="listhead_title">{{showList.title}}</p>
-          <p class="listhead_tip" v-if="state==0">热销中</p>
-          <p class="listhead_price" v-if="state==0">{{showList.price}}&nbsp;¥</p>
-          <p class="listhead_price" v-else> 强烈推荐</p>
-        </div>
-        <div class="listhead_changecard">
-          <div class="changecardcom" :class="[changecardisshow?a:n]" @click="changecardtype(0)">课程概述</div>
-          <div class="changecardcom" :class="[changecardisshow?n:a]" @click="changecardtype(1)">课程目录</div>
-        </div>
-        <div class="listhead_showlist">
-          <!-- 课程概述 -->
-          <div class="showlist_list" v-show="lessonlistshowtype==0">
-            <p class="showlist_introduce">老师介绍</p>
-            <div class="showlist_teacherimagebox">
-              <div class="showlist_teacherimage" :style="{backgroundImage:'url(' + showList.teacherinfo.faceimg + ')'}"></div>
-              <p class="showlist_teachername">{{showList.teacherinfo.name}}</p>
+    <div class="lesson">
+        <div class="lessonbox">
+    
+            <div class="lessonVideo">
+                <div class="video_top">
+                    <div v-if="isPlay" class="video_top_img" @click.stop="PlayVideo">
+                        <img :src="imageSrc" alt="" class="top_img_cover" style="height:200px;">
+                        <div class="top_img_p">
+                            <img src="../../../static/image/playwhite.png" alt="" class="img_p_img">
+                            <p class="img_p_p">点击播放</p>
+                        </div>
+    
+                    </div>
+                    <div v-else class="video_top_video">
+                        <video id="myVideo" class="video" :src="videoSrc" direction='0' objectFit='fill' controls page-gesture show-fullscreen-btn show-play-btn show-center-play-btn></video>
+                        <cover-view class="top_video_icon" @click="CutVideo">
+                            <!-- <cover-image src="../../../static/image/besmall.png" alt="" class="video_icon_icon"/> -->
+                            <cover-view class="video_icon_p">收起</cover-view>
+                        </cover-view>
+                    </div>
+                </div>
+                <div class="video_bom">
+                    <div class="lesson_box">
+                        <div class="video_bom_title">
+                            <p class="bom_title_p">{{title}}</p>
+                        </div>
+                        <div class="video_bom_time">
+                            <div class="bom_time_time">
+                                <p class="time_time_p">时间</p>
+                                <p class="time_time_content">{{date}}</p>
+                            </div>
+                        </div>
+                        <div class="video_bom_time" style="padding-bottom:50rpx;">
+                            <p class="time_time_p">分类</p>
+                            <p class="time_time_type">{{lessonType}}</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div v-html="showList.teacherinfo.teacher_text" class="html"> </div>
-            <p class="showlist_introduce">适用人群</p>
-            <p class="showlist_useinfo">一、不了解长高知识的父母</p>
-            <p class="showlist_useinfo">二、想系统学习身高管理的父母</p>
-            <p class="showlist_useinfo">三、想让孩子长到理想身高的父母</p>
-            <p class="showlist_useinfo">四、0-18岁成长关键期孩子的父母</p>
-            <p class="showlist_introduce">课程介绍</p>
-            <div v-html="showList.content" class="html"></div>
-          </div>
-          <!-- 课程目录 -->
-          <div class="showlist_lessonindex" v-show="lessonlistshowtype==1">
-            <div class="lessonindex_list" @click="ChangeVideo(item.content)" v-for="(item,index) in lessonNumber " :key="index">
-              <p class="list_p">{{item.title}}</p>
-              <img class="list_img" :src="isVip?playIcon:buyIcon" alt="">
+    
+            <div class="lessonIntro">
+                <div class="lesson_box">
+                    <p class="lessonIntro_title">课程简介</p>
+                    <p class="lessonIntro_content">{{lessonIntroContent}}</p>
+                </div>
             </div>
-          </div>
+    
+            <div class="lessonIntro">
+                <div class="lesson_box">
+                    <p class="lessonIntro_title">讲师介绍</p>
+                    <div class="lessonIntro_teacher">
+                        <div class="teacher_img" v-if="faceimg" :style="{backgroundImage:'url(' + faceimg + ')'}"></div>
+                        <!-- <img :src="faceimg" alt="" class="teacher_img"> -->
+                        <p class="teacher_name">{{name}}</p>
+                    </div>
+                    <p class="lessonIntro_content">{{teacherInfoContent}}</p>
+                </div>
+            </div>
+    
+            <div class="lessonIntro" style="padding-bottom:50rpx;">
+                <div class="lesson_box">
+                    <p class="lessonIntro_title">课程表</p>
+                    <div class="lessonIntro_tip">
+                        <div class="tip_box">
+                            <img class="tip_box_img" src="../../../static/image/tip.png" alt="">
+                            <p class="tip_box_p">视频观看</p>
+                        </div>
+                        <div class="tip_box" style="margin-left:30rpx;">
+                            <img class="tip_box_img" src="../../../static/image/tip.png" alt="">
+                            <p class="tip_box_p">无限次重播</p>
+                        </div>
+                        <div class="tip_box" style="margin-left:30rpx;">
+                            <img class="tip_box_img" src="../../../static/image/tip.png" alt="">
+                            <p class="tip_box_p">VIP免费</p>
+                        </div>
+                    </div>
+                    <div class="lessonList">
+                        <div v-for="(item,index) in lessonList" :key="index" class="lessonList_box">
+                            <p class="lessonList_index">&nbsp;</p>
+                            <div class="lessonList_titlebox">
+                                <p class="titlebox_title">
+                                    {{item.title}}
+                                </p>
+                                <p class="titlebox_lessontime">上课时长：{{lessontime}}分钟</p>
+                            </div>
+                            <div class="lessonList_btn">
+                                <p v-if="isWatch" class="btn" @click="WatchVideo(item.content)">观看</p>
+                                <p v-else class="btn" @click="BuyLesson">购买</p>
+                            </div>
+                        </div>
+    
+                    </div>
+                </div>
+            </div>
+    
         </div>
-      </div>
-    </scroll-div>
-    <div class="btn" v-if="isVip" @click="PlayVideo">{{i}}</div>
-    <div class="btn" v-else @click="GoBuyLesson">{{z}}</div>
-  
-    <div :class="isBuy?s:h" style='height:100px;border:1rpx solid #333;border-radius:5px;  position: absolute;background:#fff; top: 40%; left: 0; bottom: 0; right: 0;'>
-      <div style='width:100%;height:28px;'>
-        <div style='width:30px;height:30px;line-height:30px;margin:0 auto;float:right;font-size:16px;text-align:center;' @click='CloseTip'>
-          X
+        <div :class="isBuy?s:h" style='height:100px;border:1rpx solid #333;border-radius:5px;  position: fixed;background:#fff; top: 50%;transform: translate(0,-50%); left: 0; bottom: 0; right: 0;'>
+            <div style='width:100%;height:28px;'>
+                <div style='width:30px;height:30px;line-height:30px;margin:0 auto;float:right;font-size:16px;text-align:center;' @click='CloseTip'>
+                    X
+                </div>
+            </div>
+            <div style='position:absolute;width:100%;height:30px;margin:0 auto;float:right;font-size:10pt;text-align:center;'>
+                进入客服消息后，发送"{{lessinId}}"获取查询链接
+            </div>
+            <!-- 底部 -->
+            <div style='width:100%;height:40px;overflow:hidden;position:absolute;bottom:0;box-sizing:border-box;'>
+                <button plain='true' style='margin-bottom:0px;height:40px;line-height:40px;float:right;border:none;color:#00B26A;font-size:10pt;' open-type='contact' :session-from='link'>马上咨询</button>
+            </div>
+    
         </div>
-      </div>
-      <div style='position:absolute;width:100%;height:30px;margin:0 auto;float:right;font-size:10pt;text-align:center;'>
-        进入客服消息后，发送"{{buyId}}"获取查询链接
-      </div>
-      <!-- 底部 -->
-      <div style='width:100%;height:40px;overflow:hidden;position:absolute;bottom:0;box-sizing:border-box;'>
-        <button plain='true' style='margin-bottom:0px;height:40px;line-height:40px;float:right;border:none;color:#00B26A;font-size:10pt;' open-type='contact' :session-from='link'>马上咨询</button>
-      </div>
-  
+        <div class="userinfo" @click.stop="GetShare">
+            <img src="../../../static/image/share.png" alt="" class="shareIcon">
+            <p>分享给好友</p>
+        </div>
     </div>
-    <Toast></Toast>
-  </div>
 </template>
 
 <script>
-  import {
-    mapState,
-    mapMutations
-  } from "vuex";
-  import ajax from '../../utils/ajax.js'
-  import Toast from '../../components/toast.vue'
-  export default {
-    data() {
-      return {
-        playIcon: require('../../../static/image/play.png'),
-        buyIcon: require('../../../static/image/buy.png'),
-        lessonlistshowtype: 0,
-        item: "200",
-        isBuy: false,
-        changecardisshow: true,
-        a: "active",
-        n: "normal",
-        s: 'show',
-        h: 'hidden',
-        showList: [],
-        showlistcontent: "",
-        lessonNumber: 123,
-        videoSrc: null,
-        isVip: false,
-        z: '立刻查询',
-        i: '立刻观看',
-        videoContext: null,
-        link: '{"type": "keceng","unionId":"null","userid":"null","goodsid":"null"}',
-        buyId: null,
-      };
-    },
-    components: {
-      Toast
-    },
-    methods: {
-      ...mapMutations(["changevideo", 'toastshowtype', 'closeToast']),
-      aaa(e) {},
-      init() {
-        this.toastshowtype({
-          t: 0,
-          p: '请耐心等待'
-        })
-        this.videoContext = wx.createVideoContext('myVideo');
-        let url = `https://wx.biergao.vip/api/index/getvideourl`;
-        let data = {
-          cid: this.lessonListcontent.id,
-          scode: 1,
-          openid: this.userParam.openId
-        };
-        this.buyId = this.lessonListcontent.id
-        ajax.Get(url, data).then(res => {
-          this.lessonNumber = res;
-          this.videoSrc = res[0].content;
-          this.ChangeParam()
-        })
-        this.showList = this.lessonListcontent;
-        this.GetVipState()
-        this.closeToast()
-      },
-      ChangeParam() {
-        let data = JSON.parse(this.link)
-        data.userid = this.userParam.userid
-        data.unionId = this.userParam.unionId
-        data.goodsid = this.lessonNumber[0].cid
-        this.link = JSON.stringify(data)
-        console.log(this.link);
-      },
-      CloseTip() {
-        this.isBuy = false
-      },
-      PlayVideo() {
-        this.videoContext.play()
-      },
-      GoBuyLesson() {
-        this.isBuy = true
-      },
-      ChangeVideo(x) {
-        if (this.isVip) {
-          this.videoSrc = x
-          this.videoContext.play()
-          return
+    import ajax from '../../utils/ajax.js'
+    import {
+        mapState,
+        mapMutations
+    } from 'vuex';
+    export default {
+        data() {
+            return {
+                videoSrc: '',
+                isPlay: true,
+                title: '第一课，第一课，',
+                date: '201811.30-11.30',
+                lessonType: '视频课',
+                lessonIntroContent: '',
+                teacherInfoContent: '',
+                name: '这个是老师的姓名',
+                lessontime: '60',
+                lessonContent: '',
+                lessinId: null,
+                buyState: 0,
+                faceimg: '',
+                lessonList: null,
+                isWatch: false,
+                s: 'show',
+                h: 'hidden',
+                link: '{"type": "keceng","unionId":"null","userid":"null","goodsid":"null"}',
+                isBuy: false,
+                videoContext: null,
+                imageSrc: '',
+                share: false
+            }
+        },
+        methods: {
+            init() {
+                this.lessinId = this.lessonListcontent.id
+                this.buyState = this.lessonListcontent.status
+                this.title = this.lessonListcontent.title
+                this.lessonIntroContent = this.lessonListcontent.video_text
+                this.teacherInfoContent = this.lessonListcontent.teacherinfo.teacher_text
+                this.faceimg = this.lessonListcontent.teacherinfo.faceimg
+                this.name = this.lessonListcontent.teacherinfo.name
+                let time = new Date(this.lessonListcontent.teacherinfo.time_create * 1000)
+                this.date = `${time.getFullYear()}/${time.getMonth()+1}/${time.getDate()}`
+                this.imageSrc = this.lessonListcontent.class_url_img
+                this.GetLessonInfo()
+                this.GetVipState()
+                this.ChangeLink()
+            },
+            ChangeLink() {
+                let data = JSON.parse(this.link)
+                data.userid = this.userParam.userid
+                data.unionId = this.userParam.unionId
+                data.goodsid = this.lessinId
+                this.link = JSON.stringify(data)
+            },
+            GetLessonInfo() {
+                let url = `https://wx.biergao.vip/api/index/getvideourl`;
+                let data = {
+                    cid: this.lessinId,
+                    scode: 1,
+                    openid: this.userParam.openId
+                };
+                ajax.Get(url, data).then(res => {
+                    this.lessonList = res
+                    if (res.isset) {
+                        this.isWatch = true
+                    }
+                    delete this.lessonList.isset
+                    this.videoSrc = this.lessonList[0].content
+                })
+            },
+            GetVipState() {
+                let url = 'https://wx.biergao.vip/api/vip/show'
+                let data = {
+                    openid: this.userParam.openId
+                }
+                ajax.Post(url, data).then(res => {
+                    if (res == 'success') {
+                        this.isWatch = true
+                    }
+                })
+            },
+            WatchVideo(x) {
+                this.isPlay = true
+                this.videoContext = wx.createVideoContext('myVideo');
+                this.videoSrc = x
+                setTimeout(() => {
+                    this.isPlay = false
+                    this.videoContext.play()
+                }, 500)
+            },
+            BuyLesson() {
+                this.isBuy = true
+            },
+            CloseTip() {
+                this.isBuy = false
+            },
+            PlayVideo() {
+                this.isPlay = false
+            },
+            CutVideo() {
+                this.isPlay = true
+            },
+            GetShare() {
+                wx.navigateTo({
+                    url: '/pages/test/main'
+                })
+            }
+        },
+        computed: {
+            ...mapState(["lessonListcontent", "userParam", 'lessonListcontent', ])
+        },
+        onLoad() {
+            this.init()
         }
-        this.isBuy = true
-      },
-      GetVipState() {
-        let url = 'https://wx.biergao.vip/api/vip/show'
-        let data = {
-          openid: this.userParam.openId
-        }
-        ajax.Post(url, data).then(res => {
-          if (res == 'success') {
-            this.isVip = true
-          }
-        })
-      },
-      preview(src, e) {
-        // do something
-      },
-      navigate(href, e) {
-        // do something
-      },
-      changecardtype(x) {
-        this.lessonlistshowtype = x;
-        if (x == 0) {
-          this.changecardisshow = true;
-        } else {
-          this.changecardisshow = false;
-        }
-      },
-      ComputeHight(e) {
-        console.log(e);
-      }
-    },
-    computed: {
-      ...mapState(["lessonListcontent", "userParam"])
-    },
-    onLoad(x) {
-      this.init();
-      this.state = x
-    },
-    onShow() {
-      this.isBuy = false
-    }
-  };
+    };
 </script>
-
+ 
 <style scoped>
-  .lessonindex_list {
-    overflow: hidden;
-    border-bottom: 3rpx solid #eee;
-  }
-  
-  .show {
-    display: block;
-    z-index: 9999;
-  }
-  
-  .hidden {
-    display: none;
-  }
-  
-  .listhead_showlist {
-    margin-bottom: 140rpx;
-  }
-  
-  .btn {
-    width: 100%;
-    height: 100rpx;
-    position: fixed;
-    left: 0px;
-    bottom: 0px;
-    background-color: #f2892c;
-    color: white;
-    line-height: 100rpx;
-    font-size: 35rpx;
-    text-align: center;
-  }
-  
-  .asd {
-    width: 100%;
-    height: 400px;
-  }
-  
-  .buylesson {
-    background-color: white;
-    position: relative;
-  }
-  
-  .html {
-    color: #999;
-    font-size: 30rpx;
-  }
-  
-  .fixed {
-    position: -webkit-fixed;
-    top: 0px;
-    left: 0px;
-  }
-  
-  .nofixed {
-    position: static;
-  }
-  
-  .list_p {
-    padding: 30rpx;
-    font-size: 30rpx;
-    color: #999;
-    float: left;
-    vertical-align: middle;
-  }
-  
-  .list_img {
-    width: 45rpx;
-    height: 45rpx;
-    float: right;
-    margin-right: 20rpx;
-    vertical-align: middle;
-    padding: 30rpx;
-  }
-  
-  .showlist_teachername {
-    text-align: center;
-    margin-top: 25rpx;
-    color: #999;
-    width: 100%;
-    font-size: 40rpx;
-  }
-  
-  .showlist_lessonindex {
-    width: 90%;
-    margin: 0px auto;
-    margin-top: 30rpx;
-  }
-  
-  .showlist_lessoncontent {
-    color: #999;
-    font-size: 20rpx;
-    margin-top: 20rpx;
-  }
-  
-  .showlist_useinfo {
-    font-size: 28rpx;
-    color: #999;
-    margin-top: 18rpx;
-  }
-  
-  .showlist_teacherinfo {
-    font-size: 28rpx;
-    color: #999;
-    line-height: 40rpx;
-    margin-top: 20rpx;
-  }
-  
-  .showlist_name {
-    font-size: 30rpx;
-    text-align: center;
-    height: 50rpx;
-    line-height: 50rpx;
-    margin-top: 20rpx;
-  }
-  
-  .showlist_teacherimage {
-    width: 220rpx;
-    height: 220rpx;
-    background: url("") no-repeat center top;
-    border-radius: 90%;
-    background-size: cover;
-    display: block;
-    margin: 0 auto;
-    margin-top: 30rpx;
-  }
-  
-  .showlist_teacherimagebox {
-    width: 100%;
-    position: relative;
-  }
-  
-  .showlist_introduce {
-    font-size: 36rpx;
-    line-height: 50rpx;
-    padding: 20rpx 0rpx;
-    border-bottom: 1px solid #eee;
-  }
-  
-  .showlist_list {
-    width: 90%;
-    margin: 0 auto;
-  }
-  
-  .changecardbor {
-    width: 50%;
-    height: 6rpx;
-    background-color: #f2892c;
-    display: inline-block;
-  }
-  
-  .active {
-    border-bottom: 5rpx solid #f2892c;
-  }
-  
-  .normal {
-    border: none;
-  }
-  
-  .changecardcom {
-    display: inline-block;
-    width: 50%;
-    height: 100rpx;
-    font-size: 40rpx;
-    line-height: 100rpx;
-    text-align: center;
-    color: black;
-  }
-  
-  .listhead_changecard {
-    background-color: #f4f4f4;
-    position: -webkit-sticky;
-    position: sticky;
-    top: 0px;
-    z-index: 999;
-  }
-  
-  .listhead_price {
-    color: red;
-    font-size: 35rpx;
-    margin-top: 20rpx;
-  }
-  
-  .listhead_tip {
-    color: red;
-    margin-top: 20rpx;
-    font-size: 25rpx;
-  }
-  
-  .listhead_title {
-    font-size: 36rpx;
-    font-weight: bold;
-    padding-top: 20rpx;
-  }
-  
-  .listhead {
-    width: 90%;
-    margin: 0 auto;
-    height: 200rpx;
-    background-color: white;
-  }
-  
-  .video_list {
-    width: 100%;
-    height: 400rpx;
-    width: 100%;
-  }
+    /* .shareIcon {
+                display: inline-block;
+                margin-left: 10rpx;
+                width: 30rpx;
+                height: 30rpx;
+                vertical-align: middle;
+            }
+            
+            .userinfo p {
+                vertical-align: middle;
+                margin-left: 10rpx;
+                display: inline-block;
+            }
+            
+            .userinfo {
+                opacity: 0.9;
+                background-color: #ff5da2;
+                position: absolute;
+                top: 10%;
+                right: 0px;
+                color: white;
+                padding: 10rpx 20rpx;
+                font-size: 25rpx;
+                border-bottom-left-radius: 30rpx;
+                border-top-left-radius: 30rpx;
+            } */
+    
+    .show {
+        display: block;
+        z-index: 9999;
+    }
+    
+    .hidden {
+        display: none;
+    }
+    
+    .lessonList_box {
+        margin-top: 30rpx;
+        padding-bottom: 20rpx;
+        border-bottom: 1px solid #eee;
+    }
+    
+    .btn {
+        font-size: 25rpx;
+        display: inline-block;
+        vertical-align: top;
+        padding: 5rpx 20rpx;
+        border: 1px solid #999;
+        border-radius: 20rpx;
+    }
+    
+    .lessonList_btn {
+        width: 20%;
+        display: inline-block;
+        text-align: center;
+        vertical-align: middle;
+    }
+    
+    .titlebox_lessontime {
+        margin-top: 20rpx;
+        font-size: 25rpx;
+        color: #999;
+    }
+    
+    .lessonList_titlebox {
+        font-size: 28rpx;
+        display: inline-block;
+        vertical-align: top;
+        width: 70%;
+    }
+    
+    .lessonList_index {
+        display: inline-block;
+        font-size: 28rpx;
+        vertical-align: top;
+        width: 10%;
+    }
+    
+    .tip_box_p {
+        display: inline-block;
+        margin-left: 10rpx;
+        font-size: 22rpx;
+        vertical-align: middle;
+    }
+    
+    .tip_box_img {
+        display: inline-block;
+        vertical-align: middle;
+        width: 30rpx;
+        height: 30rpx;
+    }
+    
+    .tip_box {
+        display: inline-block;
+        /* margin-left: 30rpx; */
+    }
+    
+    .lessonIntro_tip {
+        margin-top: 30rpx;
+    }
+    
+    .teacher_name {
+        font-size: 25rpx;
+        margin-left: 30rpx;
+        float: left;
+        height: 80rpx;
+        line-height: 80rpx;
+    }
+    
+    .teacher_img {
+        width: 80rpx;
+        height: 80rpx;
+        border-radius: 100%;
+        float: left;
+        background: url("") no-repeat center top;
+        background-size: cover;
+        margin: 0 auto;
+    }
+    
+    .lessonIntro_teacher {
+        padding: 30rpx 0;
+        border-bottom: 1px solid #eee;
+        overflow: hidden;
+    }
+    
+    .lessonIntro_content {
+        margin-top: 30rpx;
+        padding-bottom: 30rpx;
+        font-size: 25rpx;
+    }
+    
+    .lessonIntro_title {
+        padding-top: 30rpx;
+        font-size: 30rpx;
+    }
+    
+    .lessonIntro {
+        margin-top: 20rpx;
+        background-color: white;
+    }
+    
+    .time_time_p {
+        display: inline-block;
+    }
+    
+    .time_time_type {
+        font-size: 20rpx;
+        color: rgb(227, 139, 39);
+        padding: 6rpx;
+        border: 1px solid rgb(227, 139, 39);
+        margin-left: 30rpx;
+        display: inline-block;
+    }
+    
+    .time_time_content {
+        margin-left: 30rpx;
+        display: inline-block;
+    }
+    
+    .bom_time_time {
+        display: inline-block;
+    }
+    
+    .video_bom_time {
+        font-size: 25rpx;
+        margin-top: 30rpx;
+    }
+    
+    .video_bom_title {
+        font-size: 30rpx;
+        padding-top: 50rpx;
+    }
+    
+    .lesson_box {
+        width: 90%;
+        margin: 0 auto;
+    }
+    
+    .video_bom {
+        background-color: white;
+    }
+    
+    .video_icon_p {
+        display: inline-block;
+        font-size: 25rpx;
+        color: white;
+        vertical-align: middle;
+        padding: 8rpx 17rpx;
+    }
+    
+    .video_icon_icon {
+        vertical-align: middle;
+        width: 25rpx;
+        height: 25rpx;
+        display: inline-block;
+    }
+    
+    .top_video_icon {
+        position: absolute;
+        top: 10%;
+        right: 10%;
+        background-color: black;
+        border-radius: 18rpx;
+    }
+    
+    .img_p_img {
+        display: inline-block;
+        width: 40rpx;
+        height: 40rpx;
+        vertical-align: middle;
+        line-height: 80rpx;
+        margin-left: 50rpx;
+    }
+    
+    .img_p_p {
+        display: inline-block;
+        color: white;
+        vertical-align: middle;
+        line-height: 80rpx;
+        margin-right: 50rpx;
+    }
+    
+    .top_img_p {
+        opacity: 0.7;
+        border-radius: 50rpx;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: black;
+        height: 80rpx;
+    }
+    
+    .video_top_img {
+        position: relative;
+    }
+    
+    .video_top_video {
+        height: 80vh;
+        position: relative;
+    }
+    
+    .share {
+        position: fixed;
+        bottom: 40%;
+        right: 0px;
+        z-index: 999;
+        width: 50rpx;
+        height: 50rpx;
+        background-color: black;
+        color: white;
+    }
 </style>

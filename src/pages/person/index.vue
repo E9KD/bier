@@ -8,7 +8,7 @@
         <p class="username">{{userInfolist.nickName}}</p>
       </div>
       <button v-if="isPhone" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber" class="changephonenumber">绑定手机号</button>
-      <div class="userinfo" @click="GoUserInfo">个人资料</div>
+      <div class="userinfoa" @click="GoUserInfo">个人资料</div>
     </div>
     <div class="fucbox">
       <div class="box_com">
@@ -132,10 +132,11 @@
 </script>
 
 <style scoped>
-  .userinfo {
+  .userinfoa {
     background-color: #45b7b8;
     position: absolute;
     top: 10%;
+    bottom: none;
     right: 0px;
     color: white;
     padding: 10rpx 40rpx;

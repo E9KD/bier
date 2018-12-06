@@ -147,7 +147,6 @@
         ajax.Post(url, data).then(res => {
           this.days = res.sday;
         })
-  
       }
     },
     onLoad() {

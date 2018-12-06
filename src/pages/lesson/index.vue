@@ -21,7 +21,7 @@
       </div>
       <!-- 课程列表 -->
       <div class="lessonlisttitle">
-        <div class="contextbox" v-for='(item,index) in goodsinfo' :key="index" @click="GoLessonPage(index,item.status)">
+        <div class="contextbox" v-for='(item,index) in goodsinfo' :key="index" @click="GoLessonPage(index)">
           <img :src="item.class_url_img" alt="" srcset="" class="contextleft">
           <div class="contextright">
             <h3 class="contexttitle">{{item.title}}</h3>
@@ -119,7 +119,7 @@
         this.getLessonlist(x)
       },
       getDefaultlist() {
-        let url=`https://wx.biergao.vip/api/index/getTeachers?is_goods=1`
+        let url = `https://wx.biergao.vip/api/index/getTeachers?is_goods=1`
         ajax.Get(url).then((result) => {
           this.goodsinfo = result
         }).catch((err) => {
@@ -134,13 +134,10 @@
           console.log(err);
         });
       },
-      GoLessonPage(x,y) {
-        // 获得点击课程的index
-        // this.changeClicklessonPageindex(x)
-        //存放选中的课程全部信息
+      GoLessonPage(x, y) {
         this.GetLessonlistContent(this.goodsinfo[x])
         wx.navigateTo({
-          url: `/pages/buylesson/main?state=${y}`
+          url: `/pages/buylesson/main`
         })
       }
     },

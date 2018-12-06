@@ -2,6 +2,10 @@
   <div class="teacherinfo">
     <div class="teacherimg">
       <img :src="teacherinfo.fuwuimg" alt="" srcset="" style="width:100%;">
+      <div class="userinfo" @click.stop="GetShare">
+        <img src="../../../static/image/share.png" alt="" class="shareIcon">
+        <p>分享给好友</p>
+      </div>
     </div>
     <div class="teacherlist">
       <div class="listhead">我能为您提供的服务</div>
@@ -10,13 +14,13 @@
           <p class="listtextcom">{{isBuy?t1:t2}}</p>
           <p class="listtextcom">量身定制月度/季度的身高管理服务</p>
           <!-- <span class="listprice" v-if="isBuy">
-                                <p class="listpriceb">￥399</p>
-                                <p class="listprices">/月</p>
-                              </span>
-                <span class="listprice" v-if="isBuy">
-                                <p class="listpriceb">￥999</p>
-                                <p class="listprices">/月</p>
-                              </span> -->
+                                  <p class="listpriceb">￥399</p>
+                                  <p class="listprices">/月</p>
+                                </span>
+                  <span class="listprice" v-if="isBuy">
+                                  <p class="listpriceb">￥999</p>
+                                  <p class="listprices">/月</p>
+                                </span> -->
           <div class="listbtnbox">
             <button class="listbtn" @click="buyLesson" v-if="isBuy">查询</button>
             <button open-type="contact" class="listbtn" v-else :session-from='link2' plain='true'>查询</button>
@@ -143,7 +147,8 @@
       },
       getDefaultinfo() {
         this.toastshowtype({
-          t:0,p:'Loading...'
+          t: 0,
+          p: 'Loading...'
         });
         let that = this;
         let url = this.httpTeacherinfo + this.teacherid;
@@ -153,6 +158,11 @@
         }).catch((err) => {
           console.log(err);
         });
+      },
+      GetShare(){
+        wx.navigateTo({
+          url: '/pages/test/main'
+        })
       }
     },
     onLoad() {

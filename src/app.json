@@ -28,7 +28,9 @@
     "pages/changenumber/main",
     "pages/resultpage2/main",
     "pages/space/main",
-    "pages/writemsg/main"
+    "pages/writemsg/main",
+    "pages/share/main",
+    "pages/canvaspage/main"
     
   ],
   "window": {
