@@ -1,6 +1,5 @@
 <template>
   <div>
-    <Swiper></Swiper>
     <div class="optioncardbox">
       <div class="optioncard optioncardtext" @click="changetype(9)">
         <p :class="[cur==9?a:b]">ALL</p>
@@ -38,11 +37,11 @@
 
 <script>
   import ajax from '../../utils/ajax.js'
-  import Swiper from '../../components/swiper';
   import {
     mapState,
     mapMutations
   } from 'vuex'
+  import {getLessonInfo,getChooseLessonInfoUrl} from '@/utils/api.js'
   export default {
     data() {
       return {
@@ -96,9 +95,6 @@
         lessonlistid: []
       }
     },
-    components: {
-      Swiper
-    },
     methods: {
       ...mapMutations(['GetLessonlistContent', 'changeClicklessonPageindex']),
       changetype(x) {
@@ -119,16 +115,18 @@
         this.getLessonlist(x)
       },
       getDefaultlist() {
-        let url = `https://wx.biergao.vip/api/index/getTeachers?is_goods=1`
-        ajax.Get(url).then((result) => {
+        ajax.Get(getLessonInfo).then((result) => {
           this.goodsinfo = result
         }).catch((err) => {
           console.log(err);
         });
       },
       getLessonlist(x) {
-        let url = this.httpHead + 'index/getClasstypeResource?catid=' + this.targetid + '&classtypeid=' + x
-        ajax.Get(url).then((result) => {
+        let data={
+          catid:this.targetid,
+          classtypeid:x
+        }
+        ajax.Get(getChooseLessonInfoUrl,data).then((result) => {
           this.goodsinfo = result
         }).catch((err) => {
           console.log(err);
@@ -145,7 +143,7 @@
       this.getDefaultlist()
     },
     computed: {
-      ...mapState(['httpHead', 'httpGoods', 'lessonListcontent'])
+      ...mapState(['lessonListcontent'])
     },
     onPullDownRefresh() {
       wx.showNavigationBarLoading()
@@ -252,7 +250,7 @@
     padding: 0px 15rpx;
     line-height: 60rpx;
     height: 60rpx;
-    border-bottom: 1px solid rgb(227, 139, 39);
+    border-bottom: 1px solid #ec881d;
   }
   
   .optioncardbox {
@@ -276,10 +274,10 @@
     width: 80rpx;
     height: 80rpx;
     border-radius: 70rpx;
-    background-color: rgb(227, 139, 39);
+    background-color: #ec881d;
     margin: 0 auto;
     display: block;
-    border: 1px solid rgb(227, 139, 39);
+    border: 1px solid #ec881d;
   }
   
   .notoptioncardimg {
@@ -289,7 +287,7 @@
     background-color: #eeeeee;
     margin: 0 auto;
     display: block;
-    border: 1px solid rgb(227, 139, 39);
+    border: 1px solid #ec881d;
   }
   
   .optioncardfirst {
@@ -298,8 +296,8 @@
     height: 80rpx;
     border-radius: 70rpx;
     background-color: #eee;
-    border: 1px solid rgb(227, 139, 39);
-    color: rgb(227, 139, 39);
+    border: 1px solid #ec881d;
+    color: #ec881d;
     text-align: center;
     line-height: 80rpx;
     margin: 0 auto;
@@ -310,8 +308,8 @@
     width: 80rpx;
     height: 80rpx;
     border-radius: 70rpx;
-    background-color: rgb(227, 139, 39);
-    border: 1px solid rgb(227, 139, 39);
+    background-color: #ec881d;
+    border: 1px solid #ec881d;
     color: #eee;
     text-align: center;
     line-height: 80rpx;

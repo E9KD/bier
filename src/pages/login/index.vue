@@ -10,51 +10,58 @@
     mapMutations,
     mapState
   } from "vuex";
-  import ajax from '../../utils/ajax.js'
+  import ajax from "../../utils/ajax.js";
+  import {
+    GetUserInfo,
+    Login
+  } from "@/utils/wx.js";
+  import {
+    loginUrl
+  } from "@/utils/api.js";
   export default {
     methods: {
       ...mapMutations(["ChangeUserInfo", "ChangeUserParam"]),
       preventD() {},
-      getuserinfo(e) {
+      async getuserinfo(e) {
         // 没有授权过，点击授权并获取用户信息
-        this.ChangeUserInfo(e.target.userInfo);
-        let that = this;
-        wx.login({
-          success: function(res) {
-            let code = res.code;
-            if (res.code) {
-              wx.getUserInfo({
-                success: function(res) {
-                  let url = `https://wx.biergao.vip/api/biaob/login`
-                  let data = {
-                    encryptedData: e.mp.detail.encryptedData,
-                    iv: e.mp.detail.iv,
-                    code: code
-                  }
-                  ajax.Post(url, data).then((result) => {
-                    that.ChangeUserParam(result);
-                    if (JSON.stringify(that.userParam) != "{}") {
-                      // 回到主页
-                      wx.reLaunch({
-                        url: "/pages/index/main"
-                      });
-                    }
-                  }).catch((err) => {
-                    console.log(err);
-                  });
-                }
-              });
-            } else {
-              console.log(res.errMsg);
-            }
-          }
+        const getUserInfoResult=await this.GetUserInfoFuc()
+        const param = e.mp.detail;
+        const loginResult = await Login();
+        if (!loginResult.code) return;
+        const successResult = await this.GetUserParam(loginResult, param);
+        const localParam = wx.getStorageSync('userParamLocal')
+        if (localParam && this.userParam) {
+          wx.reLaunch({
+            url: "/pages/index/main"
+          });
+        } else {
+          console.log(`登陆失败！`);
+        }
+      },
+      GetUserInfoFuc() {
+        return new Promise(resolve => {
+          this.ChangeUserInfo(e.mp.detail.userInfo);
+          wx.setStorageSync('userInfoLocal', e.mp.detail.userInfo)
+        })
+      },
+      GetUserParam(x, y) {
+        return new Promise(resolve => {
+          let data = {
+            encryptedData: y.encryptedData,
+            iv: y.iv,
+            code: x.code,
+            sid: this.sid
+          };
+          ajax.Get(loginUrl, data).then(res => {
+            wx.setStorageSync('userParamLocal', res)
+            this.ChangeUserParam(res);
+            resolve(1);
+          });
         });
-        console.log(this.userParam);
-        console.log(this.userInfo);
       }
     },
     computed: {
-      ...mapState(["userParam", "userInfo"])
+      ...mapState(["userParam", "userInfo", "sid"])
     }
   };
 </script>
@@ -65,7 +72,7 @@
     bottom: 7%;
     left: 50%;
     transform: translate(-50%, -50%);
-    border: 2rpx solid rgb(227, 139, 39);
+    border: 2rpx solid #ec881d;
     width: 250rpx;
     height: 70rpx;
     border-radius: 14rpx;

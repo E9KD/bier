@@ -2,7 +2,7 @@
   <div class="teacherinfo">
     <div class="teacherimg">
       <img :src="teacherinfo.fuwuimg" alt="" srcset="" style="width:100%;">
-      <div class="userinfo" @click.stop="GetShare">
+      <div class="userinfo" @click.stop="GetShare" style="display:none;">
         <img src="../../../static/image/share.png" alt="" class="shareIcon">
         <p>分享给好友</p>
       </div>
@@ -14,13 +14,13 @@
           <p class="listtextcom">{{isBuy?t1:t2}}</p>
           <p class="listtextcom">量身定制月度/季度的身高管理服务</p>
           <!-- <span class="listprice" v-if="isBuy">
-                                  <p class="listpriceb">￥399</p>
-                                  <p class="listprices">/月</p>
-                                </span>
-                  <span class="listprice" v-if="isBuy">
-                                  <p class="listpriceb">￥999</p>
-                                  <p class="listprices">/月</p>
-                                </span> -->
+                                      <p class="listpriceb">￥399</p>
+                                      <p class="listprices">/月</p>
+                                    </span>
+                      <span class="listprice" v-if="isBuy">
+                                      <p class="listpriceb">￥999</p>
+                                      <p class="listprices">/月</p>
+                                    </span> -->
           <div class="listbtnbox">
             <button class="listbtn" @click="buyLesson" v-if="isBuy">查询</button>
             <button open-type="contact" class="listbtn" v-else :session-from='link2' plain='true'>查询</button>
@@ -67,6 +67,11 @@
     mapState,
     mapMutations
   } from "vuex";
+  import {
+    isVipUrl,
+    getTeacherPriceUrl,
+    getTeacherUrl
+  } from "@/utils/api.js";
   export default {
     data() {
       return {
@@ -96,11 +101,10 @@
       ...mapMutations(["toastshowtype", "closeToast"]),
       init() {
         this.GetDefaultPrice()
-        let url = `https://wx.biergao.vip/api/vip/show`
         let data = {
           openid: this.userParam.openId
         }
-        ajax.Get(url, data).then((result) => {
+        ajax.Get(isVipUrl, data).then((result) => {
           if (result == 'success') {
             this.isBuy = false
           } else {
@@ -111,8 +115,7 @@
         });
       },
       GetDefaultPrice() {
-        let url = `https://wx.biergao.vip/api/vip/price2`
-        ajax.Get(url).then((result) => {
+        ajax.Get(getTeacherPriceUrl).then((result) => {
           this.price1 = result[0]
           this.price2 = result[1]
         }).catch((err) => {
@@ -150,18 +153,19 @@
           t: 0,
           p: 'Loading...'
         });
-        let that = this;
-        let url = this.httpTeacherinfo + this.teacherid;
-        ajax.Get(url).then((result) => {
+        let data = {
+          id: this.teacherid
+        }
+        ajax.Get(getTeacherUrl, data).then((result) => {
           this.teacherinfo = result;
           this.closeToast();
         }).catch((err) => {
           console.log(err);
         });
       },
-      GetShare(){
+      GetShare() {
         wx.navigateTo({
-          url: '/pages/test/main'
+          url: '/pages/canvaspage/main'
         })
       }
     },
@@ -172,7 +176,7 @@
       this.getDefaultinfo();
     },
     computed: {
-      ...mapState(["httpTeacherinfo", "teacherid", "userParam"])
+      ...mapState(["teacherid", "userParam"])
     }
   };
 </script>
@@ -189,7 +193,7 @@
     margin: 0 auto;
     width: 300rpx;
     height: 80rpx;
-    background-color: rgb(227, 139, 39);
+    background-color: #ec881d;
     text-align: center;
     font-size: 30rpx;
     line-height: 80rpx;
@@ -241,13 +245,13 @@
   }
   
   .active {
-    background-color: rgb(227, 139, 39);
+    background-color: #ec881d;
     color: white;
   }
   
   .normal {
     background-color: white;
-    border: 1px solid rgb(227, 139, 39);
+    border: 1px solid #ec881d;
     color: black;
   }
   
@@ -270,7 +274,7 @@
   
   .buytip i {
     width: 100rpx;
-    background-color: rgb(227, 139, 39);
+    background-color: #ec881d;
     height: 6rpx;
     text-align: center;
     position: absolute;
@@ -340,7 +344,7 @@
   .listbtn {
     width: 300rpx;
     height: 80rpx;
-    background-color: rgb(227, 139, 39);
+    background-color: #ec881d;
     text-align: center;
     font-size: 35rpx;
     color: white;

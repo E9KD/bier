@@ -21,16 +21,16 @@
           <div class="reportcontext">
             <div class="context_top">
               <p v-if="type1==0"><i style="display:inline-block">·</i>当前身高，目前已经达到全国平均身高</p>
-              <p v-if="type1==1"><i style="display:inline-block">·</i>当前身高，高于全国平均身高<i style="color:rgb(227, 139, 39)">{{reportHight1}}</i>CM</p>
-              <p v-if="type1==2"><i style="display:inline-block">·</i>当前身高，低于全国平均身高<i style="color:rgb(227, 139, 39)">{{reportHight1}}</i>CM</p>
+              <p v-if="type1==1"><i style="display:inline-block">·</i>当前身高，高于全国平均身高<i style="color:#ec881d">{{reportHight1}}</i>CM</p>
+              <p v-if="type1==2"><i style="display:inline-block">·</i>当前身高，低于全国平均身高<i style="color:#ec881d">{{reportHight1}}</i>CM</p>
             </div>
             <div class="context_mid">
               <p v-if="type2==0"><i style="display:inline-block">·</i>当前身高，目前已经达到理想身高</p>
-              <p v-if="type2==1"><i style="display:inline-block">·</i>当前身高，低于理想身高<i style="color:rgb(227, 139, 39)">{{reportHight2}}</i>CM,通过科学干预，身高将突破遗传，达到<i style="color:rgb(227, 139, 39)">{{testHight}}</i>CM</p>
-              <p v-if="type2==2"><i style="display:inline-block">·</i>当前身高，高于理想身高<i style="color:rgb(227, 139, 39)">{{reportHight2}}</i>CM,通过科学干预，身高将突破遗传，达到<i style="color:rgb(227, 139, 39)">{{testHight}}</i>CM</p>
+              <p v-if="type2==1"><i style="display:inline-block">·</i>当前身高，低于理想身高<i style="color:#ec881d">{{reportHight2}}</i>CM,通过科学干预，身高将突破遗传，达到<i style="color:#ec881d">{{testHight}}</i>CM</p>
+              <p v-if="type2==2"><i style="display:inline-block">·</i>当前身高，高于理想身高<i style="color:#ec881d">{{reportHight2}}</i>CM,通过科学干预，身高将突破遗传，达到<i style="color:#ec881d">{{testHight}}</i>CM</p>
             </div>
             <div class="context_bottom">
-              <p>·若后天身高管理不善，身高将低于遗传身高，下降至身高下限<i style="color:rgb(227, 139, 39)">{{bottomhight}}</i>CM</p>
+              <p>·若后天身高管理不善，身高将低于遗传身高，下降至身高下限<i style="color:#ec881d">{{bottomhight}}</i>CM</p>
             </div>
           </div>
         </div>
@@ -79,7 +79,7 @@
   import {
     mapState
   } from "vuex";
-import { clearTimeout } from 'timers';
+import {getDefaultChildrenInfoUrl,getChooseChildrenInfoUrl} from '@/utils/api.js'
   export default {
     data() {
       return {
@@ -103,11 +103,10 @@ import { clearTimeout } from 'timers';
       init(x, y, z) {
         if (this.id == null) {
           // 默认
-          let url = `https://wx.biergao.vip/api/child/issetChild`;
           let data = {
             openid: this.userParam.openId
           };
-          ajax.Get(url, data).then((result) => {
+          ajax.Get(getDefaultChildrenInfoUrl, data).then((result) => {
             let time = new Date(result.createtime * 1000);
             let y = time.getFullYear();
             let m = time.getMonth() + 1;
@@ -123,13 +122,12 @@ import { clearTimeout } from 'timers';
       },
       GetChildrenParam(x, y, z) {
         // x id y 月 z 年
-        let url = `https://wx.biergao.vip/api/biaob/getcesinfo`;
         let data = {
           cid: x,
           m: y,
           y: z
         };
-        ajax.Get(url,data).then((result) => {
+        ajax.Get(getChooseChildrenInfoUrl,data).then((result) => {
           this.childrenAge = result[2].age;
           // x 父亲身高 y 母亲身高
           this.ComputeHight(result[0].fheight, result[0].mheight)
@@ -228,7 +226,7 @@ import { clearTimeout } from 'timers';
 <style scoped>
   .bottom_button {
     width: 320rpx;
-    background-color: rgb(227, 139, 39);
+    background-color: #ec881d;
     display: inline-block;
     margin-top: 5rpx;
     border-radius: 50px;

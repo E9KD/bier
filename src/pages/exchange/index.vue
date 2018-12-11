@@ -32,6 +32,7 @@
     mapMutations
   } from "vuex";
   import ajax from '../../utils/ajax.js'
+  import {getVipUrl} from '@/utils/api.js'
   export default {
     data() {
       return {
@@ -56,7 +57,6 @@
           }, 1500);
           return;
         }
-        let url = `https://wx.biergao.vip/api/vip/getvip`;
         let str = "abcdefghigklmnopqrstuvwxyz";
         let token =
           Math.floor(Math.random() * 1000) +
@@ -67,7 +67,7 @@
         let data = {
           token: token
         };
-        ajax.Post(url, data).then((result) => {
+        ajax.Post(getVipUrl, data).then((result) => {
           if (result.res == "success") {
             this.toastshowtype({
               t:1,p:'兑换成功！'

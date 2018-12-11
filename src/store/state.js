@@ -7,14 +7,6 @@ export default {
   userInfo:null,
   userParam:{},
   teacherid: 0,
-  httpHead: 'https://wx.biergao.vip/api/',
-  httpLogin:'biaob/getOpenid2/code/',
-  httpBanner: 'index/getArrimg',
-  httpTeacherpage1: 'Fuwu/getfuwu?page=1&pageall=15&openid=enen',
-  httpTeacherpage2: 'Fuwu/getfuwu?page=2&pageall=15&openid=enen',
-  httpGoods: 'index/getTeachers?is_goods=1',
-  httpVideo: 'https://wx.biergao.vip/uploads/b/784344c9f6e7dd9f6322783457cfb071.mp4',
-  httpTeacherinfo: 'https://wx.biergao.vip/api/Fuwu/getoneinfo?id=',
   pushCardtype: 0,
   // 营养是0
   cardType:null,
@@ -45,4 +37,6 @@ export default {
   buytoastShow:false,
   //space判定
   spaceState:0,
+  // 默认的分享值
+  sid:0
 }

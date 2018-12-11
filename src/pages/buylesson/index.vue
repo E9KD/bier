@@ -83,11 +83,11 @@
                                 <p class="titlebox_title">
                                     {{item.title}}
                                 </p>
-                                <p class="titlebox_lessontime">上课时长：{{lessontime}}分钟</p>
+                                <p class="titlebox_lessontime">课程时长：{{lessontime}}分钟</p>
                             </div>
                             <div class="lessonList_btn">
                                 <p v-if="isWatch" class="btn" @click="WatchVideo(item.content)">观看</p>
-                                <p v-else class="btn" @click="BuyLesson">购买</p>
+                                <p v-else class="btn" @click="BuyLesson">咨询</p>
                             </div>
                         </div>
     
@@ -111,7 +111,7 @@
             </div>
     
         </div>
-        <div class="userinfo" @click.stop="GetShare">
+        <div class="userinfo" @click.stop="GetShare" style="display:none;">
             <img src="../../../static/image/share.png" alt="" class="shareIcon">
             <p>分享给好友</p>
         </div>
@@ -124,6 +124,7 @@
         mapState,
         mapMutations
     } from 'vuex';
+    import {lessonListUrl,isVipUrl} from '@/utils/api.js'
     export default {
         data() {
             return {
@@ -175,13 +176,12 @@
                 this.link = JSON.stringify(data)
             },
             GetLessonInfo() {
-                let url = `https://wx.biergao.vip/api/index/getvideourl`;
                 let data = {
                     cid: this.lessinId,
                     scode: 1,
                     openid: this.userParam.openId
                 };
-                ajax.Get(url, data).then(res => {
+                ajax.Get(lessonListUrl, data).then(res => {
                     this.lessonList = res
                     if (res.isset) {
                         this.isWatch = true
@@ -191,11 +191,10 @@
                 })
             },
             GetVipState() {
-                let url = 'https://wx.biergao.vip/api/vip/show'
                 let data = {
                     openid: this.userParam.openId
                 }
-                ajax.Post(url, data).then(res => {
+                ajax.Post(isVipUrl, data).then(res => {
                     if (res == 'success') {
                         this.isWatch = true
                     }
@@ -224,7 +223,7 @@
             },
             GetShare() {
                 wx.navigateTo({
-                    url: '/pages/test/main'
+                    url: '/pages/canvaspage/main'
                 })
             }
         },
@@ -385,9 +384,9 @@
     
     .time_time_type {
         font-size: 20rpx;
-        color: rgb(227, 139, 39);
+        color: #ec881d;
         padding: 6rpx;
-        border: 1px solid rgb(227, 139, 39);
+        border: 1px solid #ec881d;
         margin-left: 30rpx;
         display: inline-block;
     }

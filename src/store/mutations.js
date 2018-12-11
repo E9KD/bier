@@ -1,4 +1,4 @@
-export default {
+ export default {
   changeteacherid(state, x) {
     state.teacherid = x
   },
@@ -73,4 +73,8 @@ export default {
   ChangeSpaceState(state,x){
     state.spaceState=x
   },
+  // 修改分享值
+  ChangeSid(state,x){
+    state.sid=x||0
+  }
 }

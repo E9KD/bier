@@ -40,6 +40,7 @@
   import {
     mapState
   } from "vuex";
+  import {getOrderurl} from '@/utils/api.js'
   export default {
     data() {
       return {
@@ -58,14 +59,13 @@
     },
     methods: {
       init() {
-        let url = `https://wx.biergao.vip/api/order/getdingdan`;
         let pageindex = 1;
         let data = {
           oid: this.userParam.openId,
           page: pageindex
         };
 
-        ajax.Order(url, data).then((result) => {
+        ajax.Order(getOrderurl, data).then((result) => {
           this.list = result.orderlist;
           this.AddLink();
         }).catch((err) => {

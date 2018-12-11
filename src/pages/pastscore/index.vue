@@ -21,6 +21,10 @@
     mapMutations
   } from "vuex";
   import ajax from '../../utils/ajax.js'
+  import {
+    getHistoryUrl1,
+    getHistoryUrl2
+  } from '@/utils/api.js'
   export default {
     data() {
       return {
@@ -41,15 +45,13 @@
       ]),
       init(x) {
         // 这里进行请求，获取分数，并进行展示。0显示分数 1不显示分数
-        if (x == 0) {
-          console.log(`修改了1`);
-          let url = `https://wx.biergao.vip/api/Yypfjl/getfuwu2`;
-          this.GetHistoryScore(url);
-        } else {
-          console.log(`修改了2`);
-          let url = `https://wx.biergao.vip/api/Yybg/getyydkpfjl`;
-          this.GetHistoryScore(url);
-        }
+        // 进行简易的操作
+        x == 0 ? this.GetHistoryScore(getHistoryUrl1) : this.GetHistoryScore(getHistoryUrl2)
+        // if (x == 0) {
+        //   this.GetHistoryScore(getHistoryUrl1);
+        // } else {
+        //   this.GetHistoryScore(getHistoryUrl2);
+        // }
       },
       GetHistoryScore(url) {
         let data = {
@@ -98,7 +100,8 @@
     },
     onLoad(x) {
       this.toastshowtype({
-        t:0,p:'Loading...'
+        t: 0,
+        p: 'Loading...'
       })
       this.scoreList = []
       this.isScoreshow = x.show;
@@ -148,7 +151,7 @@
     width: 150rpx;
     height: 150rpx;
     border-radius: 300rpx;
-    background: linear-gradient(to right, rgb(227, 139, 39), rgb(227, 200, 39));
+    background: linear-gradient(to right, #ec881d, rgb(227, 200, 39));
   }
   
   .img {

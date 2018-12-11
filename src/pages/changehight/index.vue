@@ -24,6 +24,7 @@
   import {
     mapState
   } from 'vuex';
+  import {changeHightNowUrl} from '@/utils/api.js'
   export default {
     data() {
       return {
@@ -40,14 +41,13 @@
     methods: {
       ChangeHightButton() {
         // 进行请求，发送数据
-        let url = `https://wx.biergao.vip/api/child/addData/openid/${this.userParam.openId}`
         let data = {
           openid: this.openId,
           id: this.id,
           name: this.name,
           hight: this.hight
         }
-        ajax.Get(url, data).then(res => {
+        ajax.Get(`${changeHightNowUrl}${this.userParam.openId}`, data).then(res => {
           if (res) {
             wx.navigateBack({
               delta: 1
@@ -142,7 +142,7 @@
     width: 50rpx;
     height: 50rpx;
     line-height: 50rpx;
-    background-color: rgb(227, 139, 39);
+    background-color: #ec881d;
     border-radius: 50rpx;
   }
 </style>

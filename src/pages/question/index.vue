@@ -33,6 +33,7 @@
     mapMutations
   } from "vuex";
   import Toast from "../../components/toast";
+  import {getNextUrl,pushAnswerUrl,getFirstQuestionUrl} from '@/utils/api.js'
   export default {
     data() {
       return {
@@ -71,12 +72,11 @@
           this.totalScore += this.currentScore;
           console.log(this.totalScore);
           this.currentScore = null;
-          let url = `https://wx.biergao.vip/api/survey/getquestion2`;
           let data = {
             questionid: this.nextRequestnumber,
             pid: this.cardType
           };
-          ajax.Get(url, data).then((result) => {
+          ajax.Get(getNextUrl, data).then((result) => {
             this.questionList = result.anwserdata;
             this.nowOfquestion = result.questiondata[0].questionid;
             this.questionTitle = result.questiondata[0].question;
@@ -141,7 +141,6 @@
         this.ComputeScore(this.nowOfquestion);
         this.totalScore += this.currentScore;
         this.currentScore = null;
-        let url = `https://wx.biergao.vip/api/Yypfjl/add2`;
         let data = {
           assess1: this.assess1,
           assess2: this.assess2,
@@ -157,7 +156,7 @@
           total: this.totalScore,
           pid: this.cardType
         };
-        ajax.Get(url, data).then((result) => {
+        ajax.Get(pushAnswerUrl, data).then((result) => {
           setTimeout(() => {
             this.closeToast();
             if (this.cardType == 0) {
@@ -185,11 +184,10 @@
         this.toastshowtype({
           t:0,p:'Loading...'
         });
-        let url = `https://wx.biergao.vip/api/survey/firstgetquestion2`;
         let data = {
           id: this.cardType
         };
-        ajax.Get(url, data).then((result) => {
+        ajax.Get(getFirstQuestionUrl, data).then((result) => {
           this.questionList = result.anwserdata;
           this.allOfquestion = result.count;
           this.nowOfquestion = result.questiondata[0].questionid;

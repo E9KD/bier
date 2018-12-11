@@ -27,6 +27,7 @@
     mapState,
     mapMutations
   } from "vuex";
+  import {getScoreNowUrl} from '@/utils/api.js'
   export default {
     data() {
       return {
@@ -38,7 +39,6 @@
   
     methods: {
       init(x) {
-        let url = `https://wx.biergao.vip/api/survey/getassess2`
         let data = {
           pid: this.cardType,
           total: x
@@ -46,7 +46,7 @@
         this.score = null
         this.topContent = null
         this.content == null
-        ajax.Get(url, data).then((result) => {
+        ajax.Get(getScoreNowUrl, data).then((result) => {
           this.score = x
           this.topContent = result.title
           this.content = result.jielun.replace(

@@ -68,6 +68,10 @@
     mapState
   } from "vuex";
   import ajax from '../../utils/ajax.js'
+  import {
+    addChildrenUrl,
+    isParUrl
+  } from '@/utils/api.js'
   export default {
     data() {
       return {
@@ -147,7 +151,6 @@
         } else if (this.childrenHight == null) {
           this.showMessage('请选择目前身高')
         } else {
-          let url = `https://wx.biergao.vip/api/biaob/addData/openid/${this.userParam.openId}`
           let data = {
             sex: this.checked,
             username: this.name,
@@ -155,7 +158,7 @@
             qiwangheight: this.childrenHight,
             nowheight: this.childrenHightnow
           }
-          ajax.Get(url, data).then(res => {
+          ajax.Get(`${addChildrenUrl}${this.userParam.openId}`, data).then(res => {
             if (res == 'em') {
               this.showMessage('添加失败已存在');
             } else {
@@ -179,11 +182,10 @@
         this.GetDefaultState()
       },
       GetDefaultState() {
-        let url = `https://wx.biergao.vip/api/child/isChild`
         let data = {
           openid: this.userParam.openId
         }
-        ajax.Post(url, data).then(res => {
+        ajax.Post(isParUrl, data).then(res => {
           if (res.result == 'true') {
             this.isParshow = false
           } else {
@@ -265,7 +267,7 @@
     height: 80rpx;
     line-height: 80rpx;
     border-radius: 80rpx;
-    background-color: rgb(227, 139, 39);
+    background-color: #ec881d;
     text-align: center;
     color: white;
     font-size: 30rpx;

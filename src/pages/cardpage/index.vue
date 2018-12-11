@@ -40,6 +40,7 @@
   import {
     mapState
   } from "vuex";
+  import {pushCardUrl,getCardDayUrl} from '@/utils/api.js'
   export default {
     data() {
       return {
@@ -118,7 +119,6 @@
           }
         }
         // 发送提交数据。
-        let url = `https://wx.biergao.vip/api/yybg/sign`;
         let data = {
           rou: this.optionList[0].checked,
           yuxia: this.optionList[1].checked,
@@ -129,7 +129,7 @@
           shuiguo: this.optionList[6].checked,
           uid: this.userParam.userid
         };
-        ajax.Get(url, data).then(res => {
+        ajax.Get(pushCardUrl, data).then(res => {
           if (res.status != 200) {
             console.log(`打卡失败，请重新提交！`);
           } else {
@@ -143,8 +143,7 @@
         let data = {
           uid: this.userParam.userid
         };
-        let url = "https://wx.biergao.vip/api/Yybg/getisbuka"
-        ajax.Post(url, data).then(res => {
+        ajax.Post(getCardDayUrl, data).then(res => {
           this.days = res.sday;
         })
       }
@@ -232,7 +231,7 @@
   }
   
   .card_head {
-    background: linear-gradient(to right, rgb(227, 139, 39), rgb(227, 200, 39));
+    background: linear-gradient(to right, #ec881d, rgb(227, 200, 39));
   }
   
   .head_box_title {

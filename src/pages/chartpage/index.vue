@@ -332,7 +332,7 @@
   }
   
   .pick {
-    color: rgb(227, 139, 39);
+    color: #ec881d;
     text-align: center;
     background-color: white;
     width: 90%;

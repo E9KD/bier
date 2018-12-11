@@ -56,6 +56,7 @@
     mapState,
     mapMutations
   } from 'vuex';
+  import {changeHightUrl} from '@/utils/api.js'
   export default {
     data() {
       return {
@@ -116,7 +117,6 @@
         }
       },
       ChangeHightButton() {
-        let url = `https://wx.biergao.vip/api/index/saveheight`
         let data = {
           qiwangheight: this.hopehight,
           nowheight: this.nowhight,
@@ -128,7 +128,7 @@
           id: this.id,
           name: this.name,
         }
-        ajax.Get(url,data).then(res=>{
+        ajax.Get(changeHightUrl,data).then(res=>{
           if (res.code == 200) {
             this.toastshowtype({
               t:1,
@@ -192,7 +192,7 @@
     width: 130rpx;
     height: 130rpx;
     line-height: 130rpx;
-    background-color: rgb(227, 139, 39);
+    background-color: #ec881d;
     border-radius: 100%;
     text-align: center;
   }

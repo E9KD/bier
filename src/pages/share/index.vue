@@ -2,7 +2,7 @@
     <div class="share">
         <div class="container" disable-scroll='true'>
             <div class="mine-top-fen">
-                <div class="classname">
+                <div class="classname" >
                     <img class='userinfo-avatar' :src="userParam.avatarUrl" background-size="cover">
                     <div class='moname'>{{userParam.nickName}}</div>
                     <!-- <div class='moname'>{{userInfo.nickName}}</div> -->
@@ -97,15 +97,12 @@
             }
         },
         methods: {
-            ...mapMutations(['ChangeShareState']),
             GoServe() {
-                this.ChangeShareState(1)
                 wx.switchTab({
                     url: `/pages/serve/main`
                 })
             },
             GoLesson() {
-                this.ChangeShareState(1)
                 wx.switchTab({
                     url: `/pages/lesson/main`
                 })

@@ -46,6 +46,7 @@
         mapMutations
     } from "vuex";
 import ajax from "../utils/ajax.js";
+import {isPastUrl} from '@/utils/api.js'
     export default {
         data() {
             return {
@@ -65,12 +66,11 @@ import ajax from "../utils/ajax.js";
         methods: {
             ...mapMutations(["closePushcardType"]),
             init() {
-                let url = `https://wx.biergao.vip/api/Yypfjl/getlist`;
                 let data = {
                     userid: this.userParam.userid,
                     pid: this.cardType
                 };
-                ajax.Get(url, data).then(res => {
+                ajax.Get(isPastUrl, data).then(res => {
                     if (res.status == 200) {
                         if (this.cardType != 0) {
                             this.isPastShow = false
@@ -78,7 +78,6 @@ import ajax from "../utils/ajax.js";
                         }
                         this.isPastShow = true;
                     } else {
-    
                         this.isPastShow = false;
                     }
                 })

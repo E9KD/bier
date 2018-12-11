@@ -15,12 +15,12 @@
                         <div class="halfcurleft halfcur"></div>
                         <div class="halfcurright halfcur"></div>
                         <div class="littlecurtop littlecur" @click="ShowPushCard(0)">
-                            <div class="inlittlecurtop inlittlecur" style="margin-top:15rpx;background-color:rgb(227, 139, 39);color:white;">评</div>
-                            <div class="inlittlecurbom inlittlecur" style="color:rgb(227, 139, 39)">价</div>
+                            <div class="inlittlecurtop inlittlecur" style="margin-top:15rpx;background-color:#ec881d;color:white;">评</div>
+                            <div class="inlittlecurbom inlittlecur" style="color:#ec881d">价</div>
                         </div>
                         <div class="littlecurbom littlecur" @click="ShowPushCard(1)">
                             <div class="inlittlecurtop inlittlecur" style="color:white;">打</div>
-                            <div class="inlittlecurbom inlittlecur" style="margin-bottom:15rpx;background-color:white;color:rgb(227, 139, 39)">卡</div>
+                            <div class="inlittlecurbom inlittlecur" style="margin-bottom:15rpx;background-color:white;color:#ec881d">卡</div>
                         </div>
                     </div>
                 </div>
@@ -133,9 +133,13 @@
         height: 700rpx;
         width: 100%;
         background-color: white;
-        position: relative;
+        /* position: relative; */
+        padding-top: 50rpx;
     }
-    
+    .systembox{
+        position: relative;
+        height: 700rpx;
+    }
     .curbox {
         width: 600rpx;
         height: 600rpx;
@@ -158,7 +162,7 @@
     .systemtypetext {
         height: 100rpx;
         width: 100rpx;
-        background-color: rgb(227, 139, 39);
+        background-color: #ec881d;
         border-radius: 70rpx;
         position: absolute;
         top: 50%;
@@ -255,7 +259,7 @@
         width: 200rpx;
         height: 70rpx;
         border-radius: 20rpx;
-        background-color: rgb(227, 139, 39);
+        background-color: #ec881d;
         text-align: center;
         font-size: 30rpx;
         line-height: 70rpx;
@@ -275,7 +279,7 @@
     
     .halfcurright {
         border-radius: 0 155px 155px 0;
-        background-color: rgb(227, 139, 39);
+        background-color: #ec881d;
     }
     
     .littlecur {
@@ -294,7 +298,7 @@
     }
     
     .littlecurbom {
-        background-color: rgb(227, 139, 39);
+        background-color: #ec881d;
         bottom: 0px;
         left: 50%;
         transform: translate(-50%, 0%)

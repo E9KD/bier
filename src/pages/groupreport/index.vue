@@ -41,6 +41,7 @@
     mapMutations, mapState
   } from 'vuex';
   import ajax from '../../utils/ajax.js'
+  import {getChildrenInfoUrl} from '@/utils/api.js'
   export default {
     data() {
       return {
@@ -60,13 +61,12 @@
         })
       },
       init(){
-        let url=`https://wx.biergao.vip/api/biaob/userMorenew/`
         let data={
           openid:this.userParam.openId
         }
-        ajax.Get(url,data).then((result) => {
+        ajax.Get(getChildrenInfoUrl,data).then(result => {
           this.childrenList=result
-        }).catch((err) => {
+        }).catch(err => {
           console.log(err);
         });
       },

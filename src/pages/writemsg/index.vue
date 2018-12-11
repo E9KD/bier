@@ -40,6 +40,7 @@
     mapMutations
   } from 'vuex';
   import Toast from '../../components/toast'
+  import {pushMsgUrl,getPreviewUrl} from '@/utils/api.js'
   export default {
     data() {
       return {
@@ -56,9 +57,6 @@
     methods: {
       ...mapMutations(['toastshowtype', 'closeToast','ChangeSpaceState']),
       PushMsg() {
-        console.log(`这个是上传`);
-        console.log(this.picSrc + 123123123123123123123123);
-        let url = `https://wx.biergao.vip/api/qzone/setresouse`
         let data = {
           nickName: this.userParam.nickName,
           content: this.keyWord,
@@ -66,7 +64,7 @@
           imgStr: this.picSrc,
           headimg: this.userParam.avatarUrl
         }
-        ajax.Post(url, data).then((result) => {
+        ajax.Post(pushMsgUrl, data).then(result => {
           setTimeout(() => {
             this.ChangeSpaceState(1)
             wx.switchTab({
@@ -79,13 +77,12 @@
       },
       PreviewImage(x) {
         let b = this.picSrc.split(",")
-        let url = `https://wx.biergao.vip/uploads/qzone${b[x]}`
         let list = []
         for (let i = 0; i < this.imglist.length; i++) {
-          list.push(`https://wx.biergao.vip/uploads/qzone${b[i]}`)
+          list.push(`${getPreviewUrl}${b[i]}`)
         }
         wx.previewImage({
-          current: url, // 当前显示图片的http链接
+          current: `${getPreviewUrl}${b[x]}`, // 当前显示图片的http链接
           urls: list // 需要预览的图片http链接列表
         })
       },
@@ -102,7 +99,7 @@
             that.imgLength = that.imglist.length
             let qzone = 'https://wx.biergao.vip/api/qzone/';
             wx.uploadFile({
-              url: qzone + 'uploadsfiles',
+              url: `${qzone}uploadsfiles`,
               filePath: tempFilePaths[0],
               name: 'image',
               success: function(res) {

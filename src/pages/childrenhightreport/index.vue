@@ -21,16 +21,16 @@
           <div class="reportcontext">
             <div class="context_top">
               <p v-if="type1==0"><i style="display:inline-block">·</i>当前身高，目前已经达到全国平均身高</p>
-              <p v-if="type1==1"><i style="display:inline-block">·</i>当前身高，高于全国平均身高<i style="color:rgb(227, 139, 39)">{{reportHight1}}</i>CM</p>
-              <p v-if="type1==2"><i style="display:inline-block">·</i>当前身高，低于全国平均身高<i style="color:rgb(227, 139, 39)">{{reportHight1}}</i>CM</p>
+              <p v-if="type1==1"><i style="display:inline-block">·</i>当前身高，高于全国平均身高<i style="color:#ec881d">{{reportHight1}}</i>CM</p>
+              <p v-if="type1==2"><i style="display:inline-block">·</i>当前身高，低于全国平均身高<i style="color:#ec881d">{{reportHight1}}</i>CM</p>
             </div>
             <div class="context_mid">
               <p v-if="type2==0"><i style="display:inline-block">·</i>当前身高，目前已经达到理想身高</p>
-              <p v-if="type2==1"><i style="display:inline-block">·</i>当前身高，高于理想身高<i style="color:rgb(227, 139, 39)">{{reportHight2}}</i>CM,通过科学干预，身高将突破遗传，达到<i style="color:rgb(227, 139, 39)">{{hightHight}}</i>CM</p>
-              <p v-if="type2==2"><i style="display:inline-block">·</i>当前身高，低于理想身高<i style="color:rgb(227, 139, 39)">{{reportHight2}}</i>CM,通过科学干预，身高将突破遗传，达到<i style="color:rgb(227, 139, 39)">{{hightHight}}</i>CM</p>
+              <p v-if="type2==1"><i style="display:inline-block">·</i>当前身高，高于理想身高<i style="color:#ec881d">{{reportHight2}}</i>CM,通过科学干预，身高将突破遗传，达到<i style="color:#ec881d">{{hightHight}}</i>CM</p>
+              <p v-if="type2==2"><i style="display:inline-block">·</i>当前身高，低于理想身高<i style="color:#ec881d">{{reportHight2}}</i>CM,通过科学干预，身高将突破遗传，达到<i style="color:#ec881d">{{hightHight}}</i>CM</p>
             </div>
             <div class="context_bottom">
-              <p>·若后天身高管理不善，身高将低于遗传身高，下降至身高下限<i style="color:rgb(227, 139, 39)">{{lowerHight}}</i>CM</p>
+              <p>·若后天身高管理不善，身高将低于遗传身高，下降至身高下限<i style="color:#ec881d">{{lowerHight}}</i>CM</p>
             </div>
           </div>
         </div>

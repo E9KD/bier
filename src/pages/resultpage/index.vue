@@ -169,7 +169,7 @@
 
   import ajax from '../../utils/ajax.js'
   import wxCharts from "../../utils/wxcharts.js";
-  
+  import {getQuestionContentUrl} from '@/utils/api.js'
   export default {
     data() {
       return {
@@ -277,8 +277,7 @@
       ...mapMutations(["ChangePolarParam"]),
       init() {
         this.globalScore = this.scoreState;
-        let url = "https://wx.biergao.vip/api/survey/getassess";
-        ajax.GetWithOutData(url).then((result) => {
+        ajax.GetWithOutData(getQuestionContentUrl).then((result) => {
           console.log(result);
           this.scoreList = [];
           this.ComputeScore(result);

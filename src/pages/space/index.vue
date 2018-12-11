@@ -27,14 +27,14 @@
               </div>
             </div>
             <!-- <div v-else style="margin-left: 20rpx;">
-                                          <div class="images-wrapper">
-                                            <div class="images-list">
-                                              <div v-for="(item,index3) in item.imglist" :key='index3'>
-                                                <img class="images-img" src="https://wx.biergao.vip/uploads/thumb">
-                                              </div>
-                                            </div>
-                                          </div>
-                                        </div> -->
+              <div class="images-wrapper">
+                <div class="images-list">
+                  <div v-for="(item,index3) in item.imglist" :key='index3'>
+                    <img class="images-img" src="https://wx.biergao.vip/uploads/thumb">
+                  </div>
+                </div>
+              </div>
+            </div> -->
             <!--显示发布时间-->
             <div class="time">
               <p class="time_p">{{item.datatime}}</p>
@@ -58,8 +58,8 @@
             <div v-if="item.dianzanlist" style="margin-left: 20rpx;">
               <div class="dianzan-box">
                 <!-- <div class="dianzan-biao">
-                                                <img class="xin2" src="../../../static/image/zan.png"  style='line-height:35rpx;'>
-                                              </div> -->
+                                                  <img class="xin2" src="../../../static/image/zan.png"  style='line-height:35rpx;'>
+                                                </div> -->
                 <div class="dianzan-text">
                   <img class="xin2" src="../../../static/image/zan1.png">
                   <p class="dianzan_text_p">{{item.dianzanlist}}</p>
@@ -87,8 +87,14 @@
 <script>
   import ajax from '../../utils/ajax.js'
   import {
-    mapState, mapMutations
+    mapState,
+    mapMutations
   } from 'vuex';
+  import {
+    getSpaceDefaultUrl,
+    pushStarUrl,
+    getPreviewUrl
+  } from '@/utils/api.js'
   export default {
     data() {
       return {
@@ -110,12 +116,11 @@
         this.DefaultRequest()
       },
       DefaultRequest() {
-        let url = `https://wx.biergao.vip/api/qzone/getlist`
         let data = {
           uid: this.userParam.userid,
           page: 1
         }
-        ajax.Get(url, data).then((result) => {
+        ajax.Get(getSpaceDefaultUrl, data).then((result) => {
           if (data.enum == 0) {
             this.isshow = 0
             this.isDoom = false
@@ -133,13 +138,12 @@
         if (y) {
           return
         }
-        let url = `https://wx.biergao.vip/api/qzone/setdianzan`
-        let data = {
+        const data = {
           userId: this.userParam.userid,
           id: x,
           nickname: this.userParam.nickName
         }
-        ajax.Get(url, data).then((result) => {
+        ajax.Get(pushStarUrl, data).then((result) => {
           this.searchSongList[z].dianzan = true
           if (this.searchSongList[z].dianzanlist) {
             this.searchSongList[z].dianzanlist += `,${this.userParam.nickName}`
@@ -156,14 +160,13 @@
         })
       },
       PreviewImage(x, y) {
-        let url = `https://wx.biergao.vip/uploads/qzone${x}`
         let list = []
         for (let i = 0; i < y.length; i++) {
-          list.push(`https://wx.biergao.vip/uploads/qzone${y[i]}`)
+          list.push(`${getPreviewUrl}${y[i]}`)
         }
         console.log(list);
         wx.previewImage({
-          current: url, // 当前显示图片的http链接
+          current: `${getPreviewUrl}${x}`, // 当前显示图片的http链接
           urls: list // 需要预览的图片http链接列表
         })
       },
@@ -187,12 +190,11 @@
         return
       } else {
         this.reachIndex = this.reachIndex + 1
-        let url = `https://wx.biergao.vip/api/qzone/getlist`
         let data = {
           uid: this.userParam.userid,
           page: this.reachIndex
         }
-        ajax.Get(url, data).then((result) => {
+        ajax.Get(getSpaceDefaultUrl, data).then((result) => {
           for (let i = 0; i < result.orderlist.length; i++) {
             this.searchSongList.push(result.orderlist[i])
           }
@@ -503,7 +505,7 @@
     font-size: 30rpx;
     padding: 10rpx 0px;
     /* margin-top: -29rpx;
-                                        margin-left: 50rpx; */
+                                          margin-left: 50rpx; */
   }
   
   

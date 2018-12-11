@@ -16,6 +16,7 @@
     mapActions
   } from "vuex";
 import ajax from "../utils/ajax.js";
+import {bannerUrl} from '@/utils/api.js'
   export default {
   
     data() {
@@ -33,15 +34,10 @@ import ajax from "../utils/ajax.js";
   
       },
       getBanner() {
-        let url = `https://wx.biergao.vip/api/index/getArrimg`
-        ajax.Get(url).then(res => {
+        ajax.Get(bannerUrl).then(res => {
           this.imgUrls = res.banner
         })
-  
       }
-    },
-    computed: {
-      ...mapState(['httpHead', 'httpBanner'])
     },
     onLoad() {
       this.getBanner()

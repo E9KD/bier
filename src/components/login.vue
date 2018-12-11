@@ -20,7 +20,7 @@
         bottom: 7%;
         left: 50%;
         transform: translate(-50%, -50%);
-        border: 2rpx solid rgb(227, 139, 39);
+        border: 2rpx solid #ec881d;
         width: 250rpx;
         height: 70rpx;
         border-radius: 14rpx;

@@ -2,9 +2,9 @@
   <div>
     <div class="servehead">
       <div class="seveheadbox">
-        <h2 class="servetext texthead">TEAM</h2>
-        <p class="servetext phead">国内一流的身高管理团队</p>
-        <p class="servetext phead">一对一定制并全程跟踪身高促进</p>
+        <h2 class=" texthead">TEAM</h2>
+        <p class="servetext phead">国内一流的身高管理团队<span></span></p>
+        <p class="servetext phead">一对一定制并全程跟踪身高促进<span></span></p>
       </div>
     </div>
     <!-- 老师列表 -->
@@ -29,6 +29,7 @@
     mapState,
     mapMutations
   } from 'vuex';
+  import {getDefaultTeacherInfoUrl,getMoreTeacherInfoUrl} from '@/utils/api.js'
   export default {
     data() {
       return {
@@ -43,11 +44,11 @@
       ...mapMutations(['changeteacherid', 'toastshowtype', 'closeToast']),
       getTeacherinfo() {
         let that = this
-        let url = this.httpHead + this.httpTeacherpage1
         this.toastshowtype({
-          t:0,p:'Loading...'
+          t: 0,
+          p: 'Loading...'
         });
-        ajax.Get(url).then((result) => {
+        ajax.Get(getDefaultTeacherInfoUrl).then((result) => {
           this.teacherinfolist = result.orderlist
           this.closeToast()
         }).catch((err) => {
@@ -67,16 +68,12 @@
         })
       }
     },
-    computed: {
-      ...mapState(['httpHead', 'httpTeacherpage1', 'httpTeacherpage2'])
-    },
     onLoad() {
       this.getTeacherinfo()
     },
     onReachBottom() {
       let that = this
-      let url = this.httpHead + this.httpTeacherpage2
-      ajax.Get(url).then((result) => {
+      ajax.Get(getMoreTeacherInfoUrl).then((result) => {
         this.teacherinfolist2 = result.orderlist
       }).catch((err) => {
         console.log(err);
@@ -95,22 +92,28 @@
 
 <style scoped>
   .seveheadbox {
-    border: 1px solid #888888;
     border-radius: 50rpx;
     width: 90%;
     margin: 30rpx auto;
   }
   
   .servetext {
-    text-align: center;
+    text-align: justify;
+    height: 55rpx;
+  }
+  
+  .servetext>span {
+    display: inline-block;
+    padding-left: 100%;
   }
   
   .texthead {
     font-size: 60rpx;
+    text-align: center;
   }
   
   .phead {
-    font-size: 30rpx;
+    font-size: 40rpx;
     padding: 10rpx;
     color: #888888;
   }

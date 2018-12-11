@@ -55,6 +55,7 @@
     mapMutations
   } from "vuex";
   import ajax from '../../utils/ajax.js'
+  import {changePhoneUrl} from '@/utils/api.js'
   export default {
     data() {
       return {
@@ -77,16 +78,13 @@
         }
       },
       getPhoneNumber(e) {
-        console.log(e);
-        let url = `https://wx.biergao.vip/api/biaob/setmobile`
-        console.log(this.userParam);
         let data = {
           iv: e.mp.detail.iv,
           encryptedData: e.mp.detail.encryptedData,
           sessionKey: this.userParam.sessionKey,
           userid: this.userParam.userid
         }
-        ajax.Get(url, data).then((result) => {
+        ajax.Get(changePhoneUrl, data).then((result) => {
           this.ChangePhoneNumber(result.phoneNumber)
         }).catch((err) => {
           console.log(err);

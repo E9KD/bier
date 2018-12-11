@@ -30,6 +30,7 @@
 <script>
 import { mapState, mapMutations } from "vuex";
 import ajax from "../utils/ajax.js";
+import {buyPriceUrl} from '@/utils/api.js'
 export default {
   data() {
     return {
@@ -74,8 +75,7 @@ export default {
       console.log(this.asd);
     },
     init() {
-      let url = `https://wx.biergao.vip/api/vip/price`;
-      ajax.Get(url).then(res=>{
+      ajax.Get(buyPriceUrl).then(res=>{
         this.price1 = res.data[0];
         this.price2 = res.data[1];
         this.price = this.price1;
@@ -134,7 +134,7 @@ export default {
   margin: 0 auto;
   width: 300rpx;
   height: 80rpx;
-  background-color: rgb(227, 139, 39);
+  background-color: #ec881d;
   text-align: center;
   font-size: 30rpx;
   line-height: 80rpx;
@@ -186,13 +186,13 @@ export default {
 }
 
 .active {
-  background-color: rgb(227, 139, 39);
+  background-color: #ec881d;
   color: white;
 }
 
 .normal {
   background-color: white;
-  border: 1px solid rgb(227, 139, 39);
+  border: 1px solid #ec881d;
   color: black;
 }
 
@@ -215,7 +215,7 @@ export default {
 
 .buytip i {
   width: 100rpx;
-  background-color: rgb(227, 139, 39);
+  background-color: #ec881d;
   height: 6rpx;
   text-align: center;
   position: absolute;

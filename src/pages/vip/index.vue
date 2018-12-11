@@ -9,9 +9,9 @@
       </div>
       <block v-if="isvip == false">
         <div style='display:flex;position:relative;'>
-          <button style='margin-bottom:0px;width:40%;height:40px;line-height:40px;float:left;margin-top:20px;background:#616161;border:none;color:#fff;font-size:20px;position:absolute;bottom:-20px;left:25px;background: linear-gradient(to right, rgb(227, 139, 39), rgb(227, 200, 39));'
+          <button style='margin-bottom:0px;width:40%;height:40px;line-height:40px;float:left;margin-top:20px;background:#616161;border:none;color:#fff;font-size:20px;position:absolute;bottom:-20px;left:25px;background: linear-gradient(to right, #ec881d, rgb(227, 200, 39));'
             @click="GoExchange">VIP兑换</button>
-          <button plain='true' style='margin-bottom:0px;width:40%;height:40px;line-height:40px;float:left;margin-top:20px;background:#616161;border:none;color:#fff;font-size:20px;position:absolute;bottom:-20px;right:25px;background: linear-gradient(to right, rgb(227, 139, 39), rgb(227, 200, 39));'
+          <button plain='true' style='margin-bottom:0px;width:40%;height:40px;line-height:40px;float:left;margin-top:20px;background:#616161;border:none;color:#fff;font-size:20px;position:absolute;bottom:-20px;right:25px;background: linear-gradient(to right, #ec881d, rgb(227, 200, 39));'
             @click="GoInquireVIp">VIP查询</button>
         </div>
       </block>
@@ -59,9 +59,7 @@
           <div class='vip-title'>极速</div>
           <div class='vip-text'>反馈/主动回访</div>
         </div>
-  
       </div>
-  
     </div>
     <div class="buylinkbox" :class="[buyshow?s:h]">
       <div class="buylink">
@@ -95,6 +93,7 @@
     mapState
   } from 'vuex';
   import ajax from '../../utils/ajax.js'
+  import {buyPriceUrl,getVipStateUrl} from '@/utils/api.js'
   export default {
     data() {
       return {
@@ -115,8 +114,7 @@
     methods: {
       ...mapMutations(['ChangeToast2State']),
       init() {
-        let url = `https://wx.biergao.vip/api/vip/price`
-        ajax.Get(url).then((result) => {
+        ajax.Get(buyPriceUrl).then((result) => {
           this.price1 = result[0]
           this.price2 = result[1]
           this.price = this.price1
@@ -127,11 +125,10 @@
         this.GetVipState()
       },
       GetVipState() {
-        let url = `https://wx.biergao.vip/api/vip/select`
         let data = {
           openid: this.userParam.openId
         }
-        ajax.Post(url, data).then((result) => {
+        ajax.Post(getVipStateUrl, data).then((result) => {
           if (result.status == 500) {
             this.isvip = false
           } else if (result.status == 404) {
@@ -199,7 +196,7 @@
     margin: 0 auto;
     width: 300rpx;
     height: 80rpx;
-    background-color: rgb(227, 139, 39);
+    background-color: #ec881d;
     text-align: center;
     font-size: 30rpx;
     line-height: 80rpx;
@@ -251,13 +248,13 @@
   }
   
   .active {
-    background-color: rgb(227, 139, 39);
+    background-color: #ec881d;
     color: white;
   }
   
   .normal {
     background-color: white;
-    border: 1px solid rgb(227, 139, 39);
+    border: 1px solid #ec881d;
     color: black;
   }
   
@@ -280,7 +277,7 @@
   
   .buytip i {
     width: 100rpx;
-    background-color: rgb(227, 139, 39);
+    background-color: #ec881d;
     height: 6rpx;
     text-align: center;
     position: absolute;

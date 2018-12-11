@@ -1,76 +1,60 @@
 <script>
   import {
-    mapMutations,
-    mapState
-  } from 'vuex';
-  import ajax from './utils/ajax.js'
+    mapMutations
+  } from "vuex";
+  import {
+    loginUrl
+  } from "@/utils/api.js";
   export default {
     methods: {
-      ...mapMutations(['ChangeUserInfo', 'ChangeUserParam']),
-      // 查看是否授权
-      getuserinfo(x) {
-        let that = this
-        wx.getUserInfo({
-          lang: "zh_CN",
-          success: function(res) {
-            // 授权成功
-            console.log(`授权成功`);
-            that.ChangeUserInfo(res.userInfo)
-            that.login(res)
-          },
-          fail: function(res) {
-            console.log('授权失败');
-            // 进行手动授权
-            wx.reLaunch({
-              url: '/pages/login/main'
-            })
-          }
-        })
-      },
-      async login(x) {
-        let that = this
-        wx.login({
-          success: function(res) {
-            let code = res.code
-            // 拿到code
-            if (res.code) {
-              wx.getUserInfo({
-                success: function(res) {
-                  let url = `https://wx.biergao.vip/api/biaob/login`
-                  let data = {
-                    encryptedData: res.encryptedData,
-                    iv: res.iv,
-                    code: code
-                  }
-                  ajax.Post(url, data).then(res => {
-                    that.ChangeUserParam(res)
-                  })
-                }
-              })
-            } else {
-              console.log(res.errMsg)
-            }
-          }
-        })
-      },
+      ...mapMutations(["ChangeSid", "ChangeUserParam", "ChangeUserInfo"]),
+      // 先判断有没有获取到userParam
+      init() {
+        const param = wx.getStorageSync("userParamLocal");
+        const info = wx.getStorageSync("userInfoLocal");
+        if (!param && !info) {
+          wx.reLaunch({
+            url: "/pages/login/main"
+          });
+        } else {
+          this.ChangeUserParam(param);
+          this.ChangeUserInfo(info);
+        }
+      }
     },
     onLaunch() {
-      this.getuserinfo()
-  
+      this.init();
     },
-    onShow(x) {
-      console.log(x);
+    onShow(options) {
+      //  options里面的scene是带有参数的，应该是放到了query里面
+      if (options.query.scene) {
+        var scene = decodeURIComponent(options.query.scene);
+        var arrPara = scene.split("&");
+        var arr = [];
+        var testData = {};
+        for (var i in arrPara) {
+          arr = arrPara[i].split("=");
+          if (i == 0) {
+            testData.page = arr[1];
+          } else {
+            testData.sid = arr[1];
+          }
+        }
+        this.ChangeSid(testData.sid);
+      } else {
+        this.ChangeSid(0);
+      }
     }
-  }
+  };
 </script>
 
 <style>
   page {
-    background-color: #eeeeee;
+    background-color: white;
   }
   
   .goldbg {
-    background: linear-gradient(to right, rgb(227, 139, 39), rgb(227, 200, 39));
+    background: linear-gradient(to right, #ec881d, rgb(227, 200, 39));
   }
   
   .backgroundImg {
@@ -162,30 +146,31 @@
     color: #999;
     font-size: 30rpx;
   }
-      .shareIcon {
-        display: inline-block;
-        margin-left: 10rpx;
-        width: 30rpx;
-        height: 30rpx;
-        vertical-align: middle;
-    }
-    
-    .userinfo p {
-        vertical-align: middle;
-        margin-left: 10rpx;
-        display: inline-block;
-    }
-    
-    .userinfo {
-        opacity: 0.9;
-        background-color: #ff5da2;
-        position: fixed;
-        bottom: 20%;
-        right: 0px;
-        color: white;
-        padding: 10rpx 20rpx;
-        font-size: 25rpx;
-        border-bottom-left-radius: 30rpx;
-        border-top-left-radius: 30rpx;
-    }
+  
+  .shareIcon {
+    display: inline-block;
+    margin-left: 10rpx;
+    width: 30rpx;
+    height: 30rpx;
+    vertical-align: middle;
+  }
+  
+  .userinfo p {
+    vertical-align: middle;
+    margin-left: 10rpx;
+    display: inline-block;
+  }
+  
+  .userinfo {
+    opacity: 0.9;
+    background-color: #45b7b8;
+    position: fixed;
+    bottom: 20%;
+    right: 0px;
+    color: white;
+    padding: 10rpx 20rpx;
+    font-size: 25rpx;
+    border-bottom-left-radius: 30rpx;
+    border-top-left-radius: 30rpx;
+  }
 </style>
