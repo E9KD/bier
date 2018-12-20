@@ -3,11 +3,11 @@
     <div class="addchildren ">
       <div class="sexchoose">
         <div class="radio_box_left">
-          <input type="radio" name="asd" :checked='checked==1' @click="ChangeChecked(1)" class="radio radio_man">
+          <input type="radio" name="asd" :checked='checked==1' @click="checked=1" class="radio radio_man">
           <p class="radio_p">男</p>
         </div>
         <div class="radio_box_right">
-          <input type="radio" name="asd" :checked='checked==2' @click="ChangeChecked(2)" class="radio radio_woman">
+          <input type="radio" name="asd" :checked='checked==2' @click="checked=2" class="radio radio_woman">
           <p class="radio_p">女</p>
         </div>
       </div>
@@ -112,10 +112,6 @@
         this.childrenBirthday = e.mp.detail.value;
         this.ComputeAge(e.mp.detail.value)
       },
-      ChangeChecked(x) {
-        // 1是男 2是nv
-        this.checked = x;
-      },
       ComputeNumber(x) {
         let a = JSON.parse(x)
         return a + 100
@@ -172,12 +168,9 @@
         }
       },
       init() {
-        if (this.childrenHightlist.length > 0) {
-          return
-        } else {
-          for (let i = 100; i <= 180; i++) {
-            this.childrenHightlist.push(i);
-          }
+        if (this.childrenHightlist.length > 0) return
+        for (let i = 100; i <= 180; i++) {
+          this.childrenHightlist.push(i);
         }
         this.GetDefaultState()
       },

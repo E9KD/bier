@@ -57,9 +57,7 @@
   
       },
       AddList() {
-        if (this.childrenHightlist.length > 0) {
-          return;
-        }
+        if (this.childrenHightlist.length > 0) return
         for (let i = 50; i <= 180; i++) {
           this.childrenHightlist.push(i);
         }

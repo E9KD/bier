@@ -75,7 +75,7 @@
                 //     url: `/pages/toolspage/main`
                 // })
                 wx.navigateTo({
-                    url: `/pages/share/main`
+                    url: `/pages/chart/main`
                 })
             }
         },

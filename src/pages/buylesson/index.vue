@@ -5,7 +5,7 @@
     
             <div class="lessonVideo">
                 <div class="video_top">
-                    <div v-if="isPlay" class="video_top_img" @click.stop="PlayVideo">
+                    <div v-if="isPlay" class="video_top_img" @click.stop="isPlay=false">
                         <img :src="imageSrc" alt="" class="top_img_cover" style="height:200px;">
                         <div class="top_img_p">
                             <img src="../../../static/image/playwhite.png" alt="" class="img_p_img">
@@ -15,7 +15,7 @@
                     </div>
                     <div v-else class="video_top_video">
                         <video id="myVideo" class="video" :src="videoSrc" direction='0' objectFit='fill' controls page-gesture show-fullscreen-btn show-play-btn show-center-play-btn></video>
-                        <cover-view class="top_video_icon" @click="CutVideo">
+                        <cover-view class="top_video_icon" @click="isPlay=true">
                             <!-- <cover-image src="../../../static/image/besmall.png" alt="" class="video_icon_icon"/> -->
                             <cover-view class="video_icon_p">收起</cover-view>
                         </cover-view>
@@ -87,7 +87,7 @@
                             </div>
                             <div class="lessonList_btn">
                                 <p v-if="isWatch" class="btn" @click="WatchVideo(item.content)">观看</p>
-                                <p v-else class="btn" @click="BuyLesson">咨询</p>
+                                <p v-else class="btn" @click="isBuy=true">咨询</p>
                             </div>
                         </div>
     
@@ -98,7 +98,7 @@
         </div>
         <div :class="isBuy?s:h" style='height:100px;border:1rpx solid #333;border-radius:5px;  position: fixed;background:#fff; top: 50%;transform: translate(0,-50%); left: 0; bottom: 0; right: 0;'>
             <div style='width:100%;height:28px;'>
-                <div style='width:30px;height:30px;line-height:30px;margin:0 auto;float:right;font-size:16px;text-align:center;' @click='CloseTip'>
+                <div style='width:30px;height:30px;line-height:30px;margin:0 auto;float:right;font-size:16px;text-align:center;' @click='isBuy=false'>
                     X
                 </div>
             </div>
@@ -154,6 +154,7 @@
         },
         methods: {
             init() {
+                let time = new Date(this.lessonListcontent.teacherinfo.time_create * 1000)
                 this.lessinId = this.lessonListcontent.id
                 this.buyState = this.lessonListcontent.status
                 this.title = this.lessonListcontent.title
@@ -161,7 +162,6 @@
                 this.teacherInfoContent = this.lessonListcontent.teacherinfo.teacher_text
                 this.faceimg = this.lessonListcontent.teacherinfo.faceimg
                 this.name = this.lessonListcontent.teacherinfo.name
-                let time = new Date(this.lessonListcontent.teacherinfo.time_create * 1000)
                 this.date = `${time.getFullYear()}/${time.getMonth()+1}/${time.getDate()}`
                 this.imageSrc = this.lessonListcontent.class_url_img
                 this.GetLessonInfo()
@@ -208,18 +208,6 @@
                     this.isPlay = false
                     this.videoContext.play()
                 }, 500)
-            },
-            BuyLesson() {
-                this.isBuy = true
-            },
-            CloseTip() {
-                this.isBuy = false
-            },
-            PlayVideo() {
-                this.isPlay = false
-            },
-            CutVideo() {
-                this.isPlay = true
             },
             GetShare() {
                 wx.navigateTo({

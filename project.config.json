@@ -31,7 +31,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 24,
+			"current": 25,
 			"list": [
 				{
 					"id": -1,
@@ -181,12 +181,18 @@
 					"id": -1,
 					"name": "123123",
 					"pathName": "pages/test/main",
+					"query": "",
 					"scene": "1044",
 					"shareInfo": {
 						"groupName": "测试模拟群0",
 						"shareName": "8e4xkfI2TzM5t_rTD-Sj7nL1EQE3iFjThN0lPFRfvRc@cr4dev",
 						"shareKey": "C7DYDAv_iFTLukq6ykzPSADsvsjHtcUO60tCVm87QDvqHVkpO9hXrhwDkzBdByublNnRr0S6wAJaUxX_Tojhgw~~"
 					}
+				},
+				{
+					"id": -1,
+					"name": "聊天",
+					"pathName": "pages/chart/main"
 				}
 			]
 		}

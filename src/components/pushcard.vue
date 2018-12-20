@@ -81,9 +81,6 @@ import {isPastUrl} from '@/utils/api.js'
                         this.isPastShow = false;
                     }
                 })
-    
-    
-    
             },
             GoEvaluate() {
                 this.closePushcardType();
@@ -97,9 +94,7 @@ import {isPastUrl} from '@/utils/api.js'
                     url: "/pages/cardpage/main"
                 });
             },
-            // 阻止冒泡
             preventD() {},
-            // 关闭pushcard
             closePushcard() {
                 this.closePushcardType();
             },

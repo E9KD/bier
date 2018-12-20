@@ -14,140 +14,136 @@
         <div class="top_content">{{topContent}}</div>
       </div>
       <div class="parse">
-        <div v-html="content" class="html a "></div>
+        <div v-html="content" class="html a"></div>
       </div>
     </div>
-  
   </div>
 </template>
 
 <script>
-  import ajax from '../../utils/ajax.js'
-  import {
-    mapState,
-    mapMutations
-  } from "vuex";
-  import {getScoreNowUrl} from '@/utils/api.js'
-  export default {
-    data() {
-      return {
-        score: null,
-        topContent: null,
-        content: null
-      }
-    },
-  
-    methods: {
-      init(x) {
-        let data = {
-          pid: this.cardType,
-          total: x
-        }
-        this.score = null
-        this.topContent = null
-        this.content == null
-        ajax.Get(getScoreNowUrl, data).then((result) => {
-          this.score = x
-          this.topContent = result.title
-          this.content = result.jielun.replace(
-            /16/g,
-            "12").replace(
-            /background-color:rgb(255, 255, 255)/g,
-            "")
-        }).catch((err) => {
+import ajax from "@/utils/ajax.js";
+import { mapState, mapMutations } from "vuex";
+import { getScoreNowUrl } from "@/utils/api.js";
+export default {
+  data() {
+    return {
+      score: null,
+      topContent: null,
+      content: null
+    };
+  },
+
+  methods: {
+    init(x) {
+      let data = {
+        pid: this.cardType,
+        total: x
+      };
+      this.score = null;
+      this.topContent = null;
+      this.content == null;
+      ajax
+        .Get(getScoreNowUrl, data)
+        .then(result => {
+          this.score = x;
+          this.topContent = result.title;
+          this.content = result.jielun
+            .replace(/16/g, "12")
+            .replace(/background-color:rgb(255, 255, 255)/g, "");
+        })
+        .catch(err => {
           console.log(err);
         });
-      }
-    },
-    computed: {
-      ...mapState(["userParam", "cardType"])
-    },
-    onLoad(x) {
-      this.init(x.total)
     }
+  },
+  computed: {
+    ...mapState(["userParam", "cardType"])
+  },
+  onLoad(x) {
+    this.init(x.total);
   }
+};
 </script>
 
 <style scoped>
-  .a {
-    background-color: none;
-  }
-  
-  .parse {
-    width: 80%;
-    margin: 0 auto;
-    margin-top: 50rpx;
-    padding-bottom: 50rpx;
-  }
-  
-  
-  .result_container {
-    position: relative;
-    z-index: 99;
-  }
-  
-  .container_top {
-    width: 100%;
-    border-bottom: 1px solid #999;
-  }
-  
-  .top_title {
-    padding-top: 50rpx;
-    text-align: center;
-    background: linear-gradient(to left, #ff8c00, #fff);
-    background-clip: text;
-    -webkit-background-clip: text;
-    color: transparent;
-    font-weight: bold;
-  }
-  
-  .top_score {
-    position: relative;
-    height: 400rpx;
-  }
-  
-  .score_box {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 250rpx;
-    height: 250rpx;
-    border-radius: 300rpx;
-    border: 2px solid #ff8c00;
-  }
-  
-  .box_v {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    white-space: nowrap;
-  }
-  
-  .score_v {
-    display: inline-block;
-    font-size: 80rpx;
-    background: linear-gradient(to left, #ff8c00, #fff);
-    background-clip: text;
-    -webkit-background-clip: text;
-    color: transparent;
-  }
-  
-  .score_s {
-    display: inline-block;
-    font-size: 40rpx;
-    background: linear-gradient(to left, #ff8c00, #fff);
-    background-clip: text;
-    -webkit-background-clip: text;
-    color: transparent;
-  }
-  
-  .top_content {
-    text-align: center;
-    color: white;
-    width: 80%;
-    margin: 0 auto;
-    margin-bottom: 50rpx;
-  }
+.a {
+  background-color: none;
+}
+
+.parse {
+  width: 80%;
+  margin: 0 auto;
+  margin-top: 50rpx;
+  padding-bottom: 50rpx;
+}
+
+.result_container {
+  position: relative;
+  z-index: 99;
+}
+
+.container_top {
+  width: 100%;
+  border-bottom: 1px solid #999;
+}
+
+.top_title {
+  padding-top: 50rpx;
+  text-align: center;
+  background: linear-gradient(to left, #ff8c00, #fff);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  font-weight: bold;
+}
+
+.top_score {
+  position: relative;
+  height: 400rpx;
+}
+
+.score_box {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 250rpx;
+  height: 250rpx;
+  border-radius: 300rpx;
+  border: 2px solid #ff8c00;
+}
+
+.box_v {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  white-space: nowrap;
+}
+
+.score_v {
+  display: inline-block;
+  font-size: 80rpx;
+  background: linear-gradient(to left, #ff8c00, #fff);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.score_s {
+  display: inline-block;
+  font-size: 40rpx;
+  background: linear-gradient(to left, #ff8c00, #fff);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.top_content {
+  text-align: center;
+  color: white;
+  width: 80%;
+  margin: 0 auto;
+  margin-bottom: 50rpx;
+}
 </style>

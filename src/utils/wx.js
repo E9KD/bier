@@ -12,6 +12,7 @@ export function GetUserInfo() {
   })
 }
 export function Login() {
+  console.log(`login进来了`);
   return new Promise(resolve => {
     wx.login({
       success: res => {
@@ -20,3 +21,4 @@ export function Login() {
     })
   })
 }
+

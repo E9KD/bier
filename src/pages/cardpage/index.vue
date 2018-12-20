@@ -105,14 +105,14 @@
       };
     },
     computed: {
-      ...mapState(["userParam"])
+      ...mapState(["userParam"]),
     },
     methods: {
       ChangeChecked(index, index1) {
         this.optionList[index].checked = index1;
       },
       PushSubmit() {
-        for (let i in 7) {
+        for (let i=0;i<7;i++) {
           if (this.optionList[i].checked == null) {
             console.log(`有没有填写的内容`);
             return;

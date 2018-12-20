@@ -109,3 +109,8 @@ export const getVipStateUrl=`https://wx.biergao.vip/api/vip/select`
 // 上传圈子信息
 export const pushMsgUrl=`https://wx.biergao.vip/api/qzone/setresouse`
 
+// 上传全的图片链接
+export const qzone=`https://wx.biergao.vip/api/qzone/`
+
+// socket地址
+export const socketUrl=`ws://appnode.biergao.vip:7272`

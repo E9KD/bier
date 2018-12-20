@@ -13,7 +13,7 @@
   import ajax from "../../utils/ajax.js";
   import {
     GetUserInfo,
-    Login
+    Login,
   } from "@/utils/wx.js";
   import {
     loginUrl
@@ -24,12 +24,12 @@
       preventD() {},
       async getuserinfo(e) {
         // 没有授权过，点击授权并获取用户信息
-        const getUserInfoResult=await this.GetUserInfoFuc()
-        const param = e.mp.detail;
-        const loginResult = await Login();
+        let param = e.mp.detail;
+        let getUserInfoResult=await this.GetUserInfoFuc(e)
+        let loginResult = await Login();
         if (!loginResult.code) return;
-        const successResult = await this.GetUserParam(loginResult, param);
-        const localParam = wx.getStorageSync('userParamLocal')
+        let successResult = await this.GetUserParam(loginResult, param);
+        let localParam = wx.getStorageSync('userParamLocal')
         if (localParam && this.userParam) {
           wx.reLaunch({
             url: "/pages/index/main"
@@ -38,10 +38,11 @@
           console.log(`登陆失败！`);
         }
       },
-      GetUserInfoFuc() {
+      GetUserInfoFuc(e) {
         return new Promise(resolve => {
           this.ChangeUserInfo(e.mp.detail.userInfo);
           wx.setStorageSync('userInfoLocal', e.mp.detail.userInfo)
+          resolve(1)
         })
       },
       GetUserParam(x, y) {
@@ -62,7 +63,7 @@
     },
     computed: {
       ...mapState(["userParam", "userInfo", "sid"])
-    }
+    },
   };
 </script>
 

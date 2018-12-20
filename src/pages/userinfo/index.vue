@@ -68,7 +68,6 @@ import { mapState } from 'vuex';
         }else{
           this.sex=`女`
         }
-        console.log(this.userParam,this.userInfo);
       },
       ChangePhoneNumber(x){
         // 0 是手机号

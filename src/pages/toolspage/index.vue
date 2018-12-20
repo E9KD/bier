@@ -1,11 +1,11 @@
 <template>
   <div class="toolspage">
-    <img src="../../../static/image/nutrition.png" alt="" class="bgi">
+    <img src="../../../static/image/nutrition.png" alt class="bgi">
     <div class="toolspage_box">
       <div class="box_listbox">
         <div class="listbox_div goldbg" v-for="(item,index) in list" :key="index">
           <div class="div_top">
-            <img :src="item.img" alt="" class="top_img">
+            <img :src="item.img" alt class="top_img">
             <p class="top_content">{{item.title}}</p>
             <p class="top_tip" v-show="item.ishow">敬请期待</p>
           </div>
@@ -21,8 +21,8 @@
 </template>
 
 <script>
-import Pushcard from '../../components/pushcard'
-import { mapMutations, mapState } from 'vuex';
+import Pushcard from "../../components/pushcard";
+import { mapMutations, mapState } from "vuex";
 export default {
   data() {
     return {
@@ -55,31 +55,26 @@ export default {
       ]
     };
   },
-  components:{
+  components: {
     Pushcard
   },
   methods: {
-    ...mapMutations(['openPushcardType']),
+    ...mapMutations(["openPushcardType"]),
     GoEvaluate(x) {
-      if (x != 0) {
-        return;
-      }
+      if (x != 0) return;
       this.openPushcardType({
-        type:0,
-        index:x
-      })
-
+        type: 0,
+        index: x
+      });
     },
     GoPunch(x) {
-      if (x != 0) {
-        return;
-      }
+      if (x != 0) return;
       this.openPushcardType({
-        type:1,
-        index:x
-      })
+        type: 1,
+        index: x
+      });
     }
-  },
+  }
 };
 </script>
 
