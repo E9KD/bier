@@ -1,21 +1,121 @@
 <template>
-    <div class="test"></div>
+  <div class="echarts-wrap">
+    <mpvue-echarts :echarts="echarts" :onInit="onInit" canvasId="demo-canvas"/>
+    <button @click="click">click</button>
+  </div>
 </template>
-<script>
-export default {
-    methods:{
-        change(){
-            let a='{"type":"say","from_client_id":"7f00000108fd00000003","from_client_name":"\u5206\u4eba","to_client_id":"all","content":"http:\/\/www.a.comhttp:\/\/tmp\/wx41e93e31c9d4dc26.o6zAJsxJLWJ1OyRVNZsW5HYwbGnI.db51sotx8r5Hac07ad2dab3cb967672cdc09c16ef558.silk","stype":"2","time":"2018-12-15 10:12:17"}'
-            let b=JSON.parse(a)
-            console.log(b);
-        }
 
+<script>
+import echarts from "echarts";
+import mpvueEcharts from "mpvue-echarts";
+
+let chart = null;
+let list = [10, 20, 30];
+let option = {
+  tooltip: {
+    trigger: "axis"
+  },
+  legend: {
+    itemWidth: 10,
+    itemHeight: 7,
+    data: ["正常身高", "完美身高", "矮小身高", "你的身高"],
+    itemGap: 5
+  },
+  dataZoom: [
+    {
+      show: true,
+      realtime: true,
+      handleSize: false,
+      start: 0,
+      end: 50,
+      default: false
     },
-    onLoad(){
-        this.change()
+    {
+      type: "slider",
+      realtime: true,
+      start: 0,
+      end: 50
     }
+  ],
+  calculable: true,
+  xAxis: [
+    {
+      type: "category",
+      boundaryGap: false,
+      data: [111, 150, 200]
+    }
+  ],
+  yAxis: [
+    {
+      type: "category",
+      // max: 'dataMax',
+      // min: 'dataMax',
+      nameGap: 0
+    }
+  ],
+  series: [
+    {
+      name: "正常身高",
+      type: "line",
+      data: list
+    },
+    {
+      name: "完美身高",
+      type: "line",
+      data: [40, 50, 60]
+    },
+    {
+      name: "矮小身高",
+      type: "line",
+      data: [70, 80, 90]
+    },
+    {
+      name: "你的身高",
+      type: "line",
+      data: [100, 110, 120]
+    }
+  ]
+}; // ECharts 配置项
+function initChart(canvas, width, height) {
+  console.log(123123123);
+  chart = echarts.init(canvas, null, {
+    width: width,
+    height: height
+  });
+  canvas.setChart(chart);
+
+  chart.setOption(option);
+
+  return chart; // 返回 chart 后可以自动绑定触摸操作
 }
+export default {
+  components: {
+    mpvueEcharts
+  },
+  data() {
+    return {
+      echarts,
+      onInit: initChart
+    };
+  },
+  methods: {
+    click() {
+      let arr = [22, 23, 24];
+      option.series[0].data = arr;
+      chart.setOption(option);
+    }
+  },
+  onLoad() {}
+};
 </script>
 <style scoped>
+.can {
+  width: 100vw;
+  height: 400px;
+}
 
+.echarts-wrap {
+  width: 100%;
+  height: 300px;
+}
 </style>

@@ -6,8 +6,9 @@
       </picker>
       <div style="height:8rpx;"></div>
     </div>
+    <!-- <Echarts></Echarts> -->
     <div class="echarts-wrap">
-      <mpvue-echarts :echarts="echarts" :onInit="Init" ref="echarts"/>
+      <mpvue-echarts :echarts="echarts" :onInit="HandleInit" ref="echarts"/>
     </div>
     <div class="chartpage_bottom">
       <div class="bottom_button">
@@ -25,92 +26,12 @@
 
 
 <script>
-import ajax from "@/utils/ajax.js";
+import { mapMutations, mapState } from "vuex";
+import ajax from "../../utils/ajax.js";
 import echarts from "echarts";
 import mpvueEcharts from "mpvue-echarts";
-import { man, woman } from "@/utils/data.js";
+import { man, woman } from "../../utils/data.js";
 let chart = null;
-// 时间线
-let timeList = [];
-let allHightparam = {
-  allNormalhight: null,
-  allPerfecthight: null,
-  allLowhight: null,
-  allMyhight: null
-};
-//总optios
-let option = {
-  legend: {
-    itemWidth: 10,
-    itemHeight: 7,
-    data: ["正常身高", "完美身高", "矮小身高", "你的身高"],
-    itemGap: 5
-  },
-  dataZoom: [
-    {
-      show: true,
-      realtime: true,
-      handleSize: false,
-      start: 0,
-      end: 30,
-      default: false,
-      type: "inside"
-    }
-  ],
-  calculable: true,
-  xAxis: [
-    {
-      type: "category",
-      boundaryGap: true,
-      data: timeList
-    }
-  ],
-  yAxis: [
-    {
-      type: "value",
-      max: "dataMax",
-      min: "dataMin",
-      nameGap: 0
-    }
-  ],
-  series: [
-    {
-      itemStyle: { normal: { label: { show: true } } },
-      name: "正常身高",
-      type: "line",
-      data: allHightparam.allNormalhight
-    },
-    {
-      itemStyle: { normal: { label: { show: true } } },
-      name: "完美身高",
-      type: "line",
-      data: allHightparam.allPerfecthight
-    },
-    {
-      itemStyle: { normal: { label: { show: true } } },
-      name: "矮小身高",
-      type: "line",
-      data: allHightparam.allLowhight
-    },
-    {
-      itemStyle: { normal: { label: { show: true } } },
-      name: "你的身高",
-      type: "line",
-      data: allHightparam.allMyhight
-    }
-  ]
-};
-
-// 默认函数
-let HandleInit = function(canvas, width, height) {
-  chart = echarts.init(canvas, null, {
-    width: width,
-    height: height
-  });
-  canvas.setChart(chart);
-  chart.setOption(option);
-  return chart;
-};
 export default {
   data() {
     return {
@@ -118,25 +39,26 @@ export default {
       index: 99,
       childrenInfolist: [],
       echarts,
-      Init: HandleInit,
+      option: null,
       childrenSex: null,
       childrenAge: null,
       normalHight: [],
       perfectHight: [],
       lowHight: [],
       youHightlist: [],
+      agelist: this.sage,
+      sexlist: this.ssex,
+      chart: null,
       id: [],
       nowHeightneed: null
     };
   },
-
   components: {
     mpvueEcharts
   },
-
   methods: {
-    // 添加x轴
     InitChart() {
+      let timeList = [];
       let yearnow = new Date().getFullYear();
       let monthnow = new Date().getMonth() + 1;
       for (let i = monthnow; i <= 12; i++) {
@@ -147,20 +69,95 @@ export default {
           }
         }
       }
+      this.option = {
+        tooltip: {
+          trigger: "axis"
+        },
+        legend: {
+          itemWidth: 10,
+          itemHeight: 7,
+          data: ["正常身高", "完美身高", "矮小身高", "你的身高"],
+          itemGap: 5
+        },
+        dataZoom: [
+          {
+            show: true,
+            realtime: true,
+            handleSize: false,
+            start: 0,
+            end: 50,
+            default: false
+          },
+          {
+            type: "slider",
+            realtime: true,
+            start: 0,
+            end: 50
+          }
+        ],
+        calculable: true,
+        xAxis: [
+          {
+            type: "category",
+            boundaryGap: false,
+            data: timeList
+          }
+        ],
+        yAxis: [
+          {
+            type: "category",
+            // max: 'dataMax',
+            // min: 'dataMax',
+            nameGap: 0
+          }
+        ],
+        series: [
+          {
+            name: "正常身高",
+            type: "line",
+            data: this.normalHight
+          },
+          {
+            name: "完美身高",
+            type: "line",
+            data: this.perfectHight
+          },
+          {
+            name: "矮小身高",
+            type: "line",
+            data: this.lowHight
+          },
+          {
+            name: "你的身高",
+            type: "line",
+            data: this.youHightlist
+          }
+        ]
+      };
+
+      this.$refs.echarts.init();
+    },
+    // 已经会使用了鸭
+    HandleInit(canvas, width, height) {
+      chart = echarts.init(canvas, null, {
+        width: width,
+        height: height
+      });
+      canvas.setChart(chart);
+      this.ChangeNumber();
+      chart.setOption(this.option);
+      return chart;
     },
 
-    //各项高度函数
     HightComputed(x, y, z) {
       let age = JSON.parse(this.childrenAge);
       let num = z[x][`${age + 1}`] - z[x][`${age}`];
       let fixNum = num.toFixed(1) / 12;
-      for (let i = 0; i < 11; i++) {
+      for (let i = 0; i <= 12; i++) {
         let item = JSON.parse(z[x][`${age}`]) + i * fixNum;
         y.push(item.toFixed(1));
       }
     },
-
-    //计算高度
     ChangeData() {
       this.normalHight = [];
       this.perfectHight = [];
@@ -177,15 +174,37 @@ export default {
         this.HightComputed(2, this.lowHight, womandata);
       }
     },
-
-    //切换孩子
+    ChangeNumber() {
+      // 直接修改option就可以
+      this.option.series = [
+        {
+          name: "正常身高",
+          type: "line",
+          data: this.normalHight
+        },
+        {
+          name: "完美身高",
+          type: "line",
+          data: this.perfectHight
+        },
+        {
+          name: "矮小身高",
+          type: "line",
+          data: this.lowHight
+        },
+        {
+          name: "你的身高",
+          type: "line",
+          data: this.youHightlist
+        }
+      ];
+    },
     ChangeChildren(e) {
       this.youHightlist = [];
       this.index = e.mp.detail.value;
       this.Requesta();
     },
 
-    //获取当前身高
     Requesta() {
       let url2 = `https://wx.biergao.vip/api/Child/clist/`;
       let data2 = {
@@ -194,43 +213,54 @@ export default {
       ajax
         .Post(url2, data2)
         .then(result => {
-          // 判断是否有数据，有就计算当前身高，没有跳过
+          if (result) return;
           let list = [];
-          if (result != 0) {
-            for (let i = 0; i < result.length; i++) {
-              list.push(result[i].nowheight);
-            }
-            this.nowHeightneed = result[0].nowheight;
-          } else {
-            // 传递的身高设置为0
-            this.nowHeightneed = null;
+          for (let i = 0; i < result.length; i++) {
+            list.push(result[i].nowheight);
           }
-          //正常操作
+          this.nowHeightneed = result[0].nowheight;
           this.childrenSex = this.childrenInfolist[this.index].sex;
           this.childrenAge = this.childrenInfolist[this.index].age;
           this.ChangeData();
-          option.series[0].data = this.normalHight;
-          option.series[1].data = this.perfectHight;
-          option.series[2].data = this.lowHight;
-          option.series[3].data = list;
-          chart.setOption(option);
+          this.option.series = [
+            {
+              name: "正常身高",
+              type: "line",
+              data: this.normalHight
+            },
+            {
+              name: "完美身高",
+              type: "line",
+              data: this.perfectHight
+            },
+            {
+              name: "矮小身高",
+              type: "line",
+              data: this.lowHight
+            },
+            {
+              name: "你的身高",
+              type: "line",
+              data: list
+            }
+          ];
+          chart.setOption(this.option);
         })
         .catch(err => {
           console.log(err);
         });
     },
-
-    // 获取十二个月的数据
     init() {
       //  请求获取孩子的数量和信息，获取成功push到childrenList中,获取年龄和性别，还有自己的身高
       // 如今之后第一次更新图表
       let url1 = `https://wx.biergao.vip/api/Child/childlist`;
       let data1 = {
-        openid: this.$store.state.userParam.openId
+        openid: this.userParam.openId
       };
       ajax
         .Post(url1, data1)
         .then(result => {
+          console.log(result);
           if (this.childrenList.length == 0) {
             for (let i = 0; i < result.length; i++) {
               this.childrenList.push(result[i].name);
@@ -239,32 +269,17 @@ export default {
           }
           this.childrenInfolist = result;
           this.index = 0;
-          this.InitChart();
           this.Requesta();
         })
         .catch(err => {
-          if (this.childrenList.length == 0) {
-            for (let i = 0; i < result.length; i++) {
-              this.childrenList.push(result[i].name);
-              this.id.push(result[i].id);
-            }
-          }
-          this.childrenInfolist = result;
-          this.index = 0;
-          this.InitChart();
-          this.Requesta();
           console.log(err);
         });
     },
-
-    // 默认数据
     EchartsDefaultParam() {
       this.childrenSex = 0;
       this.childrenAge = 1;
       this.youHightlist = [];
     },
-
-    //去修改身高页面
     ChangeHightNow() {
       wx.navigateTo({
         url: `/pages/changehight/main?hight=${this.nowHeightneed}&id=${
@@ -275,13 +290,16 @@ export default {
       });
     }
   },
-
   created() {
     this.EchartsDefaultParam();
   },
-
   mounted() {
+    this.InitChart();
+    this.ChangeData();
     this.init();
+  },
+  computed: {
+    ...mapState(["userParam"])
   }
 };
 </script>

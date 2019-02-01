@@ -35,15 +35,12 @@
 
 <script>
 import ajax from "@/utils/ajax.js";
-import { mapState, mapMutations } from "vuex";
 import Toast from "@/components/toast";
 import { getNextUrl, pushAnswerUrl, getFirstQuestionUrl } from "@/utils/api.js";
 export default {
   data() {
     return {
       isComplete: true,
-      submit: `提交`,
-      nextQuestion: `下一题`,
       allOfquestion: null,
       nowOfquestion: null,
       questionList: [],
@@ -66,22 +63,21 @@ export default {
     Toast
   },
   methods: {
-    ...mapMutations(["toastshowtype", "closeToast", "ChangeScoreState"]),
+    // 下一题
     GoNext(x) {
       if (this.currentScore != null) {
-        this.toastshowtype({
+        this.$store.commit("toastshowtype", {
           t: 0,
           p: "Loading..."
         });
         this.ComputeScore(this.nowOfquestion);
         this.totalScore += this.currentScore;
         this.currentScore = null;
-        let data = {
-          questionid: this.nextRequestnumber,
-          pid: this.cardType
-        };
         ajax
-          .Get(getNextUrl, data)
+          .Get(getNextUrl, {
+            questionid: this.nextRequestnumber,
+            pid: this.$store.state.cardType
+          })
           .then(result => {
             this.questionList = result.anwserdata;
             this.nowOfquestion = result.questiondata[0].questionid;
@@ -91,7 +87,7 @@ export default {
             if (this.nowOfquestion == this.allOfquestion) {
               this.isComplete = false;
             }
-            this.closeToast();
+            this.$store.commit("closeToast");
           })
           .catch(err => {
             console.log(err);
@@ -100,6 +96,8 @@ export default {
         console.log(`没选择`);
       }
     },
+
+    // 计算当前分数
     ComputeScore(x) {
       /**
        * @msg:
@@ -141,8 +139,10 @@ export default {
         }
       }
     },
+
+    // 提交
     GoSubmit() {
-      this.toastshowtype({
+      this.$store.commit("toastshowtype", {
         t: 0,
         p: "Loading..."
       });
@@ -158,19 +158,19 @@ export default {
         assess6: this.assess6,
         assess7: this.assess7,
         assess8: this.assess8,
-        userid: this.userParam.userid,
-        openid: this.userParam.openId,
-        unionid: this.userParam.unionId,
+        userid: this.$store.state.userParam.userid,
+        openid: this.$store.state.userParam.openId,
+        unionid: this.$store.state.userParam.unionId,
         total: this.totalScore,
-        pid: this.cardType
+        pid: this.$store.state.cardType
       };
       ajax
         .Get(pushAnswerUrl, data)
         .then(result => {
           setTimeout(() => {
-            this.closeToast();
-            if (this.cardType == 0) {
-              this.ChangeScoreState(this.totalScore);
+            this.$store.commit("closeToast");
+            if (this.$store.state.cardType == 0) {
+              this.$store.commit("ChangeScoreState", this.totalScore);
               wx.redirectTo({
                 url: "/pages/resultpage/main"
               });
@@ -181,8 +181,10 @@ export default {
             }
           }, 1000);
         })
-        .catch(err => {});
+        .catch(err => console.log(err));
     },
+
+    //选中答案
     ChangeChecked(index) {
       this.number = index;
       this.currentScore = this.questionList[index].score;
@@ -197,45 +199,42 @@ export default {
      * @param {4}  睡眠
      * @return:
      */
+
+    // 默认执行
     init() {
-      this.toastshowtype({
+      this.$store.commit("toastshowtype", {
         t: 0,
         p: "Loading..."
       });
-      let data = {
-        id: this.cardType
-      };
       ajax
-        .Get(getFirstQuestionUrl, data)
+        .Get(getFirstQuestionUrl, { id: this.$store.state.cardType })
         .then(result => {
           this.questionList = result.anwserdata;
           this.allOfquestion = result.count;
           this.nowOfquestion = result.questiondata[0].questionid;
           this.questionTitle = result.questiondata[0].question;
           this.nextRequestnumber = result.questiondata[0].questionid + 1;
-          this.closeToast();
+          this.$store.commit("closeToast");
         })
-        .catch(err => {
-          console.log(err);
-        });
+        .catch(err => console.log(err));
     }
-  },
-  computed: {
-    ...mapState(["userParam", "cardType"])
   },
   onLoad(x) {
     this.init();
   },
   onShow() {
     this.isComplete = true;
-    this.assess1 = 0;
-    this.assess2 = 0;
-    this.assess3 = 0;
-    this.assess4 = 0;
-    this.assess5 = 0;
-    this.assess6 = 0;
-    this.assess7 = 0;
-    this.assess8 = 0;
+    for (let i = 1; i < 9; i++) {
+      this["assess" + i] = 0;
+    }
+    // this.assess1 = 0;
+    // this.assess2 = 0;
+    // this.assess3 = 0;
+    // this.assess4 = 0;
+    // this.assess5 = 0;
+    // this.assess6 = 0;
+    // this.assess7 = 0;
+    // this.assess8 = 0;
   }
 };
 </script>

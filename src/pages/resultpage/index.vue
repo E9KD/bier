@@ -15,9 +15,6 @@
       </div>
       <div class="contianer_middle">
         <p class="middle_content">合理营养、平衡膳食评价与对策</p>
-        <!-- <div class="echarts-wrap">
-                      <mpvue-echarts :echarts="echarts" :onInit="onInit" ref="echarts" />
-        </div>-->
         <canvas canvas-id="radarCanvas" class="canvas" bindtouchstart="touchHandler"></canvas>
       </div>
 
@@ -195,25 +192,14 @@
 </template>
 
 <script>
-import Polar from "../../components/polar";
-import { mapMutations, mapState } from "vuex";
-
-import ajax from "../../utils/ajax.js";
-import wxCharts from "../../utils/wxcharts.js";
+import Polar from "@/components/polar";
+import ajax from "@/utils/ajax.js";
+import wxCharts from "@/utils/wxcharts.js";
 import { getQuestionContentUrl } from "@/utils/api.js";
 export default {
   data() {
     return {
-      /**
-       * @msg:
-       * @param {listContent}  标题
-       *@param {parsecontent}  正文
-       *@param {listContent}  分数等级
-       * @return:
-       */
-      // onInit: initChart,
       scoreList: [],
-      asd: null,
       heightList: true,
       showimg: require("../../../static/image/bottomarrow.png"),
       hideimg: require("../../../static/image/toparrow.png"),
@@ -221,8 +207,6 @@ export default {
       topContent: "小主，您此次膳食调查表的得分是：",
       list: [],
       pageHeight: null,
-      listHeight: 150,
-      parsecontent: null,
       globalScore: null,
       imgList: [
         {
@@ -320,13 +304,12 @@ export default {
     Polar
   },
   methods: {
-    ...mapMutations(["ChangePolarParam"]),
+    // 默认执行
     init() {
-      this.globalScore = this.scoreState;
+      this.globalScore = this.$store.state.scoreState;
       ajax
         .GetWithOutData(getQuestionContentUrl)
         .then(result => {
-          console.log(result);
           this.scoreList = [];
           this.ComputeScore(result);
         })
@@ -334,7 +317,10 @@ export default {
           console.log(err);
         });
     },
+
     touchHandler() {},
+
+    // 计算分数
     ComputeScore(res) {
       /**
        * @msg: q 得分 w 高分档 r 低分档
@@ -521,19 +507,18 @@ export default {
             .replace(/16/g, "12")
             .replace(/pt/g, "px"));
       }
-      console.log(`执行了列表`);
     },
+
+    // 展开/收起
     ChangeArrowState(index, item) {
-      console.log(`点击了箭头`);
-      console.log(item);
       if (item[0].heightList) {
-        console.log(`xiao`);
         item[0].heightList = null;
       } else {
-        console.log(`da`);
         item[0].heightList = 50;
       }
     },
+
+    // 我也忘了这是干什么的
     ChangePageHight() {
       //创建节点选择器
       var query = wx.createSelectorQuery();
@@ -543,6 +528,8 @@ export default {
         this.pageHeight = res[0].bottom;
       });
     },
+
+    // 计算雷达图
     ComputePolarParam(x) {
       let scoreLL = [];
       this.list = [];
@@ -557,8 +544,9 @@ export default {
       for (let i = 0; i < 8; i++) {
         this.list.push(scoreLL[i]);
       }
-      console.log(this.list);
     },
+
+    // 雷达图数据
     qwe() {
       let res = wx.getSystemInfoSync();
       let windowWidth = res.windowWidth;
@@ -595,18 +583,14 @@ export default {
     }
   },
 
-  computed: {
-    ...mapState(["polarParam", "scoreState"])
-  },
   onLoad(x) {
     this.score = x.score;
     this.ChangePageHight();
     this.init();
-    console.log(`onload`);
   },
+
   onReady() {
-    console.log(`ready`);
-    this.ComputePolarParam(this.polarParam);
+    this.ComputePolarParam(this.$store.state.polarParam);
     this.qwe();
   }
 };
@@ -764,3 +748,6 @@ export default {
   margin-bottom: 5vh;
 }
 </style>
+
+
+

@@ -40,9 +40,8 @@
 </template>
 
 <script>
-import ajax from "../../utils/ajax.js";
-import { mapState, mapMutations } from "vuex";
-import Toast from "../../components/toast";
+import ajax from "@/utils/ajax.js";
+import Toast from "@/components/toast";
 import { pushMsgUrl, getPreviewUrl, qzone } from "@/utils/api.js";
 export default {
   data() {
@@ -58,74 +57,75 @@ export default {
     Toast
   },
   methods: {
-    ...mapMutations(["toastshowtype", "closeToast", "ChangeSpaceState"]),
+    // 发布圈子
     PushMsg() {
-      let data = {
-        nickName: this.userParam.nickName,
-        content: this.keyWord,
-        userId: this.userParam.openId,
-        imgStr: this.picSrc,
-        headimg: this.userParam.avatarUrl
-      };
       ajax
-        .Post(pushMsgUrl, data)
+        .Post(pushMsgUrl, {
+          nickName: this.$store.state.userParam.nickName,
+          headimg: this.$store.state.userParam.avatarUrl,
+          userId: this.$store.state.userParam.openId,
+          content: this.keyWord,
+          imgStr: this.picSrc
+        })
         .then(result => {
           setTimeout(() => {
-            this.ChangeSpaceState(1);
+            this.$store.commit("ChangeSpaceState", 1);
             wx.switchTab({
               url: "/pages/space/main"
             });
           }, 1000);
         })
-        .catch(err => {
-          console.log(err);
-        });
+        .catch(err => console.log(err));
     },
+
+    // 预览图片
     PreviewImage(x) {
       let b = this.picSrc.split(",");
       let list = [];
       for (let i in this.imglist) {
         list.push(`${getPreviewUrl}${b[i]}`);
       }
-      console.log(list);
       wx.previewImage({
         current: `${getPreviewUrl}${b[x]}`,
         urls: list
       });
     },
 
+    // 选择图片
     ChooseImage() {
-      let that = this;
       wx.chooseImage({
         sizeType: ["original", "compressed"],
         sourceType: ["album", "camera"],
-        success(res) {
+        success: res => {
           // tempFilePath可以作为img标签的src属性显示图片
           const tempFilePaths = res.tempFilePaths;
-          that.imglist.push(tempFilePaths[0]);
-          that.imgLength = that.imglist.length;
+          this.imglist.push(tempFilePaths[0]);
+          this.imgLength = this.imglist.length;
           wx.uploadFile({
             url: `${qzone}uploadsfiles`,
             filePath: tempFilePaths[0],
             name: "image",
             success: res => {
               if (JSON.parse(res.data).status == 0) {
-                that.toastshowtype({
+                this.$store.commit("toastshowtype", {
                   t: 2,
                   p: "图片过大！"
                 });
-                that.imglist.pop();
+                this.imglist.pop();
                 setTimeout(() => {
-                  that.closeToast();
+                  this.$store.commit("closeToast");
                 }, 2000);
                 return;
               }
-              if (that.picSrc == "") {
-                that.picSrc += `${JSON.parse(res.data).img}`;
-              } else {
-                that.picSrc += `,${JSON.parse(res.data).img}`;
-              }
-              that.closeToast();
+              this.picSrc
+                ? (this.picSrc += `,${JSON.parse(res.data).img}`)
+                : (this.picSrc += `${JSON.parse(res.data).img}`);
+              // if (that.picSrc == "") {
+              //   that.picSrc += `${JSON.parse(res.data).img}`;
+              // } else {
+              //   that.picSrc += `,${JSON.parse(res.data).img}`;
+              // }
+              this.$store.commit("closeToast");
             },
             fail: function(res) {
               console.debug(res);
@@ -155,9 +155,6 @@ export default {
     //   // console.log(this.imglist);
     //   // console.log(this.picSrc);
     // }
-  },
-  computed: {
-    ...mapState(["userParam"])
   },
   onUnload() {
     this.keyWord = "";

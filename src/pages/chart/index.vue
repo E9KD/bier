@@ -3,9 +3,10 @@
     <div class="container">
       <scroll-view
         class="scrool-div"
-        scroll-y="true"
-        scroll-with-animation="true"
-        enable-back-to-top="true"
+        :scroll-y="true"
+        :scroll-with-animation="true"
+        :enable-back-to-top="true"
+        :scroll-top="talkHeight"
       >
         <div class="chat-list">
           <div v-for="(item,index) in chartList" :key="index">
@@ -139,6 +140,7 @@
 import { qzone, socketUrl } from "@/utils/api.js";
 import { mapState } from "vuex";
 import Toast from "@/components/toast.vue";
+import { setTimeout } from "timers";
 export default {
   data() {
     return {
@@ -150,7 +152,8 @@ export default {
       keyWord: null,
       isShow: false,
       socketOpen: false,
-      MineId: null
+      MineId: null,
+      talkHeight: 9999
     };
   },
   components: {
@@ -184,10 +187,12 @@ export default {
         console.log("WebSocket连接打开失败，请检查！");
       });
       wx.onSocketMessage(res => {
+        console.log(res);
         console.log(JSON.parse(res.data));
         if (
           JSON.parse(res.data).type == "ping" ||
-          JSON.parse(res.data).type == "login"
+          JSON.parse(res.data).type == "login" ||
+          JSON.parse(res.data).from_id == this.userParam.userid
         )
           return;
         let data = JSON.parse(res.data);
@@ -242,14 +247,19 @@ export default {
     },
     // 发送信息
     SendText() {
-      let type = {
-        stype: 1,
-        content: this.keyWord,
-        to_client_name: "冰镇",
-        to_client_id: "asd",
-        from_id: "808",
-        to_id: "10"
-      };
+      // let type = {
+      //   stype: 1,
+      //   content: this.keyWord,
+      //   to_client_name: "NewPc",
+      //   to_client_id: "123",
+      //   from_id: "808",
+      //   to_id: "100"
+      // };
+      let type = `{ "type": "chatMessage", "data": { "to_id": "KF2", "to_name": "客服", "content": "${
+        this.keyWord
+      }", "from_name": "${
+        this.userParam.nickName
+      }", "from_id": "808", "from_avatar": "${this.userParam.avatarUrl}"}}`;
       this.LocalListPush(type);
       this.ServeListPush(type);
       this.keyWord = null;
@@ -283,6 +293,8 @@ export default {
 
     Senda() {},
     PlayVoice(x) {
+      console.log(1111);
+      console.log(x);
       wx.playVoice({
         filePath: x,
         success: res => {
@@ -291,17 +303,14 @@ export default {
       });
     },
     ServeListPush(x) {
-      let data = `{"type":"say","to_client_id":"${x.to_client_id}","content":"${
-        x.content
-      }","stype":"${x.stype}","from_id":"${x.from_id}","to_id":"${
-        x.to_id
-      }","to_client_name": "冰镇",}`;
-      this.sendSocketMessage(data);
+      this.sendSocketMessage(x);
     },
     SendLoginMessage() {
-      let data = `{"type":"login","client_name":"${
+      let data = `{"type":"userInit","name":"${
         this.userParam.nickName
-      }","room_id":"5","uid":"808","kid":"10"}`;
+      }","group":"1","uid":"808","kid":"KF2","avatar":"${
+        this.userParam.avatarUrl
+      }"}`;
       this.sendSocketMessage(data);
     },
     // 发送信息给服务器
@@ -337,6 +346,7 @@ export default {
     },
     LocalListPush(x) {
       this.chartList.push(x);
+      this.talkHeight += 1;
     },
     touchdown() {
       this.isSpeake = true;

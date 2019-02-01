@@ -105,25 +105,18 @@ export default {
     Toast
   },
   methods: {
-    ...mapMutations(["toastshowtype", "closeToast"]),
+    // 默认执行
     init() {
       this.GetDefaultPrice();
-      let data = {
-        openid: this.userParam.openId
-      };
       ajax
-        .Get(isVipUrl, data)
+        .Get(isVipUrl, { openid: this.$store.state.userParam.openId })
         .then(result => {
-          if (result == "success") {
-            this.isBuy = false;
-          } else {
-            this.isBuy = true;
-          }
+          result == "success" ? (this.isBuy = false) : (this.isBuy = true);
         })
-        .catch(err => {
-          console.log(err);
-        });
+        .catch(err => console.log(err));
     },
+
+    // 获取默认价格
     GetDefaultPrice() {
       ajax
         .Get(getTeacherPriceUrl)
@@ -131,18 +124,20 @@ export default {
           this.price1 = result[0];
           this.price2 = result[1];
         })
-        .catch(err => {
-          console.log(err);
-        });
+        .catch(err => console.log(err));
     },
+
+    // 修改Link参数
     ChangeParam() {
       let data = JSON.parse(this.link);
-      data.userid = this.userParam.userid;
-      data.unionId = this.userParam.unionId;
+      data.userid = this.$store.state.userParam.userid;
+      data.unionId = this.$store.state.userParam.unionId;
       data.goodsid = this.teacherinfo.id;
       data.price = this.price;
       this.link = JSON.stringify(data);
     },
+
+    // 修改价格
     changeprice(x) {
       this.priceischoose = x;
       if (x == 0) {
@@ -152,28 +147,29 @@ export default {
       }
       this.ChangeParam();
     },
+
+    // 购买课程
     buyLesson() {
       this.buyshow = true;
       this.ChangeParam();
     },
+
+    // 获取默认展示
     getDefaultinfo() {
-      this.toastshowtype({
+      this.$sote.commit("toastshowtype", {
         t: 0,
         p: "Loading..."
       });
-      let data = {
-        id: this.teacherid
-      };
       ajax
-        .Get(getTeacherUrl, data)
+        .Get(getTeacherUrl, { id: this.$store.state.teacherid })
         .then(result => {
           this.teacherinfo = result;
-          this.closeToast();
+          this.$sote.commit("closeToast");
         })
-        .catch(err => {
-          console.log(err);
-        });
+        .catch(err => console.log(err));
     },
+
+    // 去分享
     GetShare() {
       wx.navigateTo({
         url: "/pages/canvaspage/main"
@@ -185,9 +181,6 @@ export default {
     this.teacherinfo = [];
     this.init();
     this.getDefaultinfo();
-  },
-  computed: {
-    ...mapState(["teacherid", "userParam"])
   }
 };
 </script>

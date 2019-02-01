@@ -97,8 +97,7 @@
 </template>
 
 <script>
-import { mapMutations, mapState } from "vuex";
-import ajax from "../../utils/ajax.js";
+import ajax from "@/utils/ajax.js";
 import { buyPriceUrl, getVipStateUrl } from "@/utils/api.js";
 export default {
   data() {
@@ -119,7 +118,7 @@ export default {
     };
   },
   methods: {
-    ...mapMutations(["ChangeToast2State"]),
+    // 默认执行
     init() {
       ajax
         .Get(buyPriceUrl)
@@ -129,53 +128,47 @@ export default {
           this.price = this.price1;
           this.ChangeParam();
         })
-        .catch(err => {
-          console.log(err);
-        });
+        .catch(err => console.log(err));
       this.GetVipState();
     },
+
+    // 获取Vip状态
     GetVipState() {
-      let data = {
-        openid: this.userParam.openId
-      };
       ajax
-        .Post(getVipStateUrl, data)
+        .Post(getVipStateUrl, { openid: this.$store.state.userParam.openId })
         .then(result => {
           if (result.status == 500 || result.status == 404) {
             this.isvip = false;
           } else {
             this.isvip = true;
-            this.time = result;
+            this.time = result.status;
           }
         })
-        .catch(err => {
-          console.log(err);
-        });
+        .catch(err => console.log(err));
     },
+
+    // 前往兑换
     GoExchange() {
       wx.navigateTo({
         url: "/pages/exchange/main"
       });
     },
+
+    // 修改价格
     ChangePrice(x) {
       this.priceischoose = x;
-      if (x == 0) {
-        this.price = this.price1;
-      } else {
-        this.price = this.price2;
-      }
+      x == 0 ? (this.price = this.price1) : (this.price = this.price2);
       this.ChangeParam();
     },
+
+    // 修改参数
     ChangeParam() {
       let data = JSON.parse(this.link);
-      data.userid = this.userParam.userid;
-      data.unionId = this.userParam.unionId;
+      data.userid = this.$store.state.userParam.userid;
+      data.unionId = this.$store.state.userParam.unionId;
       data.price = this.price;
       this.link = JSON.stringify(data);
     }
-  },
-  computed: {
-    ...mapState(["userParam"])
   },
   onLoad() {
     this.init();

@@ -7,15 +7,17 @@
       </div>
     </div>
     <div class="btm-list">
-      <div class="list" v-for="(item,index) in list" :key="index" v-if="item.abv_enum==number">
-        <button open-type="contact" :session-from="item.link" class="img">
-          <img :src="currentTab==3 ?item.orderimg :imgsrc" alt>
-        </button>
-        <div class="infor">
-          <div class="title">{{item.title}}</div>
-          <div class="intro">单号:{{item.out_trade_no}}</div>
-          <div class="num">订单状态：已支付
-            <div style="float:right">{{item.price}}</div>
+      <div class="list" v-for="(item,index) in list" :key="index">
+        <div v-if="item.abv_enum==number">
+          <button open-type="contact" :session-from="item.link" class="img">
+            <img :src="currentTab==3 ?item.orderimg :imgsrc" alt>
+          </button>
+          <div class="infor">
+            <div class="title">{{item.title}}</div>
+            <div class="intro">单号:{{item.out_trade_no}}</div>
+            <div class="num">订单状态：已支付
+              <div style="float:right">{{item.price}}</div>
+            </div>
           </div>
         </div>
       </div>
@@ -24,8 +26,7 @@
 </template>ss
 
 <script>
-import ajax from "../../utils/ajax.js";
-import { mapState } from "vuex";
+import ajax from "@/utils/ajax.js";
 import { getOrderurl } from "@/utils/api.js";
 export default {
   data() {
@@ -34,25 +35,19 @@ export default {
       currentTab: 3,
       list: [],
       number: 3,
-      userid: null,
-      unionId: null,
       linkcom: null,
-      linkListF: [],
-      linkListL: [],
       link: `{"type": "fuwu","userid":"null","unionId":"null","goodsid":"null","price":"null"}`,
       link2: `{"type": "keceng","unionId": "null","userid": "null","goodsid": "null"}`
     };
   },
   methods: {
+    // 默认执行
     init() {
-      let pageindex = 1;
-      let data = {
-        oid: this.userParam.openId,
-        page: pageindex
-      };
-
       ajax
-        .Order(getOrderurl, data)
+        .Order(getOrderurl, {
+          oid: this.$store.state.userParam.openId,
+          page: 1
+        })
         .then(result => {
           this.list = result.orderlist;
           this.AddLink();
@@ -62,27 +57,33 @@ export default {
         });
       this.ChangeParamUserifo();
     },
+
+    // 带有价格的Link
     HasPrice(i) {
       let a = {
         price: this.list[i].price,
         goodsid: this.list[i].goodsid,
         type: "fuwu",
-        userid: this.userParam.userid,
-        unionId: this.userParam.unionId
+        userid: this.$store.state.userParam.userid,
+        unionId: this.$store.state.userParam.unionId
       };
       // this.linkListF.push(this.list[i]);
       this.list[i].link = JSON.stringify(a);
     },
+
+    // 不带有价格的Link
     WithOutPrice(i) {
       let b = {
         goodsid: this.list[i].goodsid,
         type: "keceng",
-        userid: this.userParam.userid,
-        unionId: this.userParam.unionId
+        userid: this.$store.state.userParam.userid,
+        unionId: this.$store.state.userParam.unionId
       };
       // this.linkListL.push(this.list[i]);
       this.list[i].link = JSON.stringify(b);
     },
+
+    // 添加Link
     AddLink() {
       for (let i in this.list) {
         this.list[i].abv_enum == 3 ? this.HasPrice(i) : this.WithOutPrice(i);
@@ -111,6 +112,8 @@ export default {
       //   }
       // }
     },
+
+    // 修改Link参数
     ChangeParam(x, y, z) {
       if (z == 3) {
         let data1 = JSON.parse(this.link);
@@ -123,16 +126,20 @@ export default {
         this.linkcom = JSON.stringify(data2);
       }
     },
+
+    // 修改Link
     ChangeParamUserifo() {
       let data1 = JSON.parse(this.link);
       let data2 = JSON.parse(this.link2);
-      data1.userid = this.userParam.userid;
-      data1.unionId = this.userParam.unionId;
-      data2.userid = this.userParam.userid;
-      data2.unionId = this.userParam.unionId;
+      data1.userid = this.$store.state.userParam.userid;
+      data1.unionId = this.$store.state.userParam.unionId;
+      data2.userid = this.$store.state.userParam.userid;
+      data2.unionId = this.$store.state.userParam.unionId;
       this.link = JSON.stringify(data1);
       this.link2 = JSON.stringify(data2);
     },
+
+    // 切换订单
     clickTab(x) {
       this.currentTab = x;
       this.number = x;
@@ -140,9 +147,6 @@ export default {
   },
   onLoad() {
     this.init();
-  },
-  computed: {
-    ...mapState(["userParam", "userParam"])
   }
 };
 </script>

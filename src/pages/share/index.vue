@@ -193,7 +193,7 @@ page {
 .mine-top-fen image {
   width: 100rpx;
   height: 100rpx;
-  display: inline-block;
+  /* display: inline-block; */
   overflow: hidden;
   border-radius: 50%;
   float: left;

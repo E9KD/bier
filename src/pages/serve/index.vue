@@ -41,7 +41,6 @@
 <script>
 import ajax from "@/utils/ajax.js";
 import Toast from "@/components/toast.vue";
-import { mapState, mapMutations } from "vuex";
 import {
   getDefaultTeacherInfoUrl,
   getMoreTeacherInfoUrl
@@ -57,10 +56,9 @@ export default {
     Toast
   },
   methods: {
-    ...mapMutations(["changeteacherid", "toastshowtype", "closeToast"]),
+    // 获取老师信息
     getTeacherinfo() {
-      let that = this;
-      this.toastshowtype({
+      this.$store.commit("toastshowtype", {
         t: 0,
         p: "Loading..."
       });
@@ -68,20 +66,22 @@ export default {
         .Get(getDefaultTeacherInfoUrl)
         .then(result => {
           this.teacherinfolist = result.orderlist;
-          this.closeToast();
+          this.$store.commit("closeToast");
         })
-        .catch(err => {
-          console.log(err);
-        });
+        .catch(err => console.log(err));
     },
+
+    //进入第一次加载老师信息
     getTeacherid(x) {
-      this.changeteacherid(x);
+      this.$store.commit("changeteacherid", x);
       wx.navigateTo({
         url: "/pages/teacherinfo/main"
       });
     },
+
+    //进入第二次加载老师信息
     getTeacherid2(x) {
-      this.changeteacherid(x);
+      this.$store.commit("changeteacherid", x);
       wx.navigateTo({
         url: "/pages/teacherinfo/main"
       });
@@ -90,19 +90,20 @@ export default {
   onLoad() {
     this.getTeacherinfo();
   },
+
+  //
   onReachBottom() {
     ajax
       .Get(getMoreTeacherInfoUrl)
       .then(result => {
         this.teacherinfolist2 = result.orderlist;
       })
-      .catch(err => {
-        console.log(err);
-      });
+      .catch(err => console.log(err));
   },
+
+  // 下拉刷新
   onPullDownRefresh() {
     wx.showNavigationBarLoading();
-    // this.isteacherpage2=false
     this.teacherinfolist2 = [];
     this.getTeacherinfo();
     wx.hideNavigationBarLoading();

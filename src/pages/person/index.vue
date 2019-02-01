@@ -2,10 +2,10 @@
   <div class="user">
     <div class="userinfobox">
       <div class="userinfoimg">
-        <img :src="userInfolist.avatarUrl" class="userimg">
+        <img :src="GetUserInfo.avatarUrl" class="userimg">
       </div>
       <div class="userinfoname">
-        <p class="username">{{userInfolist.nickName}}</p>
+        <p class="username">{{GetUserInfo.nickName}}</p>
       </div>
       <button
         v-if="isPhone"
@@ -55,7 +55,6 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from "vuex";
 import ajax from "@/utils/ajax.js";
 import { changePhoneUrl } from "@/utils/api.js";
 export default {
@@ -63,42 +62,40 @@ export default {
     return {
       canIUse: wx.canIUse("button.open-type.getUserInfo"),
       openid: "",
-      userInfolist: [],
       isPhone: false
     };
   },
-  computed: {
-    ...mapState(["userInfo", "userParam"])
-  },
   methods: {
-    ...mapMutations(["ChangePhoneNumber"]),
+    // 默认执行
     init() {
-      this.userParam.mobile ? (this.isPhone = false) : (this.isPhone = true);
+      this.$store.state.userParam.mobile
+        ? (this.isPhone = false)
+        : (this.isPhone = true);
     },
+
+    // 获取手机号
     getPhoneNumber(e) {
-      let data = {
-        iv: e.mp.detail.iv,
-        encryptedData: e.mp.detail.encryptedData,
-        sessionKey: this.userParam.sessionKey,
-        userid: this.userParam.userid
-      };
       ajax
-        .Get(changePhoneUrl, data)
-        .then(result => {
-          this.ChangePhoneNumber(result.phoneNumber);
+        .Get(changePhoneUrl, {
+          iv: e.mp.detail.iv,
+          encryptedData: e.mp.detail.encryptedData,
+          sessionKey: this.$store.state.userParam.sessionKey,
+          userid: this.$store.state.userParam.userid
         })
-        .catch(err => {
-          console.log(err);
-        });
+        .then(result =>
+          this.$store.commit("ChangePhoneNumber", result.phoneNumber)
+        )
+        .catch(err => console.log(err));
     },
+
+    // 前往用户信息页面
     GoUserInfo() {
       wx.navigateTo({
         url: `/pages/userinfo/main`
       });
     },
-    GetUserInfo(e) {
-      this.userInfolist = this.userInfo;
-    },
+
+    //去不同的页面
     GoChildrenPage(x) {
       switch (x) {
         case 0:
@@ -124,8 +121,11 @@ export default {
       }
     }
   },
-  onLoad() {
-    this.GetUserInfo();
+  computed: {
+    // 获取用户信息
+    GetUserInfo(e) {
+      return this.$store.state.userInfo;
+    }
   }
 };
 </script>
@@ -260,7 +260,6 @@ export default {
   height: 50rpx;
   line-height: 50rpx;
   font-size: 30rpx;
-  /* color: white; */
 }
 
 .userinfobox {

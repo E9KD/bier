@@ -21,8 +21,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from "vuex";
-import ajax from "../../utils/ajax.js";
+import ajax from "@/utils/ajax.js";
 import { getHistoryUrl1, getHistoryUrl2 } from "@/utils/api.js";
 export default {
   data() {
@@ -35,55 +34,47 @@ export default {
     };
   },
   methods: {
-    ...mapMutations([
-      "ChangePolarParam",
-      "ChangeScoreState",
-      "ChangeEvaluateList",
-      "toastshowtype",
-      "closeToast"
-    ]),
+    // 默认执行
     init(x) {
       // 这里进行请求，获取分数，并进行展示。0显示分数 1不显示分数
       x == 0
         ? this.GetHistoryScore(getHistoryUrl1)
         : this.GetHistoryScore(getHistoryUrl2);
     },
+
+    // 获取历史成绩
     GetHistoryScore(url) {
-      let data = {
-        page: 1,
-        pageall: 15,
-        openid: this.userParam.userid,
-        pid: this.cardType
-      };
       ajax
-        .Get(url, data)
+        .Get(url, {
+          page: 1,
+          pageall: 15,
+          openid: this.$store.state.userParam.userid,
+          pid: this.$store.state.cardType
+        })
         .then(result => {
-          for (let i = 0; i < result.orderlist.length; i++) {
-            this.scoreList.push(result.orderlist[i]);
-          }
+          result.orderlist.forEach(x => {
+            this.scoreList.push(x);
+          });
         })
         .catch(err => {
           console.log(err);
         });
     },
+
+    // 去结果页面
     GoResult(x, y) {
       if (this.isScoreshow == 0) {
-        this.ChangeScoreState(this.scoreList[x]);
+        this.$store.commit("ChangeScoreState", this.scoreList[x]);
         let polarList = [];
-        polarList.push(this.scoreList[x].assess1);
-        polarList.push(this.scoreList[x].assess2);
-        polarList.push(this.scoreList[x].assess3);
-        polarList.push(this.scoreList[x].assess4);
-        polarList.push(this.scoreList[x].assess5);
-        polarList.push(this.scoreList[x].assess6);
-        polarList.push(this.scoreList[x].assess7);
-        polarList.push(this.scoreList[x].assess8);
-        this.ChangePolarParam(polarList);
+        for (let i = 1; i <= 8; i++) {
+          polarList.push(this.scoreList[x]["assess" + i]);
+        }
+        this.$store.commit("ChangePolarParam", polarList);
         wx.navigateTo({
           url: `/pages/resultpage/main?score=${y}`
         });
       } else {
-        this.ChangeEvaluateList(this.scoreList[x].content);
+        this.$store.commit("ChangeEvaluateList", this.scoreList[x].content);
         wx.navigateTo({
           url: `/pages/evaluate/main`
         });
@@ -91,20 +82,17 @@ export default {
     }
   },
   mounted() {
-    this.userInfolist = this.userInfo;
-  },
-  computed: {
-    ...mapState(["userInfo", "userParam", "cardType", "evaluateParam"])
+    this.userInfolist = this.$store.state.userInfo;
   },
   onLoad(x) {
-    this.toastshowtype({
+    this.$store.commit("toastshowtype", {
       t: 0,
       p: "Loading..."
     });
     this.scoreList = [];
     this.isScoreshow = x.show;
     this.init(x.show);
-    this.closeToast();
+    this.$store.commit("closeToast");
   }
 };
 </script>

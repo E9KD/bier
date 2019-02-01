@@ -6,13 +6,13 @@
 		"postcss": true,
 		"minified": true,
 		"newFeature": true,
-		"nodeModules": true
+		"nodeModules": false
 	},
 	"miniprogramRoot": "dist/",
 	"compileType": "miniprogram",
 	"appid": "wx41e93e31c9d4dc26",
 	"projectname": "biergao",
-	"libVersion": "2.4.1",
+	"libVersion": "2.5.1",
 	"condition": {
 		"search": {
 			"current": -1,

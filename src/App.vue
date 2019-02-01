@@ -76,7 +76,7 @@
   }
   
   .videobox {
-    margin-top: 30rpx;
+    margin-top: 10rpx;
     width: 100%;
     height: 400rpx;
   }

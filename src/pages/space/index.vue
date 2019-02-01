@@ -96,15 +96,13 @@
 </template>
 
 <script>
-import ajax from "../../utils/ajax.js";
-import { mapState, mapMutations } from "vuex";
+import ajax from "@/utils/ajax.js";
 import { getSpaceDefaultUrl, pushStarUrl, getPreviewUrl } from "@/utils/api.js";
 export default {
   data() {
     return {
       isshow: 5,
       searchSongList: null,
-      pageNumber: null,
       reachIndex: 1,
       pageall: null,
       isDoom: true,
@@ -112,20 +110,20 @@ export default {
     };
   },
   methods: {
-    ...mapMutations(["ChangeSpaceState"]),
+    //默认执行
     init() {
       this.pageall = null;
       this.searchSongList = null;
-      this.pagenumber = null;
       this.DefaultRequest();
     },
+
+    // 默认展示请求
     DefaultRequest() {
-      let data = {
-        uid: this.userParam.userid,
-        page: 1
-      };
       ajax
-        .Get(getSpaceDefaultUrl, data)
+        .Get(getSpaceDefaultUrl, {
+          uid: this.$store.state.userParam.userid,
+          page: 1
+        })
         .then(result => {
           if (data.enum == 0) {
             this.isshow = 0;
@@ -134,38 +132,42 @@ export default {
           }
           this.pageall = result.pageall;
           this.searchSongList = result.orderlist;
-          this.pagenumber = result.pageall;
         })
-        .catch(err => {
-          console.log(err);
-        });
+        .catch(err => console.log(err));
     },
+
+    //点赞
     UpStar(x, y, z) {
       if (y) return;
-      const data = {
-        userId: this.userParam.userid,
-        id: x,
-        nickname: this.userParam.nickName
-      };
       ajax
-        .Get(pushStarUrl, data)
+        .Get(pushStarUrl, {
+          userId: this.$store.state.userParam.userid,
+          id: x,
+          nickname: this.$store.state.userParam.nickName
+        })
         .then(result => {
           this.searchSongList[z].dianzan = true;
           if (this.searchSongList[z].dianzanlist) {
-            this.searchSongList[z].dianzanlist += `,${this.userParam.nickName}`;
+            this.searchSongList[z].dianzanlist += `,${
+              this.$store.state.userParam.nickName
+            }`;
           } else {
-            this.searchSongList[z].dianzanlist = this.userParam.nickName;
+            this.searchSongList[
+              z
+            ].dianzanlist = this.$store.state.userParam.nickName;
           }
         })
-        .catch(err => {
-          console.log(res);
-        });
+        .catch(err => console.log(res));
     },
+
+    // 写信息
     WriteMsg() {
       wx.navigateTo({
         url: "/pages/writemsg/main"
       });
     },
+
+    // 预览图片
     PreviewImage(x, y) {
       let list = [];
       for (let i in y) {
@@ -177,30 +179,28 @@ export default {
       });
     }
   },
-  computed: {
-    ...mapState(["userParam", "spaceState"])
-  },
   onLoad() {
     this.init();
   },
   onShow() {
-    if (this.spaceState == 1) {
+    if (this.$store.state.spaceState == 1) {
       this.init();
-      this.ChangeSpaceState(0);
+      this.$store.commit("ChangeSpaceState", 0);
     }
   },
+
+  // 监听用户上拉触底事件
   onReachBottom() {
     if (this.reachIndex == this.pageall) {
       this.isDoom = false;
       return;
     } else {
       this.reachIndex = this.reachIndex + 1;
-      let data = {
-        uid: this.userParam.userid,
-        page: this.reachIndex
-      };
       ajax
-        .Get(getSpaceDefaultUrl, data)
+        .Get(getSpaceDefaultUrl, {
+          uid: this.$store.state.userParam.userid,
+          page: this.reachIndex
+        })
         .then(result => {
           for (let i in result.orderlist) {
             this.searchSongList.push(result.orderlist[i]);
@@ -211,6 +211,8 @@ export default {
         });
     }
   },
+
+  // 下啦刷新
   onPullDownRefresh() {
     wx.showNavigationBarLoading();
     this.init();

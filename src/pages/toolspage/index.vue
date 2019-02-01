@@ -59,17 +59,20 @@ export default {
     Pushcard
   },
   methods: {
-    ...mapMutations(["openPushcardType"]),
+
+    // 评分展示
     GoEvaluate(x) {
       if (x != 0) return;
-      this.openPushcardType({
+      this.$store.commit("openPushcardType", {
         type: 0,
         index: x
       });
     },
+
+    // 打卡展示
     GoPunch(x) {
       if (x != 0) return;
-      this.openPushcardType({
+      this.$store.commit("openPushcardType", {
         type: 1,
         index: x
       });

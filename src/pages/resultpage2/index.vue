@@ -35,15 +35,14 @@ export default {
 
   methods: {
     init(x) {
-      let data = {
-        pid: this.cardType,
-        total: x
-      };
       this.score = null;
       this.topContent = null;
       this.content == null;
       ajax
-        .Get(getScoreNowUrl, data)
+        .Get(getScoreNowUrl, {
+          pid: this.$store.state.cardType,
+          total: x
+        })
         .then(result => {
           this.score = x;
           this.topContent = result.title;
@@ -55,9 +54,6 @@ export default {
           console.log(err);
         });
     }
-  },
-  computed: {
-    ...mapState(["userParam", "cardType"])
   },
   onLoad(x) {
     this.init(x.total);
